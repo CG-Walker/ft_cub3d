@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/25 16:36:18 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/02/25 17:04:22 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,27 +172,37 @@ void init_player(t_mlx *mlx)
 
 int move(int key, t_mlx *mlx)
 {	
-	double moveSpeed = 0.2;
+	double moveSpeed = 0.4;
 	double rotSpeed = 0.1;
 	if (key == A_KEY)
 	{
-		mlx->player->posY -= moveSpeed;
+		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
+			mlx->player->posX -= mlx->player->dirY * moveSpeed;
+    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
+			mlx->player->posY += mlx->player->dirX * moveSpeed;
 	}
 	if (key == D_KEY)
 	{
-		mlx->player->posY += moveSpeed;
+		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
+			mlx->player->posX += mlx->player->dirY * moveSpeed;
+    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
+			mlx->player->posY -= mlx->player->dirX * moveSpeed;
 	}
 	//move forward if no wall in front of you
     if (key == W_KEY)
     {
-      if(worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0) mlx->player->posX += mlx->player->dirX * moveSpeed;
-      if(worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirY * moveSpeed)] == 0) mlx->player->posY += mlx->player->dirY * moveSpeed;
+    	if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
+			mlx->player->posX += mlx->player->dirX * moveSpeed;
+    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirY * moveSpeed)] == 0)
+			mlx->player->posY += mlx->player->dirY * moveSpeed;
     }
     //move backwards if no wall behind you
     if (key == S_KEY)
     {
-      if(worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0) mlx->player->posX -= mlx->player->dirX * moveSpeed;
-      if(worldMap[(int)mlx->player->posX][(int)(mlx->player->posY - mlx->player->dirY * moveSpeed)] == 0) mlx->player->posY -= mlx->player->dirY * moveSpeed;
+    	if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
+			mlx->player->posX -= mlx->player->dirX * moveSpeed;
+    	if (worldMap[(int)mlx->player->posX][(int)(mlx->player->posY - mlx->player->dirY * moveSpeed)] == 0)
+			mlx->player->posY -= mlx->player->dirY * moveSpeed;
     }
 	if (key == ESC_KEY)
 	{
