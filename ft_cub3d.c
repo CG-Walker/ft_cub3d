@@ -6,38 +6,44 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/25 17:04:22 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/02/25 17:27:32 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cub3d.h"
 #include "ft_map.h"
 
-/*
-void	draw_screen(t_mlx *mlx)
+void floor_and_sky(t_mlx *mlx)
 {
-	double i;
-	if (worldMap[(int)mlx->player->posX + i][(int)mlx->player->posY + i] == '1')
+	int x = 0;
+	int y = 0;
+	while (x < screenWidth)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->window, 1, 500 - (i * 10), 0xFFFFFF);
+		while (y < screenHeight / 2)
+		{
+			mlx_pixel_put(mlx->mlx, mlx->window, x, y, 0x0066CC);
+			y++;
+		}
+		y = 0;
+		x++;
 	}
-	else
+	x = 0;
+	y = screenHeight / 2;
+	while (x < screenWidth)
 	{
-		i++;
-		if (mlx->player->posX + i > mapWidth || mlx->player->posY + i > mapHeight)
-			i--;
+		while (y < screenHeight )
+		{
+			mlx_pixel_put(mlx->mlx, mlx->window, x, y, 0x330000);
+			y++;
+		}
+		y = screenHeight / 2;
+		x++;
 	}
-	
 }
-*/
 
 int		raycasting(t_mlx *mlx)
 {
-	/*
-	double posX = 21.5, posY = 12;  //x and y start position
-	double dirX = -1, dirY = 0; //initial direction vector
-	double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
-	*/
+	floor_and_sky(mlx);
 	double time = 0; //time of current frame
 	double oldTime = 0; //time of previous frame
 
@@ -176,7 +182,7 @@ int move(int key, t_mlx *mlx)
 	double rotSpeed = 0.1;
 	if (key == A_KEY)
 	{
-		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
+		if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
 			mlx->player->posX -= mlx->player->dirY * moveSpeed;
     	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
 			mlx->player->posY += mlx->player->dirX * moveSpeed;
@@ -185,7 +191,7 @@ int move(int key, t_mlx *mlx)
 	{
 		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
 			mlx->player->posX += mlx->player->dirY * moveSpeed;
-    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
+    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY - mlx->player->dirX * moveSpeed)] == 0)
 			mlx->player->posY -= mlx->player->dirX * moveSpeed;
 	}
 	//move forward if no wall in front of you
@@ -204,10 +210,6 @@ int move(int key, t_mlx *mlx)
     	if (worldMap[(int)mlx->player->posX][(int)(mlx->player->posY - mlx->player->dirY * moveSpeed)] == 0)
 			mlx->player->posY -= mlx->player->dirY * moveSpeed;
     }
-	if (key == ESC_KEY)
-	{
-		exit(0);
-	}
 	//rotate to the right
     if (key == RIGHT_KEY)
     {
@@ -230,6 +232,10 @@ int move(int key, t_mlx *mlx)
       mlx->player->planeX = mlx->player->planeX * cos(rotSpeed) - mlx->player->planeY * sin(rotSpeed);
       mlx->player->planeY = oldPlaneX * sin(rotSpeed) + mlx->player->planeY * cos(rotSpeed);
     }
+	if (key == ESC_KEY)
+	{
+		exit(0);
+	}
 	mlx_clear_window(mlx->mlx, mlx->window);
 	raycasting(mlx);
 	return (1);
