@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/25 17:27:32 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/02/26 11:48:38 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,127 +41,136 @@ void floor_and_sky(t_mlx *mlx)
 	}
 }
 
+void draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
+{
+	int color;
+	switch(worldMap[mapX][mapY])
+	{
+		case 1:  color = 0xFF0000;	break; //red
+		case 2:  color = 0x00FF00;  break; //green
+		case 3:  color = 0x0000FF;  break; //blue
+		case 4:  color = 0xFFFFFF;  break; //white
+		default: color = 0xFFFF33; 	break; //yellow
+	}
+	while (start <= end)
+	{
+		mlx_pixel_put(mlx->mlx, mlx->window, x, start, color);
+		start++;
+	}
+}
+
 int		raycasting(t_mlx *mlx)
 {
-	floor_and_sky(mlx);
-	double time = 0; //time of current frame
-	double oldTime = 0; //time of previous frame
+	int w;
+	int x;
+	int mapx;
+	int mapy;
+	int stepx;
+	int stepy;
+	int h;
 
-	int w = screenWidth;
-	
-	double cameraX; //x-coordinate in camera space
-    double rayDirX;
-    double rayDirY;
-	int x = 0;
+	double time = 0;
+	double oldtime = 0;
+
+	double camerax;
+	double raydirx;
+	double raydiry;
+
+	double sidedistx;
+	double sidedisty;
+
+	double deltadistx;
+	double deltadisty;
+	double perpwalldist;
+
+	int hit;
+	int side;
+
+	int lineheight;
+	int drawstart;
+	int drawend;
+
+
+	x = 0;
+	w = screenWidth;
+	floor_and_sky(mlx);
 
 	while (x++ < w)
-    {
-		//calculate ray position and direction
-    	cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
-    	rayDirX = mlx->player->dirX + mlx->player->planeX * cameraX;
-    	rayDirY = mlx->player->dirY + mlx->player->planeY * cameraX;
-	
-		//which box of the map we're in
-		int mapX = (int)mlx->player->posX;
-		int mapY = (int)mlx->player->posY;
+	{
+		camerax = 2 * x / (double)w - 1;
+		raydirx = mlx->player->dirX + mlx->player->planeX * camerax;
+		raydiry = mlx->player->dirY + mlx->player->planeY * camerax;
 
-		//length of ray from current position to next x or y-side
-		double sideDistX;
-		double sideDistY;
+		mapx = (int)mlx->player->posX;
+		mapy = (int)mlx->player->posY;
 
-		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : fabs(1 / rayDirX));
-		double deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : fabs(1 / rayDirY));
-		double perpWallDist;
+		deltadistx = (raydiry == 0) ? 0 : ((raydirx == 0) ? 1 : fabs(1 / raydirx));
+		deltadisty = (raydirx == 0) ? 0 : ((raydiry == 0) ? 1 : fabs(1 / raydiry));
 
-		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
+		hit = 0;
 
-		int hit = 0; //was there a wall hit?
-		int side; //was a NS or a EW wall hit?
-		
-		//calculate step and initial sideDist
-		if (rayDirX < 0)
+		if (raydirx < 0)
 		{
-			stepX = -1;
-			sideDistX = (mlx->player->posX - mapX) * deltaDistX;
+			stepx = -1;
+			sidedistx = (mlx->player->posX - mapx) * deltadistx;
 		}
 		else
 		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - mlx->player->posX) * deltaDistX;
+			stepx = 1;
+			sidedistx = (mapx + 1.0 - mlx->player->posX) * deltadistx;
 		}
-		if (rayDirY < 0)
+		if (raydiry < 0)
 		{
-			stepY = -1;
-			sideDistY = (mlx->player->posY - mapY) * deltaDistY;
+			stepy = -1;
+			sidedisty = (mlx->player->posY - mapy) * deltadisty;
 		}
 		else
 		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - mlx->player->posY) * deltaDistY;
+			stepy = 1;
+			sidedisty = (mapy + 1.0 - mlx->player->posY) * deltadisty;
 		}
 
-		//perform DDA
 		while (hit == 0)
 		{
-			//jump to next map square, OR in x-direction, OR in y-direction
-			if (sideDistX < sideDistY)
+			if (sidedistx < sidedisty)
 			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
+				sidedistx += deltadistx;
+				mapx += stepx;
 				side = 0;
 			}
 			else
 			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
+				sidedisty += deltadisty;
+				mapy += stepy;
 				side = 1;
 			}
-			//Check if ray has hit a wall
-			if (worldMap[mapX][mapY] > 0) 
+			if (worldMap[mapx][mapy] > 0)
 				hit = 1;
 		}
+		if (side == 0)
+			perpwalldist =
+				(mapx - mlx->player->posX + (1 - stepx) / 2) / raydirx;
+		else
+			perpwalldist =
+				(mapy - mlx->player->posY + (1 - stepy) / 2) / raydiry;
 
-		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-		if (side == 0) 
-			perpWallDist = (mapX - mlx->player->posX + (1 - stepX) / 2) / rayDirX;
-		else           
-			perpWallDist = (mapY - mlx->player->posY + (1 - stepY) / 2) / rayDirY;
+		h = screenHeight;
 
-		int h = screenHeight;
+		lineheight = (int)(h / perpwalldist);
 
-		//Calculate height of line to draw on screen
-		int lineHeight = (int)(h / perpWallDist);
+		drawstart = -lineheight / 2 + h / 2;
+		if (drawstart < 0)
+			drawstart = 0;
+		drawend = lineheight / 2 + h / 2;
+		if (drawend >= h)
+			drawend = h - 1;
 
-		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + h / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + h / 2;
-		if (drawEnd >= h)
-			drawEnd = h - 1;
-
-		int color;
-		switch(worldMap[mapX][mapY])
-      	{
-        	case 1:  color = 0xFF0000;	break; //red
-        	case 2:  color = 0x00FF00;  break; //green
-        	case 3:  color = 0x0000FF;  break; //blue
-        	case 4:  color = 0xFFFFFF;  break; //white
-        	default: color = 0xFFFF33; 	break; //yellow
-      	}
-		while (drawStart <= drawEnd)
-		{
-			mlx_pixel_put(mlx->mlx, mlx->window, x, drawStart, color);
-			drawStart++;
-		}
+		draw(mlx, drawstart, drawend, mapx, mapy, x);
 	}
 	return (0);
 }
 
-void init_player(t_mlx *mlx)
+void	init_player(t_mlx *mlx)
 {
 	t_player *player;
 	player = malloc(sizeof(t_player));
@@ -176,7 +185,7 @@ void init_player(t_mlx *mlx)
 	mlx->player = player;
 }
 
-int move(int key, t_mlx *mlx)
+int		move(int key, t_mlx *mlx)
 {	
 	double moveSpeed = 0.4;
 	double rotSpeed = 0.1;
@@ -184,54 +193,54 @@ int move(int key, t_mlx *mlx)
 	{
 		if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
 			mlx->player->posX -= mlx->player->dirY * moveSpeed;
-    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
+		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
 			mlx->player->posY += mlx->player->dirX * moveSpeed;
 	}
 	if (key == D_KEY)
 	{
 		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
 			mlx->player->posX += mlx->player->dirY * moveSpeed;
-    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY - mlx->player->dirX * moveSpeed)] == 0)
+		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY - mlx->player->dirX * moveSpeed)] == 0)
 			mlx->player->posY -= mlx->player->dirX * moveSpeed;
 	}
 	//move forward if no wall in front of you
-    if (key == W_KEY)
-    {
-    	if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
+	if (key == W_KEY)
+	{
+		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
 			mlx->player->posX += mlx->player->dirX * moveSpeed;
-    	if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirY * moveSpeed)] == 0)
+		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirY * moveSpeed)] == 0)
 			mlx->player->posY += mlx->player->dirY * moveSpeed;
-    }
-    //move backwards if no wall behind you
-    if (key == S_KEY)
-    {
-    	if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
+	}
+	//move backwards if no wall behind you
+	if (key == S_KEY)
+	{
+		if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
 			mlx->player->posX -= mlx->player->dirX * moveSpeed;
-    	if (worldMap[(int)mlx->player->posX][(int)(mlx->player->posY - mlx->player->dirY * moveSpeed)] == 0)
+		if (worldMap[(int)mlx->player->posX][(int)(mlx->player->posY - mlx->player->dirY * moveSpeed)] == 0)
 			mlx->player->posY -= mlx->player->dirY * moveSpeed;
-    }
+	}
 	//rotate to the right
-    if (key == RIGHT_KEY)
-    {
-      //both camera direction and camera plane must be rotated
-      double oldDirX = mlx->player->dirX;
-      mlx->player->dirX = mlx->player->dirX * cos(-rotSpeed) - mlx->player->dirY * sin(-rotSpeed);
-      mlx->player->dirY = oldDirX * sin(-rotSpeed) + mlx->player->dirY * cos(-rotSpeed);
-      double oldPlaneX = mlx->player->planeX;
-      mlx->player->planeX = mlx->player->planeX * cos(-rotSpeed) - mlx->player->planeY * sin(-rotSpeed);
-      mlx->player->planeY = oldPlaneX * sin(-rotSpeed) + mlx->player->planeY * cos(-rotSpeed);
-    }
-    //rotate to the left
-    if (key == LEFT_KEY)
-    {
-      //both camera direction and camera plane must be rotated
-      double oldDirX = mlx->player->dirX;
-      mlx->player->dirX = mlx->player->dirX * cos(rotSpeed) - mlx->player->dirY * sin(rotSpeed);
-      mlx->player->dirY = oldDirX * sin(rotSpeed) + mlx->player->dirY * cos(rotSpeed);
-      double oldPlaneX = mlx->player->planeX;
-      mlx->player->planeX = mlx->player->planeX * cos(rotSpeed) - mlx->player->planeY * sin(rotSpeed);
-      mlx->player->planeY = oldPlaneX * sin(rotSpeed) + mlx->player->planeY * cos(rotSpeed);
-    }
+	if (key == RIGHT_KEY)
+	{
+		//both camera direction and camera plane must be rotated
+		double oldDirX = mlx->player->dirX;
+		mlx->player->dirX = mlx->player->dirX * cos(-rotSpeed) - mlx->player->dirY * sin(-rotSpeed);
+		mlx->player->dirY = oldDirX * sin(-rotSpeed) + mlx->player->dirY * cos(-rotSpeed);
+		double oldPlaneX = mlx->player->planeX;
+		mlx->player->planeX = mlx->player->planeX * cos(-rotSpeed) - mlx->player->planeY * sin(-rotSpeed);
+		mlx->player->planeY = oldPlaneX * sin(-rotSpeed) + mlx->player->planeY * cos(-rotSpeed);
+	}
+	//rotate to the left
+	if (key == LEFT_KEY)
+	{
+		//both camera direction and camera plane must be rotated
+		double oldDirX = mlx->player->dirX;
+		mlx->player->dirX = mlx->player->dirX * cos(rotSpeed) - mlx->player->dirY * sin(rotSpeed);
+		mlx->player->dirY = oldDirX * sin(rotSpeed) + mlx->player->dirY * cos(rotSpeed);
+		double oldPlaneX = mlx->player->planeX;
+		mlx->player->planeX = mlx->player->planeX * cos(rotSpeed) - mlx->player->planeY * sin(rotSpeed);
+		mlx->player->planeY = oldPlaneX * sin(rotSpeed) + mlx->player->planeY * cos(rotSpeed);
+	}
 	if (key == ESC_KEY)
 	{
 		exit(0);
@@ -241,7 +250,7 @@ int move(int key, t_mlx *mlx)
 	return (1);
 }
 
-int main(void)
+int		main(void)
 {
 	t_mlx *mlx;
 
