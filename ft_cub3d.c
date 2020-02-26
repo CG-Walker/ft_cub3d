@@ -3,17 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/26 11:48:38 by badrien          ###   ########.fr       */
+/*   Updated: 2020/02/26 15:03:26 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cub3d.h"
 #include "ft_map.h"
 
-void floor_and_sky(t_mlx *mlx)
+int		check_map()
+{
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
+	while (x <= mapWidth - 1)
+	{
+		if (worldMap[x][y] == -1)
+			return (-1);
+		//printf("[%d][%d] : %d\n", x, y, worldMap[x][y]);
+		x++;
+		if (x == mapWidth && y != mapHeight - 1)
+		{
+			x = 0;
+			y = mapHeight - 1;
+		}
+	}
+	x--;
+	while (y >= 0)
+	{
+		if (worldMap[x][y] == -1)
+			return (-1);
+		//printf("[%d][%d] : %d\n", x, y, worldMap[x][y]);
+		y--;
+		if (y <= -1 && x != 0)
+		{
+			y = mapHeight - 1;
+			x = 0;
+		}
+	}
+	return (1);
+}
+
+void	floor_and_sky(t_mlx *mlx)
 {
 	int x = 0;
 	int y = 0;
@@ -254,6 +289,8 @@ int		main(void)
 {
 	t_mlx *mlx;
 
+	if (check_map() == -1)
+		exit(-1);
 	mlx = malloc(sizeof(t_mlx));
 
 	mlx->mlx = mlx_init();
