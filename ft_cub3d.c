@@ -6,12 +6,24 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/26 15:03:26 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/02/27 15:09:43 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cub3d.h"
 #include "ft_map.h"
+
+void	put_frame(t_mlx *mlx)
+{
+	if (mlx->frame != NULL)
+	{
+		mlx_put_image_to_window(mlx->mlx, mlx->window, mlx->frame, 0, 0);
+		mlx_destroy_image(mlx->mlx, mlx->frame);
+	}
+	mlx->frame = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+	mlx->data = (int*)mlx_get_data_addr(mlx->frame, &mlx->bpp, &mlx->sl, &mlx->endian);
+}
+
 
 int		check_map()
 {
@@ -56,7 +68,7 @@ void	floor_and_sky(t_mlx *mlx)
 	{
 		while (y < screenHeight / 2)
 		{
-			mlx_pixel_put(mlx->mlx, mlx->window, x, y, 0x0066CC);
+			mlx->data[x + (y * screenWidth)] = 0x0066CC;
 			y++;
 		}
 		y = 0;
@@ -68,7 +80,7 @@ void	floor_and_sky(t_mlx *mlx)
 	{
 		while (y < screenHeight )
 		{
-			mlx_pixel_put(mlx->mlx, mlx->window, x, y, 0x330000);
+			mlx->data[x + (y * screenWidth)] = 0x330000;
 			y++;
 		}
 		y = screenHeight / 2;
@@ -79,6 +91,9 @@ void	floor_and_sky(t_mlx *mlx)
 void draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 {
 	int color;
+	int debut;
+
+	debut = start;
 	switch(worldMap[mapX][mapY])
 	{
 		case 1:  color = 0xFF0000;	break; //red
@@ -89,10 +104,17 @@ void draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 	}
 	while (start <= end)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->window, x, start, color);
+		if(debut >= start - 1)
+			mlx->data[x + (start * screenWidth)] = color + 0xAAAAAA;
+		else if(start >= end - 1)
+			mlx->data[x + (start * screenWidth)] = color + 0xAAAAAA;
+		else
+			mlx->data[x + (start * screenWidth)] = color;
 		start++;
 	}
 }
+
+
 
 int		raycasting(t_mlx *mlx)
 {
@@ -202,8 +224,10 @@ int		raycasting(t_mlx *mlx)
 
 		draw(mlx, drawstart, drawend, mapx, mapy, x);
 	}
+	put_frame(mlx);
 	return (0);
 }
+
 
 void	init_player(t_mlx *mlx)
 {
@@ -295,6 +319,9 @@ int		main(void)
 
 	mlx->mlx = mlx_init();
 	mlx->window = mlx_new_window(mlx->mlx, screenWidth, screenHeight, "Cub3D");
+
+	mlx->frame = NULL;
+	put_frame(mlx);
 
 	init_player(mlx);
 	raycasting(mlx);

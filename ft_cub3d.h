@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/25 16:24:27 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/02/27 14:39:19 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ typedef struct  s_mlx
 {
     void        *mlx;
     void        *window;
+    void        *frame;
+    int         *data;
+    int         bpp;
+    int         sl;
+    int         endian;
     t_player    *player;
 }               t_mlx;
 
