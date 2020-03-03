@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/03 16:03:06 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/03 17:53:03 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,25 @@ void	draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 	}
 }
 
+void drawBuffer(int **buffer, t_mlx *mlx)
+{
+	int x;
+	int y;
+	
+	x = 0;
+	y = 0;
 
+	while (x < screenWidth)
+	{
+		while (y < screenHeight)
+		{
+			mlx->data[x + (y * screenWidth)] = buffer[x][y];
+			y++;
+		}
+		y = 0;
+		x++;
+	}
+}
 
 int		raycasting(t_mlx *mlx)
 {
@@ -147,6 +165,23 @@ int		raycasting(t_mlx *mlx)
 	int drawstart;
 	int drawend;
 
+	void *texture;
+	int *image;
+	int a;
+
+	a = 64;
+
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/greystone.xpm", &a, &a);
+
+	image = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+
+
+	double wallX; //where exactly the wall was hit
+	int texX;
+	double step;
+	double texPos;
+	int texY;
+	int color;
 
 	x = 0;
 	w = screenWidth;
@@ -222,8 +257,45 @@ int		raycasting(t_mlx *mlx)
 		if (drawend >= h)
 			drawend = h - 1;
 
-		draw(mlx, drawstart, drawend, mapx, mapy, x);
-	}
+	/* DEBUT TEXTURE */
+		
+    //texturing calculations
+    
+	//int texNum = worldMap[mapx][mapy] - 1; //1 subtracted from it so that texture 0 can be used!
+
+		//int **buffer[screenHeight][screenWidth];
+
+    	//calculate value of wallX
+    	if (side == 0) 
+			wallX = mlx->player->posY + perpwalldist * raydiry;
+    	else
+			wallX = mlx->player->posX + perpwalldist * raydirx;
+    	wallX -= floor((wallX));
+
+    //x coordinate on the texture
+    	texX = (int)(wallX * (double)texWidth);
+    	if(side == 0 && raydirx > 0) texX = texWidth - texX - 1;
+    	if(side == 1 && raydiry < 0) texX = texWidth - texX - 1;
+		
+	
+	// How much to increase the texture coordinate per screen pixel
+    	step = 1.0 * texHeight / lineheight;
+    // Starting texture coordinate
+    	texPos = (drawstart - h / 2 + lineheight / 2) * step;
+    	for(int y = drawstart; y<drawend; y++)
+		{
+    	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+    		texY = (int)texPos & (texHeight - 1);
+    		texPos += step;
+        	color = image[(texHeight * texY) + texX];
+        	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+        	if (side == 1) color = (color >> 1) & 8355711;
+        	mlx->data[x + y * screenWidth] = color;
+		}
+    }
+
+	/* FIN TEXTURE*/
+
 	put_frame(mlx);
 	return (0);
 }
@@ -327,5 +399,9 @@ int		main(void)
 	raycasting(mlx);
 	mlx_hook(mlx->window, 2, 0, move, mlx);
 	mlx_loop(mlx->mlx);
+
 	return (0);
 }
+ //mlx_xpm_file_to_image(mlx->mlx, )
+
+ // -lz
