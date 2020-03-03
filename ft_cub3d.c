@@ -3,15 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/03 17:53:03 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/03 20:02:08 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cub3d.h"
-#include "ft_map.h"
+
+/*
+** TEMPORAIRE
+*/
+
+int worldMap[mapWidth][mapHeight] =
+{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
 
 void	put_frame(t_mlx *mlx)
 {
@@ -114,7 +145,7 @@ void	draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 	}
 }
 
-void drawBuffer(int **buffer, t_mlx *mlx)
+void	drawBuffer(int **buffer, t_mlx *mlx)
 {
 	int x;
 	int y;
@@ -300,7 +331,6 @@ int		raycasting(t_mlx *mlx)
 	return (0);
 }
 
-
 void	init_player(t_mlx *mlx)
 {
 	t_player *player;
@@ -316,71 +346,6 @@ void	init_player(t_mlx *mlx)
 	mlx->player = player;
 }
 
-int		move(int key, t_mlx *mlx)
-{
-	double moveSpeed = 0.3;
-	double rotSpeed = 0.1;
-	if (key == A_KEY)
-	{
-		if (worldMap[(int)(mlx->player->posX - mlx->player->dirY * moveSpeed)][(int)mlx->player->posY] == 0)
-			mlx->player->posX -= mlx->player->dirY * moveSpeed;
-		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
-			mlx->player->posY += mlx->player->dirX * moveSpeed;
-	}
-	if (key == D_KEY)
-	{
-		if (worldMap[(int)(mlx->player->posX + mlx->player->dirY * moveSpeed)][(int)mlx->player->posY] == 0)
-			mlx->player->posX += mlx->player->dirY * moveSpeed;
-		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY - mlx->player->dirX * moveSpeed)] == 0)
-			mlx->player->posY -= mlx->player->dirX * moveSpeed;
-	}
-	//move forward if no wall in front of you
-	if (key == W_KEY)
-	{
-		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
-			mlx->player->posX += mlx->player->dirX * moveSpeed;
-		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirY * moveSpeed)] == 0)
-			mlx->player->posY += mlx->player->dirY * moveSpeed;
-	}
-	//move backwards if no wall behind you
-	if (key == S_KEY)
-	{
-		if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posY] == 0)
-			mlx->player->posX -= mlx->player->dirX * moveSpeed;
-		if (worldMap[(int)mlx->player->posX][(int)(mlx->player->posY - mlx->player->dirY * moveSpeed)] == 0)
-			mlx->player->posY -= mlx->player->dirY * moveSpeed;
-	}
-	//rotate to the right
-	if (key == RIGHT_KEY)
-	{
-		//both camera direction and camera plane must be rotated
-		double oldDirX = mlx->player->dirX;
-		mlx->player->dirX = mlx->player->dirX * cos(-rotSpeed) - mlx->player->dirY * sin(-rotSpeed);
-		mlx->player->dirY = oldDirX * sin(-rotSpeed) + mlx->player->dirY * cos(-rotSpeed);
-		double oldPlaneX = mlx->player->planeX;
-		mlx->player->planeX = mlx->player->planeX * cos(-rotSpeed) - mlx->player->planeY * sin(-rotSpeed);
-		mlx->player->planeY = oldPlaneX * sin(-rotSpeed) + mlx->player->planeY * cos(-rotSpeed);
-	}
-	//rotate to the left
-	if (key == LEFT_KEY)
-	{
-		//both camera direction and camera plane must be rotated
-		double oldDirX = mlx->player->dirX;
-		mlx->player->dirX = mlx->player->dirX * cos(rotSpeed) - mlx->player->dirY * sin(rotSpeed);
-		mlx->player->dirY = oldDirX * sin(rotSpeed) + mlx->player->dirY * cos(rotSpeed);
-		double oldPlaneX = mlx->player->planeX;
-		mlx->player->planeX = mlx->player->planeX * cos(rotSpeed) - mlx->player->planeY * sin(rotSpeed);
-		mlx->player->planeY = oldPlaneX * sin(rotSpeed) + mlx->player->planeY * cos(rotSpeed);
-	}
-	if (key == ESC_KEY)
-	{
-		exit(0);
-	}
-	mlx_clear_window(mlx->mlx, mlx->window);
-	raycasting(mlx);
-	return (1);
-}
-
 int		main(void)
 {
 	t_mlx *mlx;
@@ -391,7 +356,6 @@ int		main(void)
 
 	mlx->mlx = mlx_init();
 	mlx->window = mlx_new_window(mlx->mlx, screenWidth, screenHeight, "Cub3D");
-
 	mlx->frame = NULL;
 	put_frame(mlx);
 
@@ -402,6 +366,3 @@ int		main(void)
 
 	return (0);
 }
- //mlx_xpm_file_to_image(mlx->mlx, )
-
- // -lz

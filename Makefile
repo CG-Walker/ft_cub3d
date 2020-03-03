@@ -6,7 +6,7 @@
 #    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/02/17 17:07:22 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/03/03 20:02:00 by cgoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ CC			=	gcc
 
 CFLAGS		=	#-Wall -Werror -Wextra
 
-MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit
+MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-lz
 
-SRC			=	ft_cub3d.c
+SRC			=	ft_cub3d.c ft_deplacements.c
 
 OBJ 		=	$(SRC:.c=.o)
 
@@ -47,8 +47,8 @@ fclean:		clean
 
 re:			fclean all
 
-exec:		all
-			@$(CC) $(CFLAGS) $(MFLAGS) ft_cub3d.c
+exec:		
+			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC}
 			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
 			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
 			@./a.out
