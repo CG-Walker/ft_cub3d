@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/02/27 15:09:43 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:03:06 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	put_frame(t_mlx *mlx)
 		mlx_destroy_image(mlx->mlx, mlx->frame);
 	}
 	mlx->frame = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
-	mlx->data = (int*)mlx_get_data_addr(mlx->frame, &mlx->bpp, &mlx->sl, &mlx->endian);
+	mlx->data =
+		(int*)mlx_get_data_addr(mlx->frame, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
-
 
 int		check_map()
 {
@@ -78,7 +78,7 @@ void	floor_and_sky(t_mlx *mlx)
 	y = screenHeight / 2;
 	while (x < screenWidth)
 	{
-		while (y < screenHeight )
+		while (y < screenHeight)
 		{
 			mlx->data[x + (y * screenWidth)] = 0x330000;
 			y++;
@@ -88,7 +88,7 @@ void	floor_and_sky(t_mlx *mlx)
 	}
 }
 
-void draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
+void	draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 {
 	int color;
 	int debut;
@@ -96,20 +96,20 @@ void draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 	debut = start;
 	switch(worldMap[mapX][mapY])
 	{
-		case 1:  color = 0xFF0000;	break; //red
-		case 2:  color = 0x00FF00;  break; //green
-		case 3:  color = 0x0000FF;  break; //blue
-		case 4:  color = 0xFFFFFF;  break; //white
-		default: color = 0xFFFF33; 	break; //yellow
+		case 1:  color = 0xFF0000;	break;
+		case 2:  color = 0x00FF00;  break;
+		case 3:  color = 0x0000FF;  break;
+		case 4:  color = 0xFFFFFF;  break;
+		default: color = 0xFFFF33; 	break;
 	}
 	while (start <= end)
 	{
-		if(debut >= start - 1)
-			mlx->data[x + (start * screenWidth)] = color + 0xAAAAAA;
-		else if(start >= end - 1)
-			mlx->data[x + (start * screenWidth)] = color + 0xAAAAAA;
+		if (debut >= start - 1)
+			mlx->data[x - 1 + (start * screenWidth)] = color + 0xAAAAAA;
+		else if (start >= end - 1)
+			mlx->data[x - 1 + (start * screenWidth)] = color + 0xAAAAAA;
 		else
-			mlx->data[x + (start * screenWidth)] = color;
+			mlx->data[x - 1 + (start * screenWidth)] = color;
 		start++;
 	}
 }
@@ -239,25 +239,25 @@ void	init_player(t_mlx *mlx)
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;
-	player->planeY = 0.66;
+	player->planeY = 0.86;
 
 	mlx->player = player;
 }
 
 int		move(int key, t_mlx *mlx)
-{	
-	double moveSpeed = 0.4;
+{
+	double moveSpeed = 0.3;
 	double rotSpeed = 0.1;
 	if (key == A_KEY)
 	{
-		if (worldMap[(int)(mlx->player->posX - mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
+		if (worldMap[(int)(mlx->player->posX - mlx->player->dirY * moveSpeed)][(int)mlx->player->posY] == 0)
 			mlx->player->posX -= mlx->player->dirY * moveSpeed;
 		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY + mlx->player->dirX * moveSpeed)] == 0)
 			mlx->player->posY += mlx->player->dirX * moveSpeed;
 	}
 	if (key == D_KEY)
 	{
-		if (worldMap[(int)(mlx->player->posX + mlx->player->dirX * moveSpeed)][(int)mlx->player->posX] == 0)
+		if (worldMap[(int)(mlx->player->posX + mlx->player->dirY * moveSpeed)][(int)mlx->player->posY] == 0)
 			mlx->player->posX += mlx->player->dirY * moveSpeed;
 		if (worldMap[(int)(mlx->player->posX)][(int)(mlx->player->posY - mlx->player->dirX * moveSpeed)] == 0)
 			mlx->player->posY -= mlx->player->dirX * moveSpeed;
