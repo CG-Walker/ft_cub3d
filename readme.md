@@ -5,7 +5,7 @@
 ## TODO
 
 - [ ] Gestion de fenetre parfaite
-- [ ] Afficher differentes textures selon NOES
+- [x] Afficher differentes textures selon NOES
 - [ ] Capable d'afficher Sprite
 - [x] Couleur sol et plafond
 - [ ] Pouvoir sauvegarder la premiere image rendue avec `--save`
