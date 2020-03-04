@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/03 20:02:08 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/04 13:27:25 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,23 +196,31 @@ int		raycasting(t_mlx *mlx)
 	int drawstart;
 	int drawend;
 
-	void *texture;
-	int *image;
-	int a;
-
-	a = 64;
-
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/greystone.xpm", &a, &a);
-
-	image = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-
-
 	double wallX; //where exactly the wall was hit
 	int texX;
 	double step;
 	double texPos;
 	int texY;
 	int color;
+
+	void *texture;
+	int textnum;
+	int *image1;
+	int *image2;
+	int *image3;
+	int *image4;
+
+	int a;
+	
+	a = 64;
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/eagle.xpm", &a, &a);
+	image1 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/redbrick.xpm", &a, &a);
+	image2 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/mossy.xpm", &a, &a);
+	image3 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
+	image4 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
 
 	x = 0;
 	w = screenWidth;
@@ -288,44 +296,44 @@ int		raycasting(t_mlx *mlx)
 		if (drawend >= h)
 			drawend = h - 1;
 
-	/* DEBUT TEXTURE */
-		
-    //texturing calculations
-    
-	//int texNum = worldMap[mapx][mapy] - 1; //1 subtracted from it so that texture 0 can be used!
-
-		//int **buffer[screenHeight][screenWidth];
-
-    	//calculate value of wallX
-    	if (side == 0) 
+		if (side == 0)
 			wallX = mlx->player->posY + perpwalldist * raydiry;
-    	else
+		else
 			wallX = mlx->player->posX + perpwalldist * raydirx;
-    	wallX -= floor((wallX));
+		wallX -= floor((wallX));
 
-    //x coordinate on the texture
-    	texX = (int)(wallX * (double)texWidth);
-    	if(side == 0 && raydirx > 0) texX = texWidth - texX - 1;
-    	if(side == 1 && raydiry < 0) texX = texWidth - texX - 1;
-		
-	
-	// How much to increase the texture coordinate per screen pixel
-    	step = 1.0 * texHeight / lineheight;
-    // Starting texture coordinate
-    	texPos = (drawstart - h / 2 + lineheight / 2) * step;
-    	for(int y = drawstart; y<drawend; y++)
+		texX = (int)(wallX * (double)texWidth);
+		if (side == 0 && raydirx > 0)
+			texX = texWidth - texX - 1;
+		if (side == 1 && raydiry < 0)
+			texX = texWidth - texX - 1;
+
+		step = 1.0 * texHeight / lineheight;
+		texPos = (drawstart - h / 2 + lineheight / 2) * step;
+		for (int y = drawstart; y<drawend; y++)
 		{
-    	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-    		texY = (int)texPos & (texHeight - 1);
-    		texPos += step;
-        	color = image[(texHeight * texY) + texX];
-        	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-        	if (side == 1) color = (color >> 1) & 8355711;
-        	mlx->data[x + y * screenWidth] = color;
+			texY = (int)texPos & (texHeight - 1);
+			texPos += step;
+			
+			if (side == 1)
+			{
+				if (raydiry >= 0)
+					color = image1[(texHeight * texY) + texX];
+				else
+					color = image2[(texHeight * texY) + texX];
+			}
+			else
+			{
+				if (raydirx >= 0)
+					color = image3[(texHeight * texY) + texX];
+				else
+					color = image4[(texHeight * texY) + texX];
+			}	
+			if (side == 1)
+				color = (color >> 1) & 8355711;
+			mlx->data[x + y * screenWidth] = color;
 		}
-    }
-
-	/* FIN TEXTURE*/
+	}
 
 	put_frame(mlx);
 	return (0);
