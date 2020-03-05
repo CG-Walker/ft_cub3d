@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/05 13:48:19 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/05 17:18:25 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@
 # include <mlx.h>
 # include "keynote.h"
 # include "libft/libft.h"
+# include "get_next_line/get_next_line.h"
 # include "ft_map.h"
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 typedef struct	s_ray
 {
@@ -32,6 +37,8 @@ typedef struct	s_texture
 	int *south;
     int *ceiling;
     int *floor;
+    int rgb_floor;
+    int rgb_ceiling;
 }				t_texture;
 
 
@@ -49,6 +56,9 @@ typedef struct  s_mlx
 {
     void        *mlx;
     void        *window;
+    int         screen_width;
+    int         screen_height;
+    char        **map;
     void        *frame;
     int         *data;
     int         bpp;
@@ -70,5 +80,11 @@ int		raycasting(t_mlx *mlx);
 */
 
 int		move(int key, t_mlx *mlx);
+
+/*
+**  ft_parsing
+*/
+
+void	parsing(char *file, t_mlx *mlx);
 
 #endif

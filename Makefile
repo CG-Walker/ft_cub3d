@@ -6,7 +6,7 @@
 #    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/03/03 20:02:00 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/03/05 16:14:48 by cgoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ CC			=	gcc
 
 CFLAGS		=	#-Wall -Werror -Wextra
 
-MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-lz
+MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit -fsanitize=address
 
-SRC			=	ft_cub3d.c ft_deplacements.c
+SRC			=	ft_cub3d.c ft_deplacements.c ft_parsing.c 
 
 OBJ 		=	$(SRC:.c=.o)
 
@@ -26,8 +26,10 @@ LIB			=	ar rcs
 
 all:		$(NAME)
 
-$(NAME):
-			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC}
+$(NAME):	
+			@make -C ./libft
+			@cp ./libft/libft.a libft.a
+			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC} libft.a get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 			@echo "\n\033[32m[✓]\033[0m		[$(NAME) compiled]"
 
 %.o: %.c
