@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/04 13:27:25 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/05 14:03:38 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int worldMap[mapWidth][mapHeight] =
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,3,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -37,10 +37,10 @@ int worldMap[mapWidth][mapHeight] =
   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1},
   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
@@ -93,8 +93,11 @@ int		check_map()
 
 void	floor_and_sky(t_mlx *mlx)
 {
-	int x = 0;
-	int y = 0;
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
 	while (x < screenWidth)
 	{
 		while (y < screenHeight / 2)
@@ -102,8 +105,8 @@ void	floor_and_sky(t_mlx *mlx)
 			mlx->data[x + (y * screenWidth)] = 0x0066CC;
 			y++;
 		}
-		y = 0;
 		x++;
+		y = 0;
 	}
 	x = 0;
 	y = screenHeight / 2;
@@ -114,8 +117,8 @@ void	floor_and_sky(t_mlx *mlx)
 			mlx->data[x + (y * screenWidth)] = 0x330000;
 			y++;
 		}
-		y = screenHeight / 2;
 		x++;
+		y = screenHeight / 2;
 	}
 }
 
@@ -142,26 +145,6 @@ void	draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
 		else
 			mlx->data[x - 1 + (start * screenWidth)] = color;
 		start++;
-	}
-}
-
-void	drawBuffer(int **buffer, t_mlx *mlx)
-{
-	int x;
-	int y;
-	
-	x = 0;
-	y = 0;
-
-	while (x < screenWidth)
-	{
-		while (y < screenHeight)
-		{
-			mlx->data[x + (y * screenWidth)] = buffer[x][y];
-			y++;
-		}
-		y = 0;
-		x++;
 	}
 }
 
@@ -196,37 +179,62 @@ int		raycasting(t_mlx *mlx)
 	int drawstart;
 	int drawend;
 
-	double wallX; //where exactly the wall was hit
+	double wallX;
 	int texX;
 	double step;
 	double texPos;
 	int texY;
+
 	int color;
-
-	void *texture;
-	int textnum;
-	int *image1;
-	int *image2;
-	int *image3;
-	int *image4;
-
-	int a;
-	
-	a = 64;
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/eagle.xpm", &a, &a);
-	image1 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/redbrick.xpm", &a, &a);
-	image2 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/mossy.xpm", &a, &a);
-	image3 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
-	image4 = (int*) mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
 
 	x = 0;
 	w = screenWidth;
-	floor_and_sky(mlx);
+	h = screenHeight; 
+	//floor_and_sky(mlx);
+	
+	for(int y = 0; y < h; y++)
+    {
+      float rayDirX0 = mlx->player->dirX - mlx->player->planeX;
+      float rayDirY0 = mlx->player->dirY - mlx->player->planeY;
+      float rayDirX1 = mlx->player->dirX + mlx->player->planeX;
+      float rayDirY1 = mlx->player->dirY + mlx->player->planeY;
+      
+			int p = y - screenHeight / 2;
+      float posZ = 0.5 * screenHeight;
+      float rowDistance = posZ / p;
+    	
+			float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / screenWidth;
+      float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / screenWidth;
 
-	while (x++ < w)
+      float floorX = mlx->player->posX + rowDistance * rayDirX0;
+      float floorY = mlx->player->posY + rowDistance * rayDirY0;
+
+      for(int x = 0; x < screenWidth; ++x)
+      {
+        int cellX = (int)(floorX);
+        int cellY = (int)(floorY);
+
+        int tx = (int)(texWidth * (floorX - cellX)) & (texWidth - 1);
+        int ty = (int)(texHeight * (floorY - cellY)) & (texHeight - 1);
+
+        floorX += floorStepX;
+        floorY += floorStepY;
+
+        int color;
+
+        color = mlx->texture->floor[texWidth * ty + tx];
+        color = (color >> 1) & 8355711;
+        mlx->data[x + (y * screenWidth)] = color;        
+
+        color = mlx->texture->ceiling[texWidth * ty + tx];
+        color = (color >> 1) & 8355711;
+        mlx->data[x + ((screenHeight - y - 1) * screenWidth)] = color;        
+      }
+    }
+	
+	x = 0;
+
+	while (x++ < w) // Wall casting
 	{
 		camerax = 2 * x / (double)w - 1;
 		raydirx = mlx->player->dirX + mlx->player->planeX * camerax;
@@ -314,44 +322,74 @@ int		raycasting(t_mlx *mlx)
 		{
 			texY = (int)texPos & (texHeight - 1);
 			texPos += step;
-			
 			if (side == 1)
 			{
 				if (raydiry >= 0)
-					color = image1[(texHeight * texY) + texX];
+					color = mlx->texture->west[(texHeight * texY) + texX];
 				else
-					color = image2[(texHeight * texY) + texX];
+					color = mlx->texture->east[(texHeight * texY) + texX];
 			}
 			else
 			{
 				if (raydirx >= 0)
-					color = image3[(texHeight * texY) + texX];
+					color = mlx->texture->north[(texHeight * texY) + texX];
 				else
-					color = image4[(texHeight * texY) + texX];
-			}	
-			if (side == 1)
-				color = (color >> 1) & 8355711;
+					color = mlx->texture->south[(texHeight * texY) + texX];
+			}
+			//if (side == 1)
+			//	color = (color >> 1) & 8355711;
 			mlx->data[x + y * screenWidth] = color;
 		}
 	}
-
 	put_frame(mlx);
 	return (0);
 }
 
 void	init_player(t_mlx *mlx)
 {
-	t_player *player;
+	t_player	*player;
+	t_texture	*texture;
+
 	player = malloc(sizeof(t_player));
+	texture = malloc(sizeof(t_texture));
 
 	player->posX = 22;
 	player->posY = 12;
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;
-	player->planeY = 0.86;
+	player->planeY = 0.66;
 
 	mlx->player = player;
+	mlx->texture = texture;
+}
+
+void	get_texture(t_mlx *mlx)
+{
+	void	*texture;
+	int		a;
+
+	a = 64;
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/eagle.xpm", &a, &a);
+	mlx->texture->west =
+		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/redbrick.xpm", &a, &a);
+	mlx->texture->east =
+		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/mossy.xpm", &a, &a);
+	mlx->texture->north =
+		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/bluestone.xpm", &a, &a);
+	mlx->texture->south =
+		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
+	mlx->texture->ceiling =
+		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/greystone.xpm", &a, &a);
+	mlx->texture->floor =
+		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	
 }
 
 int		main(void)
@@ -368,6 +406,7 @@ int		main(void)
 	put_frame(mlx);
 
 	init_player(mlx);
+	get_texture(mlx);
 	raycasting(mlx);
 	mlx_hook(mlx->window, 2, 0, move, mlx);
 	mlx_loop(mlx->mlx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/03 19:57:29 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/05 13:48:19 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@
 # include "keynote.h"
 # include "libft/libft.h"
 # include "ft_map.h"
+
+typedef struct	s_ray
+{
+    /* data */
+}				t_ray;
+
+typedef struct	s_texture
+{
+	int *west;
+	int *east;
+	int *north;
+	int *south;
+    int *ceiling;
+    int *floor;
+}				t_texture;
+
 
 typedef struct  s_player
 {
@@ -39,6 +55,8 @@ typedef struct  s_mlx
     int         sl;
     int         endian;
     t_player    *player;
+	t_ray		*ray;
+	t_texture	*texture;
 }               t_mlx;
 
 /*
