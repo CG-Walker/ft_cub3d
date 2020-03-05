@@ -6,7 +6,7 @@
 #    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/03/05 16:14:48 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/03/05 19:33:52 by cgoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,11 +49,10 @@ fclean:		clean
 
 re:			fclean all
 
-exec:		
-			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC}
+exec:		all
 			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
 			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out
+			@./a.out map.cub
 
 pong:		all
 			@$(CC) $(CFLAGS) $(MFLAGS) pong.c
