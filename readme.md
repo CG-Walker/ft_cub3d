@@ -13,3 +13,8 @@
 - [ ] Si la fenetre est plus grande que l'ecran, prendre la taille de l'ecran
 - [ ] Premier argument map avec .cub
 - [x] Verifier que la map soit valide
+
+## BONUS
+- [x] Collision avec les mur
+- [x] Texture sur le plafond et sol
+
