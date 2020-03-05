@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/05 17:41:59 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:54:52 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,41 +56,6 @@ void	put_frame(t_mlx *mlx)
 		(int*)mlx_get_data_addr(mlx->frame, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
-int		check_map()
-{
-	int x;
-	int y;
-
-	x = 0;
-	y = 0;
-	while (x <= mapWidth - 1)
-	{
-		if (worldMap[x][y] == -1)
-			return (-1);
-		//printf("[%d][%d] : %d\n", x, y, worldMap[x][y]);
-		x++;
-		if (x == mapWidth && y != mapHeight - 1)
-		{
-			x = 0;
-			y = mapHeight - 1;
-		}
-	}
-	x--;
-	while (y >= 0)
-	{
-		if (worldMap[x][y] == -1)
-			return (-1);
-		//printf("[%d][%d] : %d\n", x, y, worldMap[x][y]);
-		y--;
-		if (y <= -1 && x != 0)
-		{
-			y = mapHeight - 1;
-			x = 0;
-		}
-	}
-	return (1);
-}
-
 void	floor_and_sky(t_mlx *mlx)
 {
 	int x;
@@ -101,10 +66,7 @@ void	floor_and_sky(t_mlx *mlx)
 	while (x < mlx->screen_width)
 	{
 		while (y < mlx->screen_height / 2)
-		{
-			mlx->data[x + (y * mlx->screen_width)] = mlx->texture->rgb_ceiling;
-			y++;
-		}
+			mlx->data[x + (y++ * mlx->screen_width)] = mlx->texture->rgb_ceiling;
 		x++;
 		y = 0;
 	}
@@ -113,38 +75,9 @@ void	floor_and_sky(t_mlx *mlx)
 	while (x < mlx->screen_width)
 	{
 		while (y < mlx->screen_height)
-		{
-			mlx->data[x + (y * mlx->screen_width)] = mlx->texture->rgb_floor;
-			y++;
-		}
+			mlx->data[x + (y++ * mlx->screen_width)] = mlx->texture->rgb_floor;
 		x++;
 		y = mlx->screen_height / 2;
-	}
-}
-
-void	draw(t_mlx *mlx,int start, int end, int mapX, int mapY, int x)
-{
-	int color;
-	int debut;
-
-	debut = start;
-	switch(worldMap[mapX][mapY])
-	{
-		case 1:  color = 0xFF0000;	break;
-		case 2:  color = 0x00FF00;  break;
-		case 3:  color = 0x0000FF;  break;
-		case 4:  color = 0xFFFFFF;  break;
-		default: color = 0xFFFF33; 	break;
-	}
-	while (start <= end)
-	{
-		if (debut >= start - 1)
-			mlx->data[x - 1 + (start * mlx->screen_width)] = color + 0xAAAAAA;
-		else if (start >= end - 1)
-			mlx->data[x - 1 + (start * mlx->screen_width)] = color + 0xAAAAAA;
-		else
-			mlx->data[x - 1 + (start * mlx->screen_width)] = color;
-		start++;
 	}
 }
 
@@ -340,7 +273,7 @@ int		raycasting(t_mlx *mlx)
 			}
 			//if (side == 1)
 			//	color = (color >> 1) & 8355711;
-			mlx->data[x + y * mlx->screen_width] = color;
+			mlx->data[x - 1 + y * mlx->screen_width] = color;
 		}
 	}
 	put_frame(mlx);
@@ -360,7 +293,7 @@ void	init_player(t_mlx *mlx)
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;
-	player->planeY = 0.66;
+	player->planeY = 0.86;
 
 	texture->rgb_ceiling = 0;
 	texture->rgb_floor = 0;
@@ -375,20 +308,6 @@ void	get_texture(t_mlx *mlx)
 	int		a;
 
 	a = 64;
-	/*
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/eagle.xpm", &a, &a);
-	mlx->texture->west =
-		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/redbrick.xpm", &a, &a);
-	mlx->texture->east =
-		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	//texture = mlx_xpm_file_to_image(mlx->mlx, "pics/mossy.xpm", &a, &a);
-	//mlx->texture->north =
-	//	(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/bluestone.xpm", &a, &a);
-	mlx->texture->south =
-		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
-	*/
 	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
 	mlx->texture->ceiling =
 		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
@@ -401,11 +320,7 @@ int		main(int argc, char *argv[])
 {
 	t_mlx *mlx;
 
-	if (check_map() == -1)
-		exit(-1);
 	mlx = malloc(sizeof(t_mlx));
-
-	
 	mlx->mlx = mlx_init();
 	init_player(mlx);
 	if (argc == 2)
@@ -413,7 +328,6 @@ int		main(int argc, char *argv[])
 	mlx->window = mlx_new_window(mlx->mlx, mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
 	put_frame(mlx);
-
 	get_texture(mlx);
 	raycasting(mlx);
 	mlx_hook(mlx->window, 2, 0, move, mlx);

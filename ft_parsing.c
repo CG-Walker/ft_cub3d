@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/05 17:40:21 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:57:04 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,12 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	i = 2;
 	while (s[i] == ' ')
 		i++;
-	printf("%s\n", &s[i]);
+	if (open(&s[i], O_RDONLY) == -1)
+	{
+		printf("ERROR LOADING TEXTURE.\n");
+		exit(-1);
+	}
+	printf("%s loaded.\n", &s[i]);
 	texture = mlx_xpm_file_to_image(mlx->mlx, &s[i], &a, &a);
 	if (nesw == 0)
 		mlx->texture->north =
@@ -75,7 +80,6 @@ void	fc_id(char *s, int fc, t_mlx *mlx)
 	while (ft_isdigit(s[i]))
 		i++;
 	b = ft_atoi(&s[++i]);
-	printf("r : %d\ng :%d\nb : %d\n", r, g, b);
 	if (fc == 0)
 		mlx->texture->rgb_floor = r + (g * 256) + (b * 256 * 256);
 	else
