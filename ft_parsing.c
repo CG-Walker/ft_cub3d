@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/05 17:57:04 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/06 18:30:58 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,65 @@ int		check_id(char *s, t_mlx *mlx)
 	return (0);
 }
 
+char	**mllc_world_map(char *file, size_t width, size_t height)
+{
+	char	**world_map;
+	char	*line;
+	int		fd;
+	int		ret;
+	size_t	i;
+	size_t	k;
+
+	i = 0;
+	k = 0;
+	ret = 1;
+
+	world_map = malloc(sizeof(char**) * (width + 1));
+	world_map[width] = 0;
+	fd = open(file, O_RDONLY);
+	printf("__TEST__\n");
+	while (ret == 1)
+	{
+		ret = get_next_line(fd, &line);
+		while (*line == ' ')
+			line++;
+		if (*line == '1')
+			break ;
+		free(line);
+	}
+	world_map[k] = malloc(sizeof(char*) * (height + 1));
+	while (i < height)
+	{
+		if (line[i])
+			world_map[k][i] = line[i];
+		if (world_map[k][i] == ' ')
+			world_map[k][i] = '1';
+		i++;
+	}
+	world_map[k++][i] = 0;
+	i = 0;
+	free(line);
+	while (ret == 1)
+	{
+		ret = get_next_line(fd, &line);
+		world_map[k] = malloc(sizeof(char*) * (height + 1));
+		while (i < height)
+		{
+			if (line[i])
+				world_map[k][i] = line[i];
+			if (world_map[k][i] == ' ')
+				world_map[k][i] = '1';
+			i++;
+		}
+		world_map[k][i] = 0;
+		i = 0;
+		k++;
+		free(line);
+	}
+	ft_display_array(world_map);
+	return (world_map);
+}
+
 void	parsing(char *file, t_mlx *mlx)
 {
 	char	*line;
@@ -122,17 +181,22 @@ void	parsing(char *file, t_mlx *mlx)
 
 	ret = 1;
 	width = 0;
-	height = 0;
+	height = 1;
 	fd = open(file, O_RDONLY);
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
 		if (line[0] != '\n')
 			check_id(line, mlx);
+		while (*line == ' ')
+			line++;
+		if (*line == '1')
+		{
+			free(line);
+			break ;
+		}
 		free(line);
 	}
-	printf("floor : %i\nsky : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
-	/*
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
@@ -142,5 +206,9 @@ void	parsing(char *file, t_mlx *mlx)
 		height++;
 		free(line);
 	}
-	*/
+	close(fd);
+	printf("floor : %i\nsky : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
+	printf("Width : %zu\nHeight : %zu\n", width, height);
+	mllc_world_map(file, width, height);
 }
+
