@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/06 18:30:58 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:22:04 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,9 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 	k = 0;
 	ret = 1;
 
-	world_map = malloc(sizeof(char**) * (width + 1));
-	world_map[width] = 0;
+	world_map = malloc(sizeof(char*) * (height + 1));
+	world_map[height] = NULL;
 	fd = open(file, O_RDONLY);
-	printf("__TEST__\n");
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
@@ -137,36 +136,37 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 			break ;
 		free(line);
 	}
-	world_map[k] = malloc(sizeof(char*) * (height + 1));
-	while (i < height)
+	world_map[k] = malloc(sizeof(char) * (width + 1));
+	while (i < width)
 	{
-		if (line[i])
+		if (line[i] != 0 && line[i] != '\n')
 			world_map[k][i] = line[i];
-		if (world_map[k][i] == ' ')
-			world_map[k][i] = '1';
+		else
+			world_map[k][i] = ' ';
 		i++;
 	}
-	world_map[k++][i] = 0;
+	world_map[k++][width] = 0;
+	printf("%s\n", world_map[k - 1]);
 	i = 0;
 	free(line);
-	while (ret == 1)
+	while (k < height)
 	{
 		ret = get_next_line(fd, &line);
-		world_map[k] = malloc(sizeof(char*) * (height + 1));
-		while (i < height)
+		world_map[k] = malloc(sizeof(char) * (width + 1));
+		while (i < width)
 		{
-			if (line[i])
+			if (line[i] != 0 && line[i] != '\n')
 				world_map[k][i] = line[i];
-			if (world_map[k][i] == ' ')
-				world_map[k][i] = '1';
+			else
+				world_map[k][i] = ' ';
 			i++;
 		}
-		world_map[k][i] = 0;
+		world_map[k++][width] = 0;
+		printf("%s\n", world_map[k - 1]);
 		i = 0;
-		k++;
 		free(line);
 	}
-	ft_display_array(world_map);
+	//ft_display_array(world_map);
 	return (world_map);
 }
 
@@ -192,6 +192,7 @@ void	parsing(char *file, t_mlx *mlx)
 			line++;
 		if (*line == '1')
 		{
+			width = ft_strlen(line);
 			free(line);
 			break ;
 		}
