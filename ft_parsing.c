@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/09 16:22:04 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:07:45 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,14 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 		if (line[i] != 0 && line[i] != '\n')
 			world_map[k][i] = line[i];
 		else
-			world_map[k][i] = ' ';
+		{
+			while (i < width)
+				world_map[k][i++] = ' ';
+			break ;
+		}
 		i++;
 	}
 	world_map[k++][width] = 0;
-	printf("%s\n", world_map[k - 1]);
 	i = 0;
 	free(line);
 	while (k < height)
@@ -158,11 +161,14 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 			if (line[i] != 0 && line[i] != '\n')
 				world_map[k][i] = line[i];
 			else
-				world_map[k][i] = ' ';
+			{
+				while (i < width)
+					world_map[k][i++] = ' ';
+				break ;
+			}
 			i++;
 		}
 		world_map[k++][width] = 0;
-		printf("%s\n", world_map[k - 1]);
 		i = 0;
 		free(line);
 	}
