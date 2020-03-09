@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/05 17:54:52 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:20:35 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,34 @@ int		raycasting(t_mlx *mlx)
 	put_frame(mlx);
 	return (0);
 }
+/*
+check_player_pos(t_player *player, char **map)
+{
+	size_t x;
+	size_t y;
 
+	x = 0;
+	y = 0;
+	while (map[x])
+	{
+		while (map[x][y])
+		{
+			if (map[x][y] == 'N' || map[x][y] == 'S' 
+			|| map[x][y] == 'E' || map[x][y] == 'W')
+			{
+				player->posX = x;
+				player->posY = y;
+			}
+			//if (map[x][y] == 'N')
+			//if (map[x][y] == 'S')
+			//if (map[x][y] == 'E')
+			//if (map[x][y] == 'W')
+			y++;
+		}
+		x++;
+	}
+}
+*/
 void	init_player(t_mlx *mlx)
 {
 	t_player	*player;
@@ -288,8 +315,9 @@ void	init_player(t_mlx *mlx)
 	player = malloc(sizeof(t_player));
 	texture = malloc(sizeof(t_texture));
 
-	player->posX = 22;
-	player->posY = 12;
+	player->posX = 0;
+	player->posY = 0;
+	// check_player_pos(player, map);
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;

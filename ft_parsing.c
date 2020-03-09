@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/09 18:07:45 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:33:54 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,37 @@ int		check_id(char *s, t_mlx *mlx)
 	return (0);
 }
 
+/*
+void	check_map(char **map) // Reste a check pour NWES
+{
+	size_t x;
+	size_t y;
+
+	x = 0;
+	y = 0;
+	while (map[x])
+	{
+		while (map[x][y])
+		{
+			if (map[x][y] == '0')
+			{
+				if (x > 0 && map[x - 1][y] != '1')
+					printf("Mauvaise map.\n");
+				if (x < height && map[x + 1][y] != '1')
+					printf("Mauvaise map.\n");
+				if (y > 0 && map[x][y - 1] != '1')
+					printf("Mauvaise map.\n");
+				if (y < width && map[x][y + 1] != '1')
+					printf("Mauvaise map.\n");
+			}
+			y++;
+		}
+		x++;
+	}
+	printf("Map ok.\n");
+}
+*/
+
 char	**mllc_world_map(char *file, size_t width, size_t height)
 {
 	char	**world_map;
@@ -172,7 +203,7 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 		i = 0;
 		free(line);
 	}
-	//ft_display_array(world_map);
+	//ft_display_array(world_map); // Fct de ma Libft - Permet d'afficher la map dans le terminal.
 	return (world_map);
 }
 
@@ -218,4 +249,3 @@ void	parsing(char *file, t_mlx *mlx)
 	printf("Width : %zu\nHeight : %zu\n", width, height);
 	mllc_world_map(file, width, height);
 }
-
