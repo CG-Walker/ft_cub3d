@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/09 18:33:54 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/10 11:23:15 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,5 +247,5 @@ void	parsing(char *file, t_mlx *mlx)
 	close(fd);
 	printf("floor : %i\nsky : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
 	printf("Width : %zu\nHeight : %zu\n", width, height);
-	mllc_world_map(file, width, height);
+	mlx->map = mllc_world_map(file, width, height);
 }

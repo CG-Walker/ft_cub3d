@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
+#    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/03/05 19:33:52 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/03/10 11:34:14 by badrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC			=	gcc
 
 CFLAGS		=	#-Wall -Werror -Wextra
 
-MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit -fsanitize=address
+MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
 
 SRC			=	ft_cub3d.c ft_deplacements.c ft_parsing.c 
 

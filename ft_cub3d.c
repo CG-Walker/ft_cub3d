@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/09 18:20:35 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/03/10 11:55:49 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** TEMPORAIRE
 */
 
-int worldMap[mapWidth][mapHeight] =
+/*int worldMap[mapWidth][mapHeight] =
 {
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -42,7 +42,7 @@ int worldMap[mapWidth][mapHeight] =
   {1,4,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1},
   {1,4,4,4,4,4,4,4,4,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+};*/
 
 void	put_frame(t_mlx *mlx)
 {
@@ -218,7 +218,7 @@ int		raycasting(t_mlx *mlx)
 				mapy += stepy;
 				side = 1;
 			}
-			if (worldMap[mapx][mapy] > 0)
+			if (mlx->map[mapx][mapy] > 0)
 				hit = 1;
 		}
 		if (side == 0)
@@ -271,11 +271,10 @@ int		raycasting(t_mlx *mlx)
 				else
 					color = mlx->texture->south[(texHeight * texY) + texX];
 			}
-			//if (side == 1)
-			//	color = (color >> 1) & 8355711;
 			mlx->data[x - 1 + y * mlx->screen_width] = color;
 		}
 	}
+	printf("pos joueur = x, y: %f - %f \n", mlx->player->posX, mlx->player->posY);
 	put_frame(mlx);
 	return (0);
 }
@@ -315,8 +314,8 @@ void	init_player(t_mlx *mlx)
 	player = malloc(sizeof(t_player));
 	texture = malloc(sizeof(t_texture));
 
-	player->posX = 0;
-	player->posY = 0;
+	player->posX = 2;
+	player->posY = 2;
 	// check_player_pos(player, map);
 	player->dirX = -1;
 	player->dirY = 0;
@@ -353,6 +352,8 @@ int		main(int argc, char *argv[])
 	init_player(mlx);
 	if (argc == 2)
 		parsing(argv[1], mlx);
+	else
+		return(1);
 	mlx->window = mlx_new_window(mlx->mlx, mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
 	put_frame(mlx);
