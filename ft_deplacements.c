@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 19:46:26 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/10 11:52:17 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/11 14:49:33 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,40 @@
 void	mv_left(t_mlx *mlx, double move_speed)
 {
 	if (mlx->map[(int)(mlx->player->posX - mlx->player->dirY * move_speed)]
-	[(int)mlx->player->posY] == 0)
+	[(int)mlx->player->posY] == '0')
 		mlx->player->posX -= mlx->player->dirY * move_speed;
 	if (mlx->map[(int)(mlx->player->posX)]
-	[(int)(mlx->player->posY + mlx->player->dirX * move_speed)] == 0)
+	[(int)(mlx->player->posY + mlx->player->dirX * move_speed)] == '0')
 		mlx->player->posY += mlx->player->dirX * move_speed;
 }
 
 void	mv_right(t_mlx *mlx, double move_speed)
 {
 	if (mlx->map[(int)(mlx->player->posX + mlx->player->dirY * move_speed)]
-	[(int)mlx->player->posY] == 0)
+	[(int)mlx->player->posY] == '0')
 		mlx->player->posX += mlx->player->dirY * move_speed;
 	if (mlx->map[(int)(mlx->player->posX)]
-	[(int)(mlx->player->posY - mlx->player->dirX * move_speed)] == 0)
+	[(int)(mlx->player->posY - mlx->player->dirX * move_speed)] == '0')
 		mlx->player->posY -= mlx->player->dirX * move_speed;
 }
 
 void	mv_forward(t_mlx *mlx, double move_speed)
 {
 	if (mlx->map[(int)(mlx->player->posX + mlx->player->dirX * move_speed)]
-	[(int)mlx->player->posY] == 0)
+	[(int)mlx->player->posY] == '0')
 		mlx->player->posX += mlx->player->dirX * move_speed;
 	if (mlx->map[(int)(mlx->player->posX)]
-	[(int)(mlx->player->posY + mlx->player->dirY * move_speed)] == 0)
+	[(int)(mlx->player->posY + mlx->player->dirY * move_speed)] == '0')
 		mlx->player->posY += mlx->player->dirY * move_speed;
 }
 
 void	mv_backward(t_mlx *mlx, double move_speed)
 {
 	if (mlx->map[(int)(mlx->player->posX - mlx->player->dirX * move_speed)]
-	[(int)mlx->player->posY] == 0)
+	[(int)mlx->player->posY] == '0')
 		mlx->player->posX -= mlx->player->dirX * move_speed;
 	if (mlx->map[(int)mlx->player->posX]
-	[(int)(mlx->player->posY - mlx->player->dirY * move_speed)] == 0)
+	[(int)(mlx->player->posY - mlx->player->dirY * move_speed)] == '0')
 		mlx->player->posY -= mlx->player->dirY * move_speed;
 }
 

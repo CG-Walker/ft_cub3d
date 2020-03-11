@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/10 11:55:49 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/11 15:55:32 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ int		raycasting(t_mlx *mlx)
 				mapy += stepy;
 				side = 1;
 			}
-			if (mlx->map[mapx][mapy] > 0)
+			if (mlx->map[(int)mapx][(int)mapy] > '0')
 				hit = 1;
 		}
 		if (side == 0)
@@ -274,7 +274,6 @@ int		raycasting(t_mlx *mlx)
 			mlx->data[x - 1 + y * mlx->screen_width] = color;
 		}
 	}
-	printf("pos joueur = x, y: %f - %f \n", mlx->player->posX, mlx->player->posY);
 	put_frame(mlx);
 	return (0);
 }
@@ -338,6 +337,7 @@ void	get_texture(t_mlx *mlx)
 	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
 	mlx->texture->ceiling =
 		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+	
 	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/greystone.xpm", &a, &a);
 	mlx->texture->floor =
 		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
