@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/10 11:23:15 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/12 11:40:43 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,5 +247,7 @@ void	parsing(char *file, t_mlx *mlx)
 	close(fd);
 	printf("floor : %i\nsky : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
 	printf("Width : %zu\nHeight : %zu\n", width, height);
+	mlx->map_height = height;
+	mlx->map_width = width;
 	mlx->map = mllc_world_map(file, width, height);
 }

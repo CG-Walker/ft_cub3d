@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/11 15:55:32 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/12 12:07:15 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,34 +277,34 @@ int		raycasting(t_mlx *mlx)
 	put_frame(mlx);
 	return (0);
 }
-/*
-check_player_pos(t_player *player, char **map)
+
+void check_player_pos(t_mlx *mlx)
 {
 	size_t x;
 	size_t y;
 
 	x = 0;
 	y = 0;
-	while (map[x])
+	while (x < mlx->map_height)
 	{
-		while (map[x][y])
+		while (y < mlx->map_width)
 		{
-			if (map[x][y] == 'N' || map[x][y] == 'S' 
-			|| map[x][y] == 'E' || map[x][y] == 'W')
+			//printf("y = %zu\n",y);
+			if (mlx->map[x][y] == 'N' || mlx->map[x][y] == 'S' 
+			|| mlx->map[x][y] == 'E' || mlx->map[x][y] == 'W')
 			{
-				player->posX = x;
-				player->posY = y;
+				mlx->player->posX = (double)x + 0.5;
+				mlx->player->posY = (double)y + 0.5;
+				mlx->map[x][y] = '0';
 			}
-			//if (map[x][y] == 'N')
-			//if (map[x][y] == 'S')
-			//if (map[x][y] == 'E')
-			//if (map[x][y] == 'W')
+			
 			y++;
 		}
+		y = 0;
 		x++;
 	}
 }
-*/
+
 void	init_player(t_mlx *mlx)
 {
 	t_player	*player;
@@ -313,9 +313,8 @@ void	init_player(t_mlx *mlx)
 	player = malloc(sizeof(t_player));
 	texture = malloc(sizeof(t_texture));
 
-	player->posX = 2;
-	player->posY = 2;
-	// check_player_pos(player, map);
+	//player->posX = 3;
+	//player->posY = 3;
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;
@@ -336,11 +335,11 @@ void	get_texture(t_mlx *mlx)
 	a = 64;
 	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
 	mlx->texture->ceiling =
-		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 	
 	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/greystone.xpm", &a, &a);
 	mlx->texture->floor =
-		(int*)mlx_get_data_addr(texture,&mlx->bpp, &mlx->sl, &mlx->endian);
+		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
 int		main(int argc, char *argv[])
@@ -354,6 +353,7 @@ int		main(int argc, char *argv[])
 		parsing(argv[1], mlx);
 	else
 		return(1);
+	check_player_pos(mlx);
 	mlx->window = mlx_new_window(mlx->mlx, mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
 	put_frame(mlx);

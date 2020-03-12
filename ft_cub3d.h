@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/10 11:51:16 by badrien          ###   ########.fr       */
+/*   Updated: 2020/03/12 11:40:19 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 # define FT_CUB3D_H
 
 # include <math.h>
+
 # include <mlx.h>
+
 # include "keynote.h"
 # include "libft/libft.h"
 # include "get_next_line/get_next_line.h"
 # include "ft_map.h"
+
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -60,6 +63,8 @@ typedef struct  s_mlx
     int         screen_width;
     int         screen_height;
     char        **map;
+    int         map_width;
+    int         map_height;
     void        *frame;
     int         *data;
     int         bpp;
