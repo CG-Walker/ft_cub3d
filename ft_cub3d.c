@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/08 11:55:34 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/08 15:32:49 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,118 @@ void	floor_and_sky(t_mlx *mlx)
 	}
 }
 
+void	floor_and_sky_text(t_mlx *mlx)
+{
+	for(int y = 0; y < screenHeight; y++)
+		{
+			float rayDirX0 = mlx->player->dirX - mlx->player->planeX;
+			float rayDirY0 = mlx->player->dirY - mlx->player->planeY;
+			float rayDirX1 = mlx->player->dirX + mlx->player->planeX;
+			float rayDirY1 = mlx->player->dirY + mlx->player->planeY;
+
+			int p = y - mlx->screen_height / 2;
+			float posZ = 0.5 * mlx->screen_height;
+			float rowDistance = posZ / p;
+
+			float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / mlx->screen_width;
+			float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / mlx->screen_width;
+			
+			float floorX = mlx->player->posX + rowDistance * rayDirX0;
+			float floorY = mlx->player->posY + rowDistance * rayDirY0;
+
+			for(int x = 0; x < mlx->screen_width; ++x)
+			{
+				int cellX = (int)(floorX);
+				int cellY = (int)(floorY);
+
+				int tx = (int)(texWidth * (floorX - cellX)) & (texWidth - 1);
+				int ty = (int)(texHeight * (floorY - cellY)) & (texHeight - 1);
+
+				floorX += floorStepX;
+				floorY += floorStepY;
+
+				int color;
+
+				color = mlx->texture->floor[texWidth * ty + tx];
+				color = (color >> 1) & 8355711;
+				mlx->data[x + (y * mlx->screen_width)] = color;        
+
+				color = mlx->texture->ceiling[texWidth * ty + tx];
+				color = (color >> 1) & 8355711;
+				mlx->data[x + ((mlx->screen_height - y - 1) * mlx->screen_width)] = color;        
+				}
+			}
+}
+
+void	add_sprite(t_mlx *mlx, double ZBuffer[screenWidth])
+{
+		double spriteX;
+		double spriteY;
+		double invDet;
+		double transformX;
+		double transformY;
+		
+		int spriteScreenX;
+		int spriteHeight;
+		int drawStartY;
+		int drawEndY;
+		int spriteWidth;
+		int drawStartX;
+		int drawEndX;
+		int stripe;
+		int texX;
+		int texY;
+		int y;
+		int d;
+		int color;
+		int h;
+		int w;
+
+		h = screenHeight;
+		w = screenWidth;
+
+		spriteX = mlx->player->sprite_x - mlx->player->posX;
+      	spriteY = mlx->player->sprite_y - mlx->player->posY;
+
+		invDet = 1.0 / (mlx->player->planeX * mlx->player->dirY - mlx->player->dirX * mlx->player->planeY);
+
+		transformX = invDet * (mlx->player->dirY * spriteX - mlx->player->dirX * spriteY);
+		transformY = invDet * ((-(mlx->player->planeY)) * spriteX + mlx->player->planeX * spriteY);
+		
+		spriteScreenX = (int)((w / 2) * (1 + transformX / transformY));
+
+		spriteHeight = abs((int)(h / (transformY)));
+
+		drawStartY = -spriteHeight / 2 + h / 2;
+		if (drawStartY < 0) 
+			drawStartY = 0;
+		drawEndY = spriteHeight / 2 + h / 2;
+		if (drawEndY >= h) 
+			drawEndY = h - 1;
+
+		spriteWidth = abs((int) (h / (transformY)));
+		drawStartX = -spriteWidth / 2 + spriteScreenX;
+		if (drawStartX < 0) 
+			drawStartX = 0;
+		drawEndX = spriteWidth / 2 + spriteScreenX;
+		if (drawEndX >= w) 
+			drawEndX = w - 1;
+
+		for(stripe = drawStartX; stripe < drawEndX; stripe++)
+      	{
+        	texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
+        	if(transformY > 0 && stripe > 0 && stripe < w && transformY < ZBuffer[stripe])
+        	for(y = drawStartY; y < drawEndY; y++)
+        	{
+          		d = (y) * 256 - h * 128 + spriteHeight * 128;
+          		texY = ((d * texHeight) / spriteHeight) / 256;
+          		color = mlx->texture->sprite[(texWidth * texY) + texX];
+          		if((color & 0x00FFFFFF) != 0) 
+		  			mlx->data[stripe + (y * mlx->screen_width)] = color;
+        	}
+      	}
+}
+
 int		raycasting(t_mlx *mlx)
 {
 	int w;
@@ -126,47 +238,7 @@ int		raycasting(t_mlx *mlx)
 	w = mlx->screen_width;
 	h = mlx->screen_height; 
 	if (mlx->texture->rgb_ceiling == 0 && mlx->texture->rgb_floor == 0)
-	{
-		for(int y = 0; y < h; y++)
-			{
-				float rayDirX0 = mlx->player->dirX - mlx->player->planeX;
-				float rayDirY0 = mlx->player->dirY - mlx->player->planeY;
-				float rayDirX1 = mlx->player->dirX + mlx->player->planeX;
-				float rayDirY1 = mlx->player->dirY + mlx->player->planeY;
-				
-				int p = y - mlx->screen_height / 2;
-				float posZ = 0.5 * mlx->screen_height;
-				float rowDistance = posZ / p;
-				
-				float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / mlx->screen_width;
-				float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / mlx->screen_width;
-
-				float floorX = mlx->player->posX + rowDistance * rayDirX0;
-				float floorY = mlx->player->posY + rowDistance * rayDirY0;
-
-				for(int x = 0; x < mlx->screen_width; ++x)
-				{
-					int cellX = (int)(floorX);
-					int cellY = (int)(floorY);
-
-					int tx = (int)(texWidth * (floorX - cellX)) & (texWidth - 1);
-					int ty = (int)(texHeight * (floorY - cellY)) & (texHeight - 1);
-
-					floorX += floorStepX;
-					floorY += floorStepY;
-
-					int color;
-
-					color = mlx->texture->floor[texWidth * ty + tx];
-					color = (color >> 1) & 8355711;
-					mlx->data[x + (y * mlx->screen_width)] = color;        
-
-					color = mlx->texture->ceiling[texWidth * ty + tx];
-					color = (color >> 1) & 8355711;
-					mlx->data[x + ((mlx->screen_height - y - 1) * mlx->screen_width)] = color;        
-				}
-			}
-	}
+		floor_and_sky_text(mlx);
 	else
 		floor_and_sky(mlx);
 	x = 0;
@@ -274,60 +346,14 @@ int		raycasting(t_mlx *mlx)
 					color = mlx->texture->south[(texHeight * texY) + texX];
 			}
 			mlx->data[x - 1 + y * mlx->screen_width] = color;
-		}
-		
+		}	
 		ZBuffer[x] = perpwalldist;
-		/* -----------------SPRITE----------------- */
-	
 	}
-		/* temporaire */ 
-		//mlx->player->sprite_x = 3.5;
-		//mlx->player->sprite_y = 3.5;
-		/**************/
+		/* -----------------SPRITE----------------- */
+		if(mlx->player->sprite_x != -1)
+			add_sprite(mlx, ZBuffer);
 
-		printf("position sprite: x = %f y = %f\n\n", mlx->player->sprite_x, mlx->player->sprite_y);
-		
-		double spriteX = mlx->player->sprite_x - mlx->player->posX;
-      	double spriteY = mlx->player->sprite_y - mlx->player->posY;
-
-		double invDet = 1.0 / (mlx->player->planeX * mlx->player->dirY - mlx->player->dirX * mlx->player->planeY);
-
-		double transformX = invDet * (mlx->player->dirY * spriteX - mlx->player->dirX * spriteY);
-		double transformY = invDet * ((-(mlx->player->planeY)) * spriteX + mlx->player->planeX * spriteY);
-		
-		int spriteScreenX = (int)((w / 2) * (1 + transformX / transformY));
-
-		int spriteHeight = abs((int)(h / (transformY)));
-
-		int drawStartY = -spriteHeight / 2 + h / 2;
-		if(drawStartY < 0) 
-			drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + h / 2;
-		if(drawEndY >= h) 
-			drawEndY = h - 1;
-
-		int spriteWidth = abs((int) (h / (transformY)));
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0) 
-			drawStartX = 0;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= w) 
-			drawEndX = w - 1;
-
-		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-      {
-        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
-        if(transformY > 0 && stripe > 0 && stripe < w && transformY < ZBuffer[stripe])
-        for(int y = drawStartY; y < drawEndY; y++)
-        {
-          int d = (y) * 256 - h * 128 + spriteHeight * 128;
-          int texY = ((d * texHeight) / spriteHeight) / 256;
-          color = mlx->texture->sprite[(texWidth * texY) + texX];
-          if((color & 0x00FFFFFF) != 0) 
-		  	mlx->data[stripe + (y * mlx->screen_width)] = color;
-        }
-      }
-	put_frame(mlx);
+		put_frame(mlx);
 	return (0);
 }
 
@@ -342,7 +368,6 @@ void check_player_pos(t_mlx *mlx)
 	{
 		while (y < mlx->map_width)
 		{
-			//printf("y = %zu\n",y);
 			if (mlx->map[x][y] == 'N' || mlx->map[x][y] == 'S' 
 			|| mlx->map[x][y] == 'E' || mlx->map[x][y] == 'W')
 			{
@@ -360,11 +385,10 @@ void check_player_pos(t_mlx *mlx)
 				mlx->map[x][y] = '0';
 			}
 			if (mlx->map[x][y] == '2')
-				{
-					mlx->player->sprite_x = x;
-					mlx->player->sprite_y = y;
-					printf("OUI\n\n\n");
-				}
+			{
+				mlx->player->sprite_x = x + 0.5;
+				mlx->player->sprite_y = y + 0.5;
+			}
 			y++;
 		}
 		y = 0;
@@ -380,8 +404,6 @@ void	init_player(t_mlx *mlx)
 	player = malloc(sizeof(t_player));
 	texture = malloc(sizeof(t_texture));
 
-	//player->posX = 3;
-	//player->posY = 3;
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;
@@ -390,8 +412,8 @@ void	init_player(t_mlx *mlx)
 	texture->rgb_ceiling = 0;
 	texture->rgb_floor = 0;
 
-	player->sprite_x = 4;
-	player->sprite_y = 4;
+	player->sprite_x = -1;
+	player->sprite_y = -1;
 
 	mlx->player = player;
 	mlx->texture = texture;
