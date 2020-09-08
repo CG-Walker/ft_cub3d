@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 19:46:26 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/08 11:50:01 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/08 13:17:17 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	mv_forward(t_mlx *mlx, double move_speed)
 void	mv_backward(t_mlx *mlx, double move_speed)
 {
 	if (mlx->map[(int)(mlx->player->posX - mlx->player->dirX * move_speed)]
-	[(int)mlx->player->posY] != '!')
+	[(int)mlx->player->posY] != '1')
 		mlx->player->posX -= mlx->player->dirX * move_speed;
 	if (mlx->map[(int)mlx->player->posX]
 	[(int)(mlx->player->posY - mlx->player->dirY * move_speed)] != '1')
