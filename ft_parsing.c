@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/12 11:40:43 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/08 11:42:38 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	else if (nesw == 3)
 		mlx->texture->east =
 			(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
+	else if (nesw == 4)
+		mlx->texture->sprite =
+			(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
+	//printf("position sprite %f - %f \n\n",mlx->player->sprite_x, mlx->player->sprite_y );
 }
 
 void	fc_id(char *s, int fc, t_mlx *mlx)
@@ -98,6 +102,8 @@ int		check_id(char *s, t_mlx *mlx)
 		nesw_id(s, 2, mlx);
 	if (s[0] == 'E' && s[1] == 'A')
 		nesw_id(s, 3, mlx);
+	if (s[0] == 'S' && s[1] != 'O')
+		nesw_id(s, 4, mlx);
 	if (s[0] == 'F')
 		fc_id(s, 0, mlx);
 	if (s[0] == 'C')

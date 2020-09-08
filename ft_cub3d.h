@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/12 11:40:19 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/08 10:47:16 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_texture
 	int *east;
 	int *north;
 	int *south;
+    int *sprite;
     int *ceiling;
     int *floor;
     int rgb_floor;
@@ -54,6 +55,9 @@ typedef struct  s_player
     double dirY;
     double planeX;
     double planeY;
+
+    double sprite_x;
+    double sprite_y;
 }               t_player;
 
 typedef struct  s_mlx

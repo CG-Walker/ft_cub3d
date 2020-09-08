@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/08 09:26:03 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/08 11:55:34 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ int		raycasting(t_mlx *mlx)
 
 	int color;
 
+	double ZBuffer[screenWidth];
+
 	x = 0;
 	w = mlx->screen_width;
 	h = mlx->screen_height; 
@@ -218,7 +220,7 @@ int		raycasting(t_mlx *mlx)
 				mapy += stepy;
 				side = 1;
 			}
-			if (mlx->map[(int)mapx][(int)mapy] > '0')
+			if (mlx->map[(int)mapx][(int)mapy] == '1')
 				hit = 1;
 		}
 		if (side == 0)
@@ -273,7 +275,58 @@ int		raycasting(t_mlx *mlx)
 			}
 			mlx->data[x - 1 + y * mlx->screen_width] = color;
 		}
+		
+		ZBuffer[x] = perpwalldist;
+		/* -----------------SPRITE----------------- */
+	
 	}
+		/* temporaire */ 
+		//mlx->player->sprite_x = 3.5;
+		//mlx->player->sprite_y = 3.5;
+		/**************/
+
+		printf("position sprite: x = %f y = %f\n\n", mlx->player->sprite_x, mlx->player->sprite_y);
+		
+		double spriteX = mlx->player->sprite_x - mlx->player->posX;
+      	double spriteY = mlx->player->sprite_y - mlx->player->posY;
+
+		double invDet = 1.0 / (mlx->player->planeX * mlx->player->dirY - mlx->player->dirX * mlx->player->planeY);
+
+		double transformX = invDet * (mlx->player->dirY * spriteX - mlx->player->dirX * spriteY);
+		double transformY = invDet * ((-(mlx->player->planeY)) * spriteX + mlx->player->planeX * spriteY);
+		
+		int spriteScreenX = (int)((w / 2) * (1 + transformX / transformY));
+
+		int spriteHeight = abs((int)(h / (transformY)));
+
+		int drawStartY = -spriteHeight / 2 + h / 2;
+		if(drawStartY < 0) 
+			drawStartY = 0;
+		int drawEndY = spriteHeight / 2 + h / 2;
+		if(drawEndY >= h) 
+			drawEndY = h - 1;
+
+		int spriteWidth = abs((int) (h / (transformY)));
+		int drawStartX = -spriteWidth / 2 + spriteScreenX;
+		if(drawStartX < 0) 
+			drawStartX = 0;
+		int drawEndX = spriteWidth / 2 + spriteScreenX;
+		if(drawEndX >= w) 
+			drawEndX = w - 1;
+
+		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+      {
+        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
+        if(transformY > 0 && stripe > 0 && stripe < w && transformY < ZBuffer[stripe])
+        for(int y = drawStartY; y < drawEndY; y++)
+        {
+          int d = (y) * 256 - h * 128 + spriteHeight * 128;
+          int texY = ((d * texHeight) / spriteHeight) / 256;
+          color = mlx->texture->sprite[(texWidth * texY) + texX];
+          if((color & 0x00FFFFFF) != 0) 
+		  	mlx->data[stripe + (y * mlx->screen_width)] = color;
+        }
+      }
 	put_frame(mlx);
 	return (0);
 }
@@ -306,6 +359,12 @@ void check_player_pos(t_mlx *mlx)
 					rot_right(mlx, 6.3);
 				mlx->map[x][y] = '0';
 			}
+			if (mlx->map[x][y] == '2')
+				{
+					mlx->player->sprite_x = x;
+					mlx->player->sprite_y = y;
+					printf("OUI\n\n\n");
+				}
 			y++;
 		}
 		y = 0;
@@ -330,6 +389,9 @@ void	init_player(t_mlx *mlx)
 
 	texture->rgb_ceiling = 0;
 	texture->rgb_floor = 0;
+
+	player->sprite_x = 4;
+	player->sprite_y = 4;
 
 	mlx->player = player;
 	mlx->texture = texture;
