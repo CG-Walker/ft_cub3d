@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/03/12 12:07:15 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/08 09:26:03 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,9 +295,17 @@ void check_player_pos(t_mlx *mlx)
 			{
 				mlx->player->posX = (double)x + 0.5;
 				mlx->player->posY = (double)y + 0.5;
+				
+				if (mlx->map[x][y] == 'E')
+					rot_right(mlx, 1.6);
+				if (mlx->map[x][y] == 'S')
+					rot_right(mlx, 3.1);
+				if (mlx->map[x][y] == 'W')
+					rot_right(mlx, 4.7);
+				if (mlx->map[x][y] == 'N')
+					rot_right(mlx, 6.3);
 				mlx->map[x][y] = '0';
 			}
-			
 			y++;
 		}
 		y = 0;
