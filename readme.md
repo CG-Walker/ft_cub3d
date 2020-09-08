@@ -15,7 +15,7 @@
 - [x] Verifier que la map soit valide
 - [ ] Eviter les segfault dans la lecture de map
 - [x] Mise en place du joueur selon la position sur la map
-- [ ] Regler l'orientation du joueur selon indiquer sur la map
+- [x] Regler l'orientation du joueur selon indiquer sur la map
 
 ## BONUS
 - [x] Collision avec les mur
