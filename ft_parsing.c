@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/09 11:52:25 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/09 14:51:30 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,25 +256,4 @@ void	parsing(char *file, t_mlx *mlx)
 	mlx->map_height = height;
 	mlx->map_width = width;
 	mlx->map = mllc_world_map(file, width, height);
-
-	/* Erreur dectection map*/
-	/*
-	int i;
-	int j;
-	int error = 0;
-	for(i=0; i<height; i++)
-    {
-        for(j=0; j<width; j++)
-        {
-            printf("%c", mlx->map[i][j]);
-			if(mlx->map[i][j] != '0' && mlx->map[i][j] != '1' && mlx->map[i][j] != '2' 
-				&& mlx->map[i][j] != 'N' && mlx->map[i][j] != 'S' && mlx->map[i][j] != ' '
-					&& mlx->map[i][j] != 'W' && mlx->map[i][j] != 'E' && mlx->map[i][j] != '\n')
-				error = 1;
-        }
-        printf("\n");
-    }
-	if(error = 1)
-		printf("Anomalie detecter dans la map!\n");
-	*/
 }
