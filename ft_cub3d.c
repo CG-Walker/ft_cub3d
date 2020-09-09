@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/09 12:41:45 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/09 14:10:47 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,7 +361,9 @@ void check_player_pos(t_mlx *mlx)
 {
 	size_t x;
 	size_t y;
+	int nb_sprite;
 
+	nb_sprite = 0;
 	x = 0;
 	y = 0;
 	while (x < mlx->map_height)
@@ -391,12 +393,17 @@ void check_player_pos(t_mlx *mlx)
 			{
 				mlx->player->sprite_x = x + 0.5;
 				mlx->player->sprite_y = y + 0.5;
+				nb_sprite++;
 			}
 			y++;
 		}
 		y = 0;
 		x++;
 	}
+	if(mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
+		printf("ERREUR: player not found\n");
+	if(nb_sprite > 1)
+		printf("WARNING: plusieurs position de sprite trouve, une seule sera prise en compte\n");
 }
 
 void	init_player(t_mlx *mlx)
@@ -411,6 +418,9 @@ void	init_player(t_mlx *mlx)
 	player->dirY = 0;
 	player->planeX = 0;
 	player->planeY = 0.86;
+
+	player->init_posx = -1;
+	player->init_poxy = -1;
 
 	texture->rgb_ceiling = 0;
 	texture->rgb_floor = 0;
@@ -436,12 +446,6 @@ void	get_texture(t_mlx *mlx)
 	mlx->texture->floor =
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
-
-typedef struct	s_point
-{
-	int x;
-	int y;
-}				t_point;
 
 int 			is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 {
@@ -476,6 +480,51 @@ int 			is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 	}
 	return (0);
 }
+
+int check_map(t_mlx *mlx)
+{
+	t_point size;
+	t_point begin;
+	int j;
+	int i;
+	int error;
+	
+	size.y = mlx->map_height;
+	size.x = mlx->map_width;
+	begin.x = mlx->player->init_poxy;
+	begin.y = mlx->player->init_posx;
+	error = 0;
+
+	for(i=0; i<mlx->map_height; i++)
+    {
+        for(j=0; j<mlx->map_width; j++)
+            if(mlx->map[i][j] == ' ')
+				mlx->map[i][j] = '0';
+    }
+	is_close(mlx, size, begin, '3');
+	for(i=0; i<mlx->map_height; i++)
+    {
+        for(j=0; j<mlx->map_width; j++)
+        {
+			printf("%c", mlx->map[i][j]);
+			if(mlx->map[i][j] < '0' ||  mlx->map[i][j] > '3')
+				error = 2;
+			if(mlx->map[i][j] == '3' && (i == 0 || i == mlx->map_height - 1 || j == 0 || j == mlx->map_width - 1))
+				error = 1;
+		}
+		printf("\n");
+    }
+	if(error > 0)
+	{
+		printf("ON AS UNE ERREUR! code erreur: %d\n", error);
+		return (1);
+	}
+	else
+		printf("MAP OK\n");
+
+	return (0);
+}
+
 int		main(int argc, char *argv[])
 {
 	t_mlx *mlx;
@@ -488,68 +537,14 @@ int		main(int argc, char *argv[])
 	else
 		return(1);
 	check_player_pos(mlx);
-
-	/*------------*/
-
-	t_point size;
-	t_point begin;
-
-	size.y = mlx->map_height;
-	size.x = mlx->map_width;
-	begin.x = mlx->player->init_poxy;
-	begin.y = mlx->player->init_posx;
-
-	//mlx->map[(int)mlx->player->posX][(int)mlx->player->posY] = '0';
-	
-	printf("valeur begin x et begin y: %f et %f\n\n\n",mlx->player->posX,mlx->player->posY);
-
-	printf("valeur begin x et begin y: %d et %d\n\n\n",begin.x,begin.y);
-
-	int i;
-	int j;
-	int error;
-	
-	error = 0;
-
-	for(i=0; i<mlx->map_height; i++)
-    {
-        for(j=0; j<mlx->map_width; j++)
-            if(mlx->map[i][j] == ' ')
-				mlx->map[i][j] = '0';
-        printf("\n");
-    }
-	
-	printf("\n%d\n",is_close(mlx, size, begin, '3'));
-
-	for(i=0; i<mlx->map_height; i++)
-    {
-        for(j=0; j<mlx->map_width; j++)
-        {
-			printf("%c", mlx->map[i][j]);
-			if(mlx->map[i][j] < '0' ||  mlx->map[i][j] > '3')
-			{
-				printf("ERREUR ICI");
-				error = 2;
-			}
-			if(mlx->map[i][j] == '3' && (i == 0 || i == mlx->map_height - 1 || j == 0 || j == mlx->map_width - 1))
-			{
-				//printf("FUITE ICI");
-				error = 1;
-			}	
-		}  
-        printf("\n");
-    }
-	if(error > 0)
-	{
-		printf("ON AS UNE ERREUR! type: %d\n", error);
+	if(mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
 		return (1);
-	}
-	else
-
-	/*------------------*/
+	if(check_map(mlx) != 0)
+		return (1);
 
 	mlx->window = mlx_new_window(mlx->mlx, mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
+
 	put_frame(mlx);
 	get_texture(mlx);
 	raycasting(mlx);

@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/09 10:49:55 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/09 13:27:55 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ typedef struct  s_mlx
 	t_texture	*texture;
 }               t_mlx;
 
+typedef struct	s_point
+{
+	int x;
+	int y;
+}				t_point;
 /*
 ** ft_cub3d
 */
