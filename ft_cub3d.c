@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/08 15:32:49 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/09 12:41:45 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,6 +374,9 @@ void check_player_pos(t_mlx *mlx)
 				mlx->player->posX = (double)x + 0.5;
 				mlx->player->posY = (double)y + 0.5;
 				
+				mlx->player->init_posx = x;
+				mlx->player->init_poxy = y;
+
 				if (mlx->map[x][y] == 'E')
 					rot_right(mlx, 1.6);
 				if (mlx->map[x][y] == 'S')
@@ -434,6 +437,45 @@ void	get_texture(t_mlx *mlx)
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
+typedef struct	s_point
+{
+	int x;
+	int y;
+}				t_point;
+
+int 			is_close(t_mlx *mlx, t_point size, t_point begin, char c)
+{
+	t_point p;
+
+	//printf("TEST\n");
+	//printf("valeur case actuel: %c\n\n\n", mlx->map[begin.x][begin.y]);
+	mlx->map[begin.y][begin.x] = c;
+	if (begin.y > 0 && mlx->map[begin.y - 1][begin.x] == '0')
+	{
+		p.x = begin.x;
+		p.y = begin.y - 1;
+		is_close(mlx, size, p, c);
+	}
+	if ((begin.y < (size.y - 1)) && mlx->map[begin.y + 1][begin.x] == '0')
+	{
+		p.x = begin.x;
+		p.y = begin.y + 1;
+		is_close(mlx, size, p, c);
+	}
+	if ((begin.x < (size.x - 1)) && mlx->map[begin.y][begin.x + 1] == '0')
+	{
+		p.x = begin.x + 1;
+		p.y = begin.y;
+		is_close(mlx, size, p, c);
+	}
+	if (begin.x > 0 && mlx->map[begin.y][begin.x - 1] == '0')
+	{
+		p.x = begin.x - 1;
+		p.y = begin.y;
+		is_close(mlx, size, p, c);
+	}
+	return (0);
+}
 int		main(int argc, char *argv[])
 {
 	t_mlx *mlx;
@@ -446,6 +488,66 @@ int		main(int argc, char *argv[])
 	else
 		return(1);
 	check_player_pos(mlx);
+
+	/*------------*/
+
+	t_point size;
+	t_point begin;
+
+	size.y = mlx->map_height;
+	size.x = mlx->map_width;
+	begin.x = mlx->player->init_poxy;
+	begin.y = mlx->player->init_posx;
+
+	//mlx->map[(int)mlx->player->posX][(int)mlx->player->posY] = '0';
+	
+	printf("valeur begin x et begin y: %f et %f\n\n\n",mlx->player->posX,mlx->player->posY);
+
+	printf("valeur begin x et begin y: %d et %d\n\n\n",begin.x,begin.y);
+
+	int i;
+	int j;
+	int error;
+	
+	error = 0;
+
+	for(i=0; i<mlx->map_height; i++)
+    {
+        for(j=0; j<mlx->map_width; j++)
+            if(mlx->map[i][j] == ' ')
+				mlx->map[i][j] = '0';
+        printf("\n");
+    }
+	
+	printf("\n%d\n",is_close(mlx, size, begin, '3'));
+
+	for(i=0; i<mlx->map_height; i++)
+    {
+        for(j=0; j<mlx->map_width; j++)
+        {
+			printf("%c", mlx->map[i][j]);
+			if(mlx->map[i][j] < '0' ||  mlx->map[i][j] > '3')
+			{
+				printf("ERREUR ICI");
+				error = 2;
+			}
+			if(mlx->map[i][j] == '3' && (i == 0 || i == mlx->map_height - 1 || j == 0 || j == mlx->map_width - 1))
+			{
+				//printf("FUITE ICI");
+				error = 1;
+			}	
+		}  
+        printf("\n");
+    }
+	if(error > 0)
+	{
+		printf("ON AS UNE ERREUR! type: %d\n", error);
+		return (1);
+	}
+	else
+
+	/*------------------*/
+
 	mlx->window = mlx_new_window(mlx->mlx, mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
 	put_frame(mlx);
