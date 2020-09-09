@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/08 10:47:16 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/09 10:49:55 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ typedef struct	s_texture
 
 typedef struct  s_player
 {
+    int init_posx;
+    int init_poxy;
+
     double posX;
     double posY;
     double dirX;
