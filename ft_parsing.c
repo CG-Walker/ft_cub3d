@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/09 14:51:30 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/11 10:36:19 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 		else
 		{
 			while (i < width)
-				world_map[k][i++] = '0';
+				world_map[k][i++] = ' ';
 			break ;
 		}
 		i++;
@@ -200,7 +200,7 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 			else
 			{
 				while (i < width)
-					world_map[k][i++] = '0';
+					world_map[k][i++] = ' ';
 				break ;
 			}
 			i++;

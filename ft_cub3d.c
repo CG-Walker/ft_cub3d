@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/09 14:10:47 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/11 11:43:10 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,37 @@ void	add_sprite(t_mlx *mlx, double ZBuffer[screenWidth])
       	}
 }
 
+void	add_map(t_mlx *mlx)
+{
+	int y;
+	int x;
+	int color;
+
+	x = 0;
+	y = 0;
+	while (x < mlx->map_height)
+	{
+		while (y < mlx->map_width)
+		{
+			if (mlx->map[x][y] != '0')
+			{
+				if (mlx->map[x][y] == '1')
+					color = 0x000000;
+				if (mlx->map[x][y] == '2')
+					color = 0xFF0000;
+				if (mlx->map[x][y] == '3')
+					color = 0x00CC00;
+				mlx->data[(x + (screenHeight/35) + ((y + (screenWidth/35)) * mlx->screen_width))] = color;
+			}
+		y++;
+		}
+	y = 0;
+	x++;
+	}
+	y = (int)mlx->player->posX + (screenHeight/35) + ((int)mlx->player->posY + (screenWidth/35)) * mlx->screen_width;
+	mlx->data[y] = 0x000000;
+}
+
 int		raycasting(t_mlx *mlx)
 {
 	int w;
@@ -350,14 +381,14 @@ int		raycasting(t_mlx *mlx)
 		ZBuffer[x] = perpwalldist;
 	}
 		/* -----------------SPRITE----------------- */
-		if(mlx->player->sprite_x != -1)
+	if(mlx->player->sprite_x != -1)
 			add_sprite(mlx, ZBuffer);
-
-		put_frame(mlx);
+	add_map(mlx);
+	put_frame(mlx);
 	return (0);
 }
 
-void check_player_pos(t_mlx *mlx)
+void	check_player_pos(t_mlx *mlx)
 {
 	size_t x;
 	size_t y;
@@ -447,7 +478,7 @@ void	get_texture(t_mlx *mlx)
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
-int 			is_close(t_mlx *mlx, t_point size, t_point begin, char c)
+int 	is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 {
 	t_point p;
 
@@ -488,13 +519,14 @@ int check_map(t_mlx *mlx)
 	int j;
 	int i;
 	int error;
-	
+
 	size.y = mlx->map_height;
 	size.x = mlx->map_width;
 	begin.x = mlx->player->init_poxy;
 	begin.y = mlx->player->init_posx;
 	error = 0;
 
+	
 	for(i=0; i<mlx->map_height; i++)
     {
         for(j=0; j<mlx->map_width; j++)
