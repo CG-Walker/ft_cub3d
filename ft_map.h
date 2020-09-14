@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_map.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:50:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/08 10:38:05 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/14 16:37:06 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,5 @@
 # define screenHeight 1080
 # define texWidth 64
 # define texHeight 64
-
-//extern int worldMap[mapWidth][mapHeight];
 
 #endif

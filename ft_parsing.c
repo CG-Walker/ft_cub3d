@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/11 10:36:19 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/14 16:55:16 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,6 @@ int		check_id(char *s, t_mlx *mlx)
 		fc_id(s, 0, mlx);
 	if (s[0] == 'C')
 		fc_id(s, 1, mlx);
-	/*
-	if (s[0] == 'S')
-		s_id(s, mlx);
-	*/
 	else
 		return (-1);
 	return (0);
@@ -209,7 +205,6 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 		i = 0;
 		free(line);
 	}
-	//ft_display_array(world_map); // Fct de ma Libft - Permet d'afficher la map dans le terminal.
 	return (world_map);
 }
 
@@ -218,13 +213,12 @@ void	parsing(char *file, t_mlx *mlx)
 	char	*line;
 	int		fd;
 	int		ret;
-	size_t	width;
-	size_t	height;
+	t_point size;
 	size_t	tmp;
 
 	ret = 1;
-	width = 0;
-	height = 1;
+	size.x = 0;
+	size.y = 1;
 	fd = open(file, O_RDONLY);
 	while (ret == 1)
 	{
@@ -233,9 +227,9 @@ void	parsing(char *file, t_mlx *mlx)
 			check_id(line, mlx);
 		while (*line == ' ')
 			line++;
-		if (*line == '1')
+		if (*line == '1' || *line == '0')
 		{
-			width = ft_strlen(line);
+			size.x = ft_strlen(line);
 			free(line);
 			break ;
 		}
@@ -245,15 +239,15 @@ void	parsing(char *file, t_mlx *mlx)
 	{
 		ret = get_next_line(fd, &line);
 		tmp = ft_strlen(line);
-		if (width < tmp)
-			width = tmp;
-		height++;
+		if (size.x < tmp)
+			size.x = tmp;
+		size.y++;
 		free(line);
 	}
 	close(fd);
-	printf("floor : %i\nsky : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
-	printf("Width : %zu\nHeight : %zu\n", width, height);
-	mlx->map_height = height;
-	mlx->map_width = width;
-	mlx->map = mllc_world_map(file, width, height);
+	printf("RGB Floor  : %i\nRGB Sky	   : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
+	printf("Map Width  : %zu\nMap Height : %zu\n", size.x, size.y);
+	mlx->map_height = size.y;
+	mlx->map_width = size.x;
+	mlx->map = mllc_world_map(file, size.x, size.y);
 }

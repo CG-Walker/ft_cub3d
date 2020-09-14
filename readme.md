@@ -20,7 +20,8 @@
 - [X] Verifier que la map soit valide (uniquement 0,1,2 NSEW comme caractères).
 - [x] Régler l'orientation du joueur selon indiquer sur la map.
 - [x] Premier argument map avec .cub.
-- [x] Touches pour se deplacer, ESC pour fermer, croix de la fenêtre pour fermer.
+- [x] Touches pour se deplacer, ESC pour fermer.
+- [ ] Croix de la fenêtre pour fermer.
 - [x] Afficher différentes textures selon NOES.
 - [x] Capable d'afficher des sprites.
 - [x] Couleur de sol et de plafond.
