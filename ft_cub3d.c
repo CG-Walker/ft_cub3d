@@ -56,7 +56,7 @@ void	put_frame(t_mlx *mlx)
 		(int*)mlx_get_data_addr(mlx->frame, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
-void	floor_and_sky(t_mlx *mlx)
+void	floor_and_sky_color(t_mlx *mlx)
 {
 	int x;
 	int y;
@@ -271,7 +271,7 @@ int		raycasting(t_mlx *mlx)
 	if (mlx->texture->rgb_ceiling == 0 && mlx->texture->rgb_floor == 0)
 		floor_and_sky_text(mlx);
 	else
-		floor_and_sky(mlx);
+		floor_and_sky_color(mlx);
 	x = 0;
 
 	while (x++ < w) // Wall casting
@@ -512,7 +512,7 @@ int 	is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 	return (0);
 }
 
-int check_map(t_mlx *mlx)
+int		check_map(t_mlx *mlx)
 {
 	t_point size;
 	t_point begin;
@@ -526,7 +526,6 @@ int check_map(t_mlx *mlx)
 	begin.y = mlx->player->init_posx;
 	error = 0;
 
-	
 	for(i=0; i<mlx->map_height; i++)
     {
         for(j=0; j<mlx->map_width; j++)
@@ -553,7 +552,6 @@ int check_map(t_mlx *mlx)
 	}
 	else
 		printf("MAP OK\n");
-
 	return (0);
 }
 
