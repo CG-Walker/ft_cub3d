@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 13:46:50 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 14:14:01 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct	s_point
 	int x;
 	int y;
 }				t_point;
+
 /*
 ** ft_cub3d
 */
@@ -162,4 +163,9 @@ void	parsing(char *file, t_mlx *mlx);
 
 void	add_sprite(t_mlx *mlx, double *ZBuffer);
 
+/*
+** ft_raycasting
+*/
+
+int		raycasting(t_mlx *mlx);
 #endif

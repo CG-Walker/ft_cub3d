@@ -6,7 +6,7 @@
 #    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/15 12:15:46 by badrien          ###   ########.fr        #
+#    Updated: 2020/09/15 14:13:44 by badrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS		=	#-Wall -Werror -Wextra
 
 MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
 
-SRC			=	ft_cub3d.c ft_deplacements.c ft_parsing.c ft_sprite.c
+SRC			=	ft_cub3d.c ft_deplacements.c ft_parsing.c ft_sprite.c ft_raycasting.c
 
 OBJ 		=	$(SRC:.c=.o)
 
