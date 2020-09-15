@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 10:42:28 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 11:07:00 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,36 @@
 # include <fcntl.h>
 # include <stdio.h>
 
+typedef struct	s_sprite
+{
+	double spriteX;
+	double spriteY;
+	double invDet;
+	double transformX;
+	double transformY;
+
+	int spriteScreenX;
+	int spriteHeight;
+	int drawStartY;
+	int drawEndY;
+	int spriteWidth;
+	int drawStartX;
+	int drawEndX;
+	int stripe;
+	int texX;
+	int texY;
+	int y;
+	int d;
+	int color;
+	int h;
+	int w;
+}				t_sprite;
+
 typedef struct	s_ray
 {
     int		w;
 	int		x;
+	int		y;
 	int		mapx;
 	int		mapy;
 	int		stepx;
@@ -58,7 +84,7 @@ typedef struct	s_ray
 	double	perpwalldist;
 }				t_ray;
 
-typedef struct	s_texture
+typedef struct	s_texture // -> tableau de texture pour avoir des taille differente 
 {
 	int *west;
 	int *east;
@@ -70,7 +96,6 @@ typedef struct	s_texture
     int rgb_floor;
     int rgb_ceiling;
 }				t_texture;
-
 
 typedef struct  s_player
 {
