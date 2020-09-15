@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 16:25:01 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/15 16:55:02 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,49 +120,47 @@ int		check_id(char *s, t_mlx *mlx)
 		return (0);
 }
 
-char	**mllc_world_map(char *file, size_t file_size, size_t width, size_t height)
+char	**mllc_world_map(char *file, size_t file_size, t_mlx *mlx)
 {
 	char	**world_map;
 	char	*line;
 	int		ret;
 	int		fd;
-	size_t	i;
-	size_t	k;
+	t_point size;
 
-	i = 0;
-	k = 0;
+	size.x = 0;
+	size.y = 0;
 	ret = 1;
-
-	world_map = malloc(sizeof(char*) * (height + 1));
-	world_map[height] = NULL;
+	world_map = malloc(sizeof(char*) * (mlx->map_height + 1));
+	world_map[mlx->map_height] = NULL;
 	fd = open(file, O_RDONLY);
-	while (i++ < file_size)
+	while (size.x++ < file_size)
 		get_next_line(fd, &line);
-	i = 0;
-	while (k < height)
+	size.x = 0;
+	while (size.y < mlx->map_height)
 	{
 		ret = get_next_line(fd, &line);
-		world_map[k] = malloc(sizeof(char) * (width + 1));
-		while (i < width)
+		world_map[size.y] = malloc(sizeof(char) * (mlx->map_width + 1));
+		while (size.x < mlx->map_width)
 		{
-			if (line[i] != 0 && line[i] != '\n')
-				world_map[k][i] = line[i];
+			if (line[size.x] != 0 && line[size.x] != '\n')
+				world_map[size.y][size.x] = line[size.x];
 			else
 			{
-				while (i < width)
-					world_map[k][i++] = ' ';
+				while (size.x < mlx->map_width)
+					world_map[size.y][size.x++] = ' ';
 				break ;
 			}
-			i++;
+			size.x++;
 		}
-		world_map[k++][width] = 0;
-		i = 0;
+		world_map[size.y++][mlx->map_width] = 0;
+		size.x = 0;
 		free(line);
 	}
 	return (world_map);
 }
 
-void	map_parsing(char *file, size_t i, int fd, t_mlx *mlx)
+void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 {
 	char	*line;
 	int		ret;
@@ -177,11 +175,11 @@ void	map_parsing(char *file, size_t i, int fd, t_mlx *mlx)
 		ret = get_next_line(fd, &line);
 		if (*line != '\n' && *line != 0)
 		{
-			i++;
+			file_size++;
 			free(line);
 			break ;
 		}
-		i++;
+		file_size++;
 	}
 	while (ret == 1)
 	{
@@ -197,7 +195,7 @@ void	map_parsing(char *file, size_t i, int fd, t_mlx *mlx)
 	printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
 	mlx->map_height = size.y;
 	mlx->map_width = size.x;
-	mlx->map = mllc_world_map(file, i, size.x, size.y);
+	mlx->map = mllc_world_map(file, file_size, mlx);
 }
 
 void	full_parsing(char *file, t_mlx *mlx)
