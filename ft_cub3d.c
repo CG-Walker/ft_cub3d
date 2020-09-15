@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/14 16:56:17 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/15 10:40:02 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	floor_and_sky_text(t_mlx *mlx)
 			}
 }
 
-void	add_sprite(t_mlx *mlx, double ZBuffer[screenWidth])
+void	add_sprite(t_mlx *mlx, double *ZBuffer)
 {
 		double spriteX;
 		double spriteY;
@@ -148,8 +148,8 @@ void	add_sprite(t_mlx *mlx, double ZBuffer[screenWidth])
 		int h;
 		int w;
 
-		h = screenHeight;
-		w = screenWidth;
+		h = mlx->screen_height;
+		w = mlx->screen_width;
 
 		spriteX = mlx->player->sprite_x - mlx->player->posX;
       	spriteY = mlx->player->sprite_y - mlx->player->posY;
@@ -226,159 +226,124 @@ void	add_map(t_mlx *mlx)
 
 int		raycasting(t_mlx *mlx)
 {
-	int w;
-	int x;
-	int mapx;
-	int mapy;
-	int stepx;
-	int stepy;
-	int h;
-
-	double time = 0;
-	double oldtime = 0;
-
-	double camerax;
-	double raydirx;
-	double raydiry;
-
-	double sidedistx;
-	double sidedisty;
-
-	double deltadistx;
-	double deltadisty;
-	double perpwalldist;
-
-	int hit;
-	int side;
-
-	int lineheight;
-	int drawstart;
-	int drawend;
-
-	double wallX;
-	int texX;
-	double step;
-	double texPos;
-	int texY;
-
-	int color;
+	t_ray ray;
 
 	double ZBuffer[screenWidth];
 
-	x = 0;
-	w = mlx->screen_width;
-	h = mlx->screen_height; 
+	ray.x = 0;
+	ray.w = mlx->screen_width;
+	ray.h = mlx->screen_height; 
 	if (mlx->texture->rgb_ceiling == 0 && mlx->texture->rgb_floor == 0)
 		floor_and_sky_text(mlx);
 	else
 		floor_and_sky_color(mlx);
-	x = 0;
+	ray.x = 0;
 
-	while (x++ < w) // Wall casting
+	while (ray.x++ < ray.w) // Wall casting
 	{
-		camerax = 2 * x / (double)w - 1;
-		raydirx = mlx->player->dirX + mlx->player->planeX * camerax;
-		raydiry = mlx->player->dirY + mlx->player->planeY * camerax;
+		ray.camerax = 2 * ray.x / (double)ray.w - 1;
+		ray.raydirx = mlx->player->dirX + mlx->player->planeX * ray.camerax;
+		ray.raydiry = mlx->player->dirY + mlx->player->planeY * ray.camerax;
 
-		mapx = (int)mlx->player->posX;
-		mapy = (int)mlx->player->posY;
+		ray.mapx = (int)mlx->player->posX;
+		ray.mapy = (int)mlx->player->posY;
 
-		deltadistx = (raydiry == 0) ? 0 : ((raydirx == 0) ? 1 : fabs(1 / raydirx));
-		deltadisty = (raydirx == 0) ? 0 : ((raydiry == 0) ? 1 : fabs(1 / raydiry));
+		ray.deltadistx = (ray.raydiry == 0) ? 0 : ((ray.raydirx == 0) ? 1 : fabs(1 / ray.raydirx));
+		ray.deltadisty = (ray.raydirx == 0) ? 0 : ((ray.raydiry == 0) ? 1 : fabs(1 / ray.raydiry));
 
-		hit = 0;
+		ray.hit = 0;
 
-		if (raydirx < 0)
+		if (ray.raydirx < 0)
 		{
-			stepx = -1;
-			sidedistx = (mlx->player->posX - mapx) * deltadistx;
+			ray.stepx = -1;
+			ray.sidedistx = (mlx->player->posX - ray.mapx) * ray.deltadistx;
 		}
 		else
 		{
-			stepx = 1;
-			sidedistx = (mapx + 1.0 - mlx->player->posX) * deltadistx;
+			ray.stepx = 1;
+			ray.sidedistx = (ray.mapx + 1.0 - mlx->player->posX) * ray.deltadistx;
 		}
-		if (raydiry < 0)
+		if (ray.raydiry < 0)
 		{
-			stepy = -1;
-			sidedisty = (mlx->player->posY - mapy) * deltadisty;
+			ray.stepy = -1;
+			ray.sidedisty = (mlx->player->posY - ray.mapy) * ray.deltadisty;
 		}
 		else
 		{
-			stepy = 1;
-			sidedisty = (mapy + 1.0 - mlx->player->posY) * deltadisty;
+			ray.stepy = 1;
+			ray.sidedisty = (ray.mapy + 1.0 - mlx->player->posY) * ray.deltadisty;
 		}
 
-		while (hit == 0)
+		while (ray.hit == 0)
 		{
-			if (sidedistx < sidedisty)
+			if (ray.sidedistx < ray.sidedisty)
 			{
-				sidedistx += deltadistx;
-				mapx += stepx;
-				side = 0;
+				ray.sidedistx += ray.deltadistx;
+				ray.mapx += ray.stepx;
+				ray.side = 0;
 			}
 			else
 			{
-				sidedisty += deltadisty;
-				mapy += stepy;
-				side = 1;
+				ray.sidedisty += ray.deltadisty;
+				ray.mapy += ray.stepy;
+				ray.side = 1;
 			}
-			if (mlx->map[(int)mapx][(int)mapy] == '1')
-				hit = 1;
+			if (mlx->map[(int)ray.mapx][(int)ray.mapy] == '1')
+				ray.hit = 1;
 		}
-		if (side == 0)
-			perpwalldist =
-				(mapx - mlx->player->posX + (1 - stepx) / 2) / raydirx;
+		if (ray.side == 0)
+			ray.perpwalldist =
+				(ray.mapx - mlx->player->posX + (1 - ray.stepx) / 2) / ray.raydirx;
 		else
-			perpwalldist =
-				(mapy - mlx->player->posY + (1 - stepy) / 2) / raydiry;
+			ray.perpwalldist =
+				(ray.mapy - mlx->player->posY + (1 - ray.stepy) / 2) / ray.raydiry;
 
-		h = mlx->screen_height;
+		ray.h = mlx->screen_height;
 
-		lineheight = (int)(h / perpwalldist);
+		ray.lineheight = (int)(ray.h / ray.perpwalldist);
 
-		drawstart = -lineheight / 2 + h / 2;
-		if (drawstart < 0)
-			drawstart = 0;
-		drawend = lineheight / 2 + h / 2;
-		if (drawend >= h)
-			drawend = h - 1;
+		ray.drawstart = -ray.lineheight / 2 + ray.h / 2;
+		if (ray.drawstart < 0)
+			ray.drawstart = 0;
+		ray.drawend = ray.lineheight / 2 + ray.h / 2;
+		if (ray.drawend >= ray.h)
+			ray.drawend = ray.h - 1;
 
-		if (side == 0)
-			wallX = mlx->player->posY + perpwalldist * raydiry;
+		if (ray.side == 0)
+			ray.wallX = mlx->player->posY + ray.perpwalldist * ray.raydiry;
 		else
-			wallX = mlx->player->posX + perpwalldist * raydirx;
-		wallX -= floor((wallX));
+			ray.wallX = mlx->player->posX + ray.perpwalldist * ray.raydirx;
+		ray.wallX -= floor((ray.wallX));
 
-		texX = (int)(wallX * (double)texWidth);
-		if (side == 0 && raydirx > 0)
-			texX = texWidth - texX - 1;
-		if (side == 1 && raydiry < 0)
-			texX = texWidth - texX - 1;
+		ray.texX = (int)(ray.wallX * (double)texWidth);
+		if (ray.side == 0 && ray.raydirx > 0)
+			ray.texX = texWidth - ray.texX - 1;
+		if (ray.side == 1 && ray.raydiry < 0)
+			ray.texX = texWidth - ray.texX - 1;
 
-		step = 1.0 * texHeight / lineheight;
-		texPos = (drawstart - h / 2 + lineheight / 2) * step;
-		for (int y = drawstart; y<drawend; y++)
+		ray.step = 1.0 * texHeight / ray.lineheight;
+		ray.texPos = (ray.drawstart - ray.h / 2 + ray.lineheight / 2) * ray.step;
+		for (int y = ray.drawstart; y<ray.drawend; y++)
 		{
-			texY = (int)texPos & (texHeight - 1);
-			texPos += step;
-			if (side == 1)
+			ray.texY = (int)ray.texPos & (texHeight - 1);
+			ray.texPos += ray.step;
+			if (ray.side == 1)
 			{
-				if (raydiry >= 0)
-					color = mlx->texture->west[(texHeight * texY) + texX];
+				if (ray.raydiry >= 0)
+					ray.color = mlx->texture->west[(texHeight * ray.texY) + ray.texX];
 				else
-					color = mlx->texture->east[(texHeight * texY) + texX];
+					ray.color = mlx->texture->east[(texHeight * ray.texY) + ray.texX];
 			}
 			else
 			{
-				if (raydirx >= 0)
-					color = mlx->texture->north[(texHeight * texY) + texX];
+				if (ray.raydirx >= 0)
+					ray.color = mlx->texture->north[(texHeight * ray.texY) + ray.texX];
 				else
-					color = mlx->texture->south[(texHeight * texY) + texX];
+					ray.color = mlx->texture->south[(texHeight * ray.texY) + ray.texX];
 			}
-			mlx->data[x - 1 + y * mlx->screen_width] = color;
+			mlx->data[ray.x - 1 + y * mlx->screen_width] = ray.color;
 		}	
-		ZBuffer[x] = perpwalldist;
+		ZBuffer[ray.x] = ray.perpwalldist;
 	}
 		/* -----------------SPRITE----------------- */
 	if(mlx->player->sprite_x != -1)
@@ -390,9 +355,9 @@ int		raycasting(t_mlx *mlx)
 
 void	check_player_pos(t_mlx *mlx)
 {
-	size_t x;
-	size_t y;
-	int nb_sprite;
+	size_t	x;
+	size_t	y;
+	int		nb_sprite;
 
 	nb_sprite = 0;
 	x = 0;
@@ -468,7 +433,7 @@ void	get_texture(t_mlx *mlx)
 	void	*texture;
 	int		a;
 
-	a = 64;
+	//a = 64; --> le a recupere la taille de la texture donc pas besoin d'harcoder le tout
 	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
 	mlx->texture->ceiling =
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
@@ -482,8 +447,6 @@ int 	is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 {
 	t_point p;
 
-	//printf("TEST\n");
-	//printf("valeur case actuel: %c\n\n\n", mlx->map[begin.x][begin.y]);
 	mlx->map[begin.y][begin.x] = c;
 	if (begin.y > 0 && mlx->map[begin.y - 1][begin.x] == '0')
 	{

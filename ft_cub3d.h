@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/09 13:27:55 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 10:42:28 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,32 @@
 
 typedef struct	s_ray
 {
-    /* data */
+    int		w;
+	int		x;
+	int		mapx;
+	int		mapy;
+	int		stepx;
+	int		stepy;
+	int		h;
+	int		hit;
+	int		side;
+	int		lineheight;
+	int		drawstart;
+	int		drawend;
+	int		texY;
+	int		color;
+	int		texX;
+	double	step;
+	double	wallX;
+	double	texPos;
+	double	camerax;
+	double	raydirx;
+	double	raydiry;
+	double	sidedistx;
+	double	sidedisty;
+	double	deltadistx;
+	double	deltadisty;
+	double	perpwalldist;
 }				t_ray;
 
 typedef struct	s_texture
