@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 15:38:07 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/15 16:13:44 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	else if (nesw == 4)
 		mlx->texture->sprite =
 			(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
-	//printf("position sprite %f - %f \n\n",mlx->player->sprite_x, mlx->player->sprite_y );
 }
 
 void	fc_id(char *s, int fc, t_mlx *mlx)
@@ -138,15 +137,13 @@ char	**mllc_world_map(char *file, size_t file_size, size_t width, size_t height)
 	world_map = malloc(sizeof(char*) * (height + 1));
 	world_map[height] = NULL;
 	fd = open(file, O_RDONLY);
+	printf("size : %i\n", file_size);
 	while (i++ < file_size)
-	{
 		get_next_line(fd, &line);
-		//printf("s : %s\n", line);
-	}
+	i = 0;
 	while (k < height)
 	{
 		ret = get_next_line(fd, &line);
-		//printf("s_ : %s\n", line);
 		world_map[k] = malloc(sizeof(char) * (width + 1));
 		while (i < width)
 		{
@@ -180,7 +177,7 @@ void	map_parsing(char *file, size_t i, int fd, t_mlx *mlx)
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
-		if (*line != '\n')
+		if (*line != '\n' && *line != 0)
 		{
 			i++;
 			free(line);
