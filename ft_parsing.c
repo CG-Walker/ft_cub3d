@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/14 16:55:16 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/15 13:53:09 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ char	**mllc_world_map(char *file, size_t width, size_t height)
 		ret = get_next_line(fd, &line);
 		while (*line == ' ')
 			line++;
-		if (*line == '1')
+		if (*line == '1' || *line == '0')
 			break ;
 		free(line);
 	}
