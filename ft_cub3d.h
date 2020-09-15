@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 12:15:15 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 13:46:50 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct	s_sprite
 	double invDet;
 	double transformX;
 	double transformY;
+	double *zbuffer;
 
 	int spriteScreenX;
 	int spriteHeight;
