@@ -1,6 +1,7 @@
 ## Usage
 
-- Commande : `Make exec`
+- Pour compiler et lancer : `Make exec`
+- `wasd` pour se déplacer, flèches pour tourner.
 
 ## TODO
 
@@ -21,7 +22,7 @@
 - Verifier que la map soit valide (uniquement 0,1,2 NSEW comme caractères).
 - Régler l'orientation du joueur selon indiquer sur la map.
 - Premier argument map avec .cub.
-- Touches pour se deplacer, ESC pour fermer.
+- Touches pour se déplacer, ESC pour fermer.
 - Afficher différentes textures selon NOES.
 - Capable d'afficher des sprites.
 - Couleur de sol et de plafond.
