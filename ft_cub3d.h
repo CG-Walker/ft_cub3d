@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 11:07:00 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 12:15:15 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,11 @@ int		move(int key, t_mlx *mlx);
 */
 
 void	parsing(char *file, t_mlx *mlx);
+
+/*
+** ft_sprite
+*/
+
+void	add_sprite(t_mlx *mlx, double *ZBuffer);
 
 #endif
