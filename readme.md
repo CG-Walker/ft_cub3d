@@ -12,7 +12,7 @@
 
 ## CRASH
 
-- [ ] Si la premiere ligne de la map commence par autre chose que '1'.
+- ~~Si la premiere ligne de la map commence par autre chose que '1'.~~
 
 ## DONE
 
