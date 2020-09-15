@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 15:43:17 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 16:24:17 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int		move(int key, t_mlx *mlx);
 **  ft_parsing
 */
 
-void	parsing(char *file, t_mlx *mlx);
+void	full_parsing(char *file, t_mlx *mlx);
 
 /*
 ** ft_sprite

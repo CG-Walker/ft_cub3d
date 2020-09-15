@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 16:13:44 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/15 16:25:01 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	void	*texture;
 	int		a;
 
-	a = 64;
 	i = 2;
 	while (s[i] == ' ')
 		i++;
@@ -137,7 +136,6 @@ char	**mllc_world_map(char *file, size_t file_size, size_t width, size_t height)
 	world_map = malloc(sizeof(char*) * (height + 1));
 	world_map[height] = NULL;
 	fd = open(file, O_RDONLY);
-	printf("size : %i\n", file_size);
 	while (i++ < file_size)
 		get_next_line(fd, &line);
 	i = 0;
