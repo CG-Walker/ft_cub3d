@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 15:06:09 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 15:48:35 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,11 @@ void	add_map(t_mlx *mlx)
 	int x;
 	int color;
 
-	x = 0;
-	y = 0;
-	while (x < mlx->map_height)
+	x = -1;
+	y = -1;
+	while (++x < mlx->map_height)
 	{
-		while (y < mlx->map_width)
-		{
+		while (++y < mlx->map_width)
 			if (mlx->map[x][y] != '0')
 			{
 				if (mlx->map[x][y] == '1')
@@ -76,14 +75,13 @@ void	add_map(t_mlx *mlx)
 					color = 0xFF0000;
 				if (mlx->map[x][y] == '3')
 					color = 0x00CC00;
-				mlx->data[(x + (screenHeight/35) + ((y + (screenWidth/35)) * mlx->screen_width))] = color;
+				mlx->data[(x + (screenHeight / 35) + ((y + (screenWidth / 35))
+					* mlx->screen_width))] = color;
 			}
-		y++;
-		}
-	y = 0;
-	x++;
+		y = 0;
 	}
-	y = (int)mlx->player->posX + (screenHeight/35) + ((int)mlx->player->posY + (screenWidth/35)) * mlx->screen_width;
+	y = (int)mlx->player->posX + (screenHeight / 35) +
+		((int)mlx->player->posY + (screenWidth / 35)) * mlx->screen_width;
 	mlx->data[y] = 0x000000;
 }
 
@@ -100,12 +98,11 @@ void	check_player_pos(t_mlx *mlx)
 	{
 		while (y < mlx->map_width)
 		{
-			if (mlx->map[x][y] == 'N' || mlx->map[x][y] == 'S' 
+			if (mlx->map[x][y] == 'N' || mlx->map[x][y] == 'S'
 			|| mlx->map[x][y] == 'E' || mlx->map[x][y] == 'W')
 			{
 				mlx->player->posX = (double)x + 0.5;
 				mlx->player->posY = (double)y + 0.5;
-				
 				mlx->player->init_posx = x;
 				mlx->player->init_poxy = y;
 
@@ -130,9 +127,9 @@ void	check_player_pos(t_mlx *mlx)
 		y = 0;
 		x++;
 	}
-	if(mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
+	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
 		printf("ERREUR: player not found\n");
-	if(nb_sprite > 1)
+	if (nb_sprite > 1)
 		printf("WARNING: plusieurs position de sprite trouve, une seule sera prise en compte\n");
 }
 
@@ -242,7 +239,7 @@ int		check_map(t_mlx *mlx)
 		}
 		printf("\n");
     }
-	if(error > 0)
+	if (error > 0)
 	{
 		printf("ON AS UNE ERREUR! code erreur: %d\n", error);
 		return (1);
@@ -260,23 +257,21 @@ int		main(int argc, char *argv[])
 	mlx->mlx = mlx_init();
 	init_player(mlx);
 	if (argc == 2)
-		parsing(argv[1], mlx);
+		full_parsing(argv[1], mlx);
 	else
-		return(1);
+		return (1);
 	check_player_pos(mlx);
-	if(mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
+	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
 		return (1);
-	if(check_map(mlx) != 0)
+	if (check_map(mlx) != 0)
 		return (1);
-
-	mlx->window = mlx_new_window(mlx->mlx, mlx->screen_width, mlx->screen_height, "Cub3D");
+	mlx->window = mlx_new_window(mlx->mlx,
+		mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
-
 	put_frame(mlx);
 	get_texture(mlx);
 	raycasting(mlx);
 	mlx_hook(mlx->window, 2, 0, move, mlx);
 	mlx_loop(mlx->mlx);
-
 	return (0);
 }

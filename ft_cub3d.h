@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 14:14:01 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 15:43:17 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,23 @@
 
 typedef struct	s_sprite
 {
-	double spriteX;
-	double spriteY;
-	double invDet;
-	double transformX;
-	double transformY;
+	double spritex;
+	double spritey;
+	double invdet;
+	double transformx;
+	double transformy;
 	double *zbuffer;
 
-	int spriteScreenX;
-	int spriteHeight;
-	int drawStartY;
-	int drawEndY;
-	int spriteWidth;
-	int drawStartX;
-	int drawEndX;
+	int spritescreenx;
+	int spriteheight;
+	int drawstarty;
+	int drawendy;
+	int spritewidth;
+	int drawstartx;
+	int drawendx;
 	int stripe;
-	int texX;
-	int texY;
+	int texx;
+	int texy;
 	int y;
 	int d;
 	int color;
@@ -87,31 +87,30 @@ typedef struct	s_ray
 
 typedef struct	s_texture // -> tableau de texture pour avoir des taille differente 
 {
-	int *west;
-	int *east;
-	int *north;
-	int *south;
-    int *sprite;
-    int *ceiling;
-    int *floor;
-    int rgb_floor;
-    int rgb_ceiling;
+	int	*west;
+	int	*east;
+	int	*north;
+	int	*south;
+    int	*sprite;
+    int	*ceiling;
+    int	*floor;
+    int	rgb_floor;
+    int	rgb_ceiling;
 }				t_texture;
 
 typedef struct  s_player
 {
-    int init_posx;
-    int init_poxy;
+    int		init_posx;
+    int		init_poxy;
 
-    double posX;
-    double posY;
-    double dirX;
-    double dirY;
-    double planeX;
-    double planeY;
-
-    double sprite_x;
-    double sprite_y;
+    double	posX;
+    double	posY;
+    double	dirX;
+    double	dirY;
+    double	planeX;
+    double	planeY;
+    double	sprite_x;
+    double	sprite_y;
 }               t_player;
 
 typedef struct  s_mlx

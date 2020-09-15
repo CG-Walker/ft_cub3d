@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 12:14:14 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/15 13:51:15 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 15:48:10 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,55 +16,55 @@ void	size_sprite(t_mlx *mlx, t_sprite *sprite)
 {
 	sprite->h = mlx->screen_height;
 	sprite->w = mlx->screen_width;
-	sprite->spriteX = mlx->player->sprite_x - mlx->player->posX;
-	sprite->spriteY = mlx->player->sprite_y - mlx->player->posY;
-	sprite->invDet = 1.0 / (mlx->player->planeX * mlx->player->dirY -
+	sprite->spritex = mlx->player->sprite_x - mlx->player->posX;
+	sprite->spritey = mlx->player->sprite_y - mlx->player->posY;
+	sprite->invdet = 1.0 / (mlx->player->planeX * mlx->player->dirY -
 		mlx->player->dirX * mlx->player->planeY);
-	sprite->transformX = sprite->invDet * (mlx->player->dirY * sprite->spriteX
-		- mlx->player->dirX * sprite->spriteY);
-	sprite->transformY = sprite->invDet * ((-(mlx->player->planeY)) *
-		sprite->spriteX + mlx->player->planeX * sprite->spriteY);
-	sprite->spriteScreenX = (int)((sprite->w / 2) *
-		(1 + sprite->transformX / sprite->transformY));
-	sprite->spriteHeight = abs((int)(sprite->h / (sprite->transformY)));
+	sprite->transformx = sprite->invdet * (mlx->player->dirY * sprite->spritex
+		- mlx->player->dirX * sprite->spritey);
+	sprite->transformy = sprite->invdet * ((-(mlx->player->planeY)) *
+		sprite->spritex + mlx->player->planeX * sprite->spritey);
+	sprite->spritescreenx = (int)((sprite->w / 2) *
+		(1 + sprite->transformx / sprite->transformy));
+	sprite->spriteheight = abs((int)(sprite->h / (sprite->transformy)));
 }
 
 void	pre_draw_sprite(t_mlx *mlx, t_sprite *sprite)
 {
-	sprite->drawStartY = -(sprite->spriteHeight) / 2 + sprite->h / 2;
-	if (sprite->drawStartY < 0)
-		sprite->drawStartY = 0;
-	sprite->drawEndY = sprite->spriteHeight / 2 + sprite->h / 2;
-	if (sprite->drawEndY >= sprite->h)
-		sprite->drawEndY = sprite->h - 1;
-	sprite->spriteWidth = abs((int)(sprite->h / (sprite->transformY)));
-	sprite->drawStartX = -(sprite->spriteWidth) / 2 + sprite->spriteScreenX;
-	if (sprite->drawStartX < 0)
-		sprite->drawStartX = 0;
-	sprite->drawEndX = sprite->spriteWidth / 2 + sprite->spriteScreenX;
-	if (sprite->drawEndX >= sprite->w)
-		sprite->drawEndX = sprite->w - 1;
+	sprite->drawstarty = -(sprite->spriteheight) / 2 + sprite->h / 2;
+	if (sprite->drawstarty < 0)
+		sprite->drawstarty = 0;
+	sprite->drawendy = sprite->spriteheight / 2 + sprite->h / 2;
+	if (sprite->drawendy >= sprite->h)
+		sprite->drawendy = sprite->h - 1;
+	sprite->spritewidth = abs((int)(sprite->h / (sprite->transformy)));
+	sprite->drawstartx = -(sprite->spritewidth) / 2 + sprite->spritescreenx;
+	if (sprite->drawstartx < 0)
+		sprite->drawstartx = 0;
+	sprite->drawendx = sprite->spritewidth / 2 + sprite->spritescreenx;
+	if (sprite->drawendx >= sprite->w)
+		sprite->drawendx = sprite->w - 1;
 }
 
 void	draw_sprite(t_mlx *mlx, t_sprite *sprite)
 {
-	sprite->stripe = sprite->drawStartX;
-	while (sprite->stripe++ < sprite->drawEndX)
+	sprite->stripe = sprite->drawstartx;
+	while (sprite->stripe++ < sprite->drawendx)
 	{
-		sprite->texX = (int)(256 * (sprite->stripe - (-sprite->spriteWidth / 2 +
-			sprite->spriteScreenX)) * texWidth / sprite->spriteWidth) / 256;
-		if (sprite->transformY > 0 && sprite->stripe > 0 && sprite->stripe
-			< sprite->w && sprite->transformY < sprite->zbuffer[sprite->stripe])
+		sprite->texx = (int)(256 * (sprite->stripe - (-sprite->spritewidth / 2 +
+			sprite->spritescreenx)) * texWidth / sprite->spritewidth) / 256;
+		if (sprite->transformy > 0 && sprite->stripe > 0 && sprite->stripe
+			< sprite->w && sprite->transformy < sprite->zbuffer[sprite->stripe])
 		{
-			sprite->y = sprite->drawStartY;
-			while (sprite->y < sprite->drawEndY)
+			sprite->y = sprite->drawstarty;
+			while (sprite->y < sprite->drawendy)
 			{
 				sprite->d = (sprite->y) * 256 - sprite->h *
-					128 + sprite->spriteHeight * 128;
-				sprite->texY = ((sprite->d * texHeight)
-					/ sprite->spriteHeight) / 256;
-				sprite->color = mlx->texture->sprite[(texWidth * sprite->texY)
-					+ sprite->texX];
+					128 + sprite->spriteheight * 128;
+				sprite->texy = ((sprite->d * texHeight)
+					/ sprite->spriteheight) / 256;
+				sprite->color = mlx->texture->sprite[(texWidth * sprite->texy)
+					+ sprite->texx];
 				if ((sprite->color & 0x00FFFFFF) != 0)
 					mlx->data[sprite->stripe +
 						(sprite->y * mlx->screen_width)] = sprite->color;

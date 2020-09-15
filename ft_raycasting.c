@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/15 15:05:27 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/15 15:29:17 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ int		raycasting(t_mlx *mlx)
 		}	
 		zbuffer[ray->x] = ray->perpwalldist;
 	}
-		/* -----------------SPRITE----------------- */
 	if (mlx->player->sprite_x != -1)
 		add_sprite(mlx, zbuffer);
 	add_map(mlx);
