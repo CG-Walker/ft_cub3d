@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 16:24:17 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/17 10:14:16 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,26 @@ typedef struct	s_ray
 	double	deltadisty;
 	double	perpwalldist;
 }				t_ray;
+
+typedef struct	s_floor_sky
+{
+	int		p;
+	int		cellx;
+	int		celly;
+	int		tx;
+	int		ty;
+	int		color;	
+	float	raydirx0;
+	float	raydiry0;
+	float	raydirx1;
+	float	raydiry1;
+	float	posz;
+	float	rowdistance;
+	float	floorstepx;
+	float	floorstepy;	
+	float	floorx;
+	float	floory;
+}				t_floor_sky;
 
 typedef struct	s_texture // -> tableau de texture pour avoir des taille differente 
 {

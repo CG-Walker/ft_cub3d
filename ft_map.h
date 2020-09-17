@@ -6,17 +6,17 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:50:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 10:22:19 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/17 10:18:42 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_MAP_H
 # define FT_MAP_H
 
-# define mapWidth 34
-# define mapHeight 25
-# define screenWidth 1920
-# define screenHeight 1080
+//# define mapWidth 34
+//# define mapHeight 25
+//# define screenWidth 1920
+//# define screenHeight 1080
 # define texWidth 64
 # define texHeight 64
 

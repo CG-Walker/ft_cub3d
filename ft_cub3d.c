@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 16:34:35 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/17 10:16:14 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	add_map(t_mlx *mlx)
 					color = 0xFF0000;
 				if (mlx->map[x][y] == '3')
 					color = 0x00CC00;
-				mlx->data[(x + (screenHeight / 35) + ((y + (screenWidth / 35))
+				mlx->data[(x + (mlx->screen_height / 35) + ((y + (mlx->screen_width / 35))
 					* mlx->screen_width))] = color;
 			}
 		y = 0;
 	}
-	y = (int)mlx->player->posX + (screenHeight / 35) +
-		((int)mlx->player->posY + (screenWidth / 35)) * mlx->screen_width;
+	y = (int)mlx->player->posX + (mlx->screen_height / 35) +
+		((int)mlx->player->posY + (mlx->screen_width / 35)) * mlx->screen_width;
 	mlx->data[y] = 0x000000;
 }
 

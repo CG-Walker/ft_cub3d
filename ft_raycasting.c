@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/15 15:29:17 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/17 10:17:26 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,51 +39,59 @@ void	floor_and_sky_color(t_mlx *mlx)
 
 void	floor_and_sky_text(t_mlx *mlx)
 {
-	for(int y = 0; y < screenHeight; y++)
+	t_floor_sky	*data;
+	int x;
+	int y;
+
+	data = malloc(sizeof(t_ray));
+	y = 0;
+	x = 0;
+
+	while(y < mlx->screen_height)
+	{
+		data->raydirx0 = mlx->player->dirX - mlx->player->planeX;
+		data->raydiry0 = mlx->player->dirY - mlx->player->planeY;
+		data->raydirx1 = mlx->player->dirX + mlx->player->planeX;
+		data->raydiry1 = mlx->player->dirY + mlx->player->planeY;
+	
+		data->p = y - mlx->screen_height / 2;
+		data->posz = 0.5 * mlx->screen_height;
+		data->rowdistance = data->posz / data->p;
+		data->floorstepx = data->rowdistance * (data->raydirx1 - data->raydirx0) / mlx->screen_width;
+		data->floorstepy = data->rowdistance * (data->raydiry1 - data->raydiry0) / mlx->screen_width;
+	
+		data->floorx = mlx->player->posX + data->rowdistance * data->raydirx0;
+		data->floory = mlx->player->posY + data->rowdistance * data->raydiry0;
+
+		x = 0;
+		while(++x < mlx->screen_width)
 		{
-			float rayDirX0 = mlx->player->dirX - mlx->player->planeX;
-			float rayDirY0 = mlx->player->dirY - mlx->player->planeY;
-			float rayDirX1 = mlx->player->dirX + mlx->player->planeX;
-			float rayDirY1 = mlx->player->dirY + mlx->player->planeY;
-
-			int p = y - mlx->screen_height / 2;
-			float posZ = 0.5 * mlx->screen_height;
-			float rowDistance = posZ / p;
-
-			float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / mlx->screen_width;
-			float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / mlx->screen_width;
+			data->cellx = (int)(data->floorx);
+			data->celly = (int)(data->floory);
 			
-			float floorX = mlx->player->posX + rowDistance * rayDirX0;
-			float floorY = mlx->player->posY + rowDistance * rayDirY0;
+			data->tx = (int)(texWidth * (data->floorx - data->cellx)) & (texWidth - 1);
+			data->ty = (int)(texHeight * (data->floory - data->celly)) & (texHeight - 1);
 
-			for(int x = 0; x < mlx->screen_width; ++x)
-			{
-				int cellX = (int)(floorX);
-				int cellY = (int)(floorY);
+			data->floorx += data->floorstepx;
+			data->floory += data->floorstepy;
 
-				int tx = (int)(texWidth * (floorX - cellX)) & (texWidth - 1);
-				int ty = (int)(texHeight * (floorY - cellY)) & (texHeight - 1);
+			data->color = mlx->texture->floor[texWidth * data->ty + data->tx];
+			data->color = (data->color >> 1) & 8355711;
+			mlx->data[x + (y * mlx->screen_width)] = data->color;        
 
-				floorX += floorStepX;
-				floorY += floorStepY;
-
-				int color;
-
-				color = mlx->texture->floor[texWidth * ty + tx];
-				color = (color >> 1) & 8355711;
-				mlx->data[x + (y * mlx->screen_width)] = color;        
-
-				color = mlx->texture->ceiling[texWidth * ty + tx];
-				color = (color >> 1) & 8355711;
-				mlx->data[x + ((mlx->screen_height - y - 1) * mlx->screen_width)] = color;        
-				}
-			}
+			data->color = mlx->texture->ceiling[texWidth * data->ty + data->tx];
+			data->color = (data->color >> 1) & 8355711;
+			mlx->data[x + ((mlx->screen_height - y - 1) * mlx->screen_width)] = data->color;        
+		}
+	y++;
+	}
+	free(data);
 }
 
 int		raycasting(t_mlx *mlx)
 {
 	t_ray	*ray;
-	double	zbuffer[screenWidth];
+	double	zbuffer[mlx->screen_width]; // --> transforme into malloc to pass norm
 
 	ray = malloc(sizeof(t_ray));
 	ray->x = 0;
@@ -205,5 +213,6 @@ int		raycasting(t_mlx *mlx)
 		add_sprite(mlx, zbuffer);
 	add_map(mlx);
 	put_frame(mlx);
+	free(ray);
 	return (0);
 }
