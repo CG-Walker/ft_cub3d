@@ -5,11 +5,8 @@
 
 ## TODO
 
-- Gestion de fenêtre parfaite.
-- Si la fenetre est plus grande que l'écran, prendre la taille de l'écran.
+- Gestion de fenêtre parfaite (?).
 - Pouvoir sauvegarder la première image rendue avec `--save`.
-- Éviter les segfaults dans la lecture de map.
-- Croix de la fenêtre pour fermer.
 - Norme.
 
 ## CRASH
@@ -18,6 +15,8 @@
 
 ## DONE
 
+- Éviter les segfaults dans la lecture de map.
+- Si la fenetre est plus grande que l'écran, prendre la taille de l'écran.
 - Mise en place du joueur selon la position sur la map.
 - Verifier que la map soit valide (uniquement 0,1,2 NSEW comme caractères).
 - Régler l'orientation du joueur selon indiquer sur la map.

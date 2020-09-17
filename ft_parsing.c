@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/15 16:55:02 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/17 13:53:06 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,7 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	while (s[i] == ' ')
 		i++;
 	if (open(&s[i], O_RDONLY) == -1)
-	{
-		printf("ERROR LOADING TEXTURE.\n");
 		exit(-1);
-	}
-	printf("%s loaded.\n", &s[i]);
 	texture = mlx_xpm_file_to_image(mlx->mlx, &s[i], &a, &a);
 	if (nesw == 0)
 		mlx->texture->north =
@@ -112,10 +108,7 @@ int		check_id(char *s, t_mlx *mlx)
 		return (-1);
 	i++;
 	if (i == 8)
-	{
-		i = 0;
 		return (1);
-	}
 	else
 		return (0);
 }
