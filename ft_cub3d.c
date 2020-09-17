@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 11:38:01 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/17 14:34:58 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,26 +141,30 @@ int		is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 {
 	t_point p;
 
-	p = begin;
+	//p = begin;
 	mlx->map[begin.y][begin.x] = c;
 	if (begin.y > 0 && mlx->map[begin.y - 1][begin.x] == '0')
 	{
 		p.y = begin.y - 1;
+		p.x = begin.x;
 		is_close(mlx, size, p, c);
 	}
 	if ((begin.y < (size.y - 1)) && mlx->map[begin.y + 1][begin.x] == '0')
 	{
 		p.y = begin.y + 1;
+		p.x = begin.x;
 		is_close(mlx, size, p, c);
 	}
 	if ((begin.x < (size.x - 1)) && mlx->map[begin.y][begin.x + 1] == '0')
 	{
 		p.x = begin.x + 1;
+		p.y = begin.y;
 		is_close(mlx, size, p, c);
 	}
 	if (begin.x > 0 && mlx->map[begin.y][begin.x - 1] == '0')
 	{
 		p.x = begin.x - 1;
+		p.y = begin.y;
 		is_close(mlx, size, p, c);
 	}
 	return (0);
@@ -180,20 +184,34 @@ int		check_map(t_mlx *mlx)
 	begin.y = mlx->player->init_posx;
 	error = 0;
 
+	
 	for(i=0; i<mlx->map_height; i++)
     {
         for(j=0; j<mlx->map_width; j++)
             if(mlx->map[i][j] == ' ')
 				mlx->map[i][j] = '0';
     }
+
+	int x;
+	int y;
+
+	for(x=0; x<mlx->map_height; x++)
+    {
+        for(y=0; y<mlx->map_width; y++)
+        {
+			printf("%c", mlx->map[x][y]);
+		}
+		printf("\n");
+    }
+
 	is_close(mlx, size, begin, '3');
 	for(i=0; i<mlx->map_height; i++)
     {
         for(j=0; j<mlx->map_width; j++)
         {
 			printf("%c", mlx->map[i][j]);
-			if(mlx->map[i][j] < '0' ||  mlx->map[i][j] > '3')
-				error = 2;
+			//if(mlx->map[i][j] < '0' ||  mlx->map[i][j] > '3')
+			//	error = 2;
 			if(mlx->map[i][j] == '3' && (i == 0 || i == mlx->map_height - 1 || j == 0 || j == mlx->map_width - 1))
 				error = 1;
 		}

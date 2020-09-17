@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 13:53:06 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/17 14:10:10 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,18 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 	mlx->map_height = size.y;
 	mlx->map_width = size.x;
 	mlx->map = mllc_world_map(file, file_size, mlx);
+
+	int i;
+	int j;
+
+	for(i=0; i<mlx->map_height; i++)
+    {
+        for(j=0; j<mlx->map_width; j++)
+        {
+			printf("%c", mlx->map[i][j]);
+		}
+		printf("\n");
+    }
 }
 
 void	full_parsing(char *file, t_mlx *mlx)
