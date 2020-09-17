@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 10:16:14 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/17 11:38:01 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,11 @@ void	check_player_pos(t_mlx *mlx)
 	int		nb_sprite;
 
 	nb_sprite = 0;
-	x = 0;
-	y = 0;
-	while (x < mlx->map_height)
+	x = -1;
+	y = -1;
+	while (++x < mlx->map_height)
 	{
-		while (y < mlx->map_width)
-		{
+		while (++y < mlx->map_width)
 			if (mlx->map[x][y] == 'N' || mlx->map[x][y] == 'S'
 			|| mlx->map[x][y] == 'E' || mlx->map[x][y] == 'W')
 			{
@@ -84,16 +83,13 @@ void	check_player_pos(t_mlx *mlx)
 					rot_right(mlx, 6.3);
 				mlx->map[x][y] = '0';
 			}
-			if (mlx->map[x][y] == '2')
+			else if (mlx->map[x][y] == '2')
 			{
 				mlx->player->sprite_x = x + 0.5;
 				mlx->player->sprite_y = y + 0.5;
 				nb_sprite++;
 			}
-			y++;
-		}
 		y = 0;
-		x++;
 	}
 	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
 		printf("ERREUR: player not found\n");
@@ -141,33 +137,30 @@ void	get_texture(t_mlx *mlx)
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
-int 	is_close(t_mlx *mlx, t_point size, t_point begin, char c)
+int		is_close(t_mlx *mlx, t_point size, t_point begin, char c)
 {
 	t_point p;
 
+	p = begin;
 	mlx->map[begin.y][begin.x] = c;
 	if (begin.y > 0 && mlx->map[begin.y - 1][begin.x] == '0')
 	{
-		p.x = begin.x;
 		p.y = begin.y - 1;
 		is_close(mlx, size, p, c);
 	}
 	if ((begin.y < (size.y - 1)) && mlx->map[begin.y + 1][begin.x] == '0')
 	{
-		p.x = begin.x;
 		p.y = begin.y + 1;
 		is_close(mlx, size, p, c);
 	}
 	if ((begin.x < (size.x - 1)) && mlx->map[begin.y][begin.x + 1] == '0')
 	{
 		p.x = begin.x + 1;
-		p.y = begin.y;
 		is_close(mlx, size, p, c);
 	}
 	if (begin.x > 0 && mlx->map[begin.y][begin.x - 1] == '0')
 	{
 		p.x = begin.x - 1;
-		p.y = begin.y;
 		is_close(mlx, size, p, c);
 	}
 	return (0);

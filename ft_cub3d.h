@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 10:14:16 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/17 11:30:26 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ typedef struct	s_floor_sky
 	int		celly;
 	int		tx;
 	int		ty;
-	int		color;	
+	int		color;
+	int		y;	
 	float	raydirx0;
 	float	raydiry0;
 	float	raydirx1;
@@ -118,7 +119,7 @@ typedef struct	s_texture // -> tableau de texture pour avoir des taille differen
     int	rgb_ceiling;
 }				t_texture;
 
-typedef struct  s_player
+typedef struct	s_player
 {
     int		init_posx;
     int		init_poxy;
@@ -131,9 +132,9 @@ typedef struct  s_player
     double	planeY;
     double	sprite_x;
     double	sprite_y;
-}               t_player;
+}				t_player;
 
-typedef struct  s_mlx
+typedef struct	s_mlx
 {
     void        *mlx;
     void        *window;
@@ -148,9 +149,8 @@ typedef struct  s_mlx
     int         sl;
     int         endian;
     t_player    *player;
-	t_ray		*ray;
 	t_texture	*texture;
-}               t_mlx;
+}				t_mlx;
 
 typedef struct	s_point
 {
