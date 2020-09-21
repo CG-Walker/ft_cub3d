@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 12:12:03 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/21 12:22:58 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/21 13:21:23 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int capture(t_mlx *mlx)
 	{
 		for (j = 0; j < mlx->screen_width; j++)
 		{
-			image[i][j][2] = (unsigned char) ( i * 255 / mlx->screen_height );             ///red
-			image[i][j][1] = (unsigned char) ( j * 255 / mlx->screen_width );              ///green
-			image[i][j][0] = (unsigned char) ( (i+j) * 255 / (mlx->screen_height + mlx->screen_width) ); ///blue
+			image[i][j][2] = (unsigned char) ( i * 255 / mlx->screen_height);             ///red
+			image[i][j][1] = (unsigned char) ( j * 255 / mlx->screen_width);              ///green
+			image[i][j][0] = (unsigned char) ( (i+j) * 255 / (mlx->screen_height + mlx->screen_width)); ///blue
 		}
 	}
 	generateBitmapImage((unsigned char*)image, mlx);
