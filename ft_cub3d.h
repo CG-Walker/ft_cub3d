@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 11:30:26 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/21 12:19:05 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,4 +187,10 @@ void	add_sprite(t_mlx *mlx, double *ZBuffer);
 */
 
 int		raycasting(t_mlx *mlx);
+
+/*
+**	ft_capture
+*/
+
+int		capture(t_mlx *mlx);
 #endif
