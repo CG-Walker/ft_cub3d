@@ -6,7 +6,7 @@
 #    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/21 12:20:01 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/09/22 14:36:10 by cgoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS		=	#-Wall -Werror -Wextra
 
 MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
 
-SRC			=	ft_cub3d.c ft_deplacements.c ft_parsing.c ft_sprite.c ft_raycasting.c ft_capture.c
+SRC			=	ft_cub3d.c ft_movements.c ft_movements_rot.c ft_parsing.c ft_sprite.c ft_raycasting.c ft_capture.c
 
 OBJ 		=	$(SRC:.c=.o)
 

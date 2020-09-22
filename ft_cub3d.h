@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/21 12:19:05 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 14:35:54 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdio.h>
+
+#define CAPTURE_FILENAME "capture.bmp"
+#define IMG_DEPTH 3
+#define FILE_HEADER_SIZE 14
+#define INFO_HEADER_SIZE 40
+#define t_byte unsigned char
 
 typedef struct	s_sprite
 {
@@ -165,16 +171,28 @@ typedef struct	s_point
 int		raycasting(t_mlx *mlx);
 
 /*
-** ft_deplacements
+** ft_movements
 */
 
 int		move(int key, t_mlx *mlx);
+void	mv_left(t_mlx *mlx, double move_speed);
+void	mv_right(t_mlx *mlx, double move_speed);
+void	mv_forward(t_mlx *mlx, double move_speed);
+void	mv_backward(t_mlx *mlx, double move_speed);
+
+/*
+** ft_movements_rot
+*/
+
+void	rot_right(t_mlx *mlx, double rot_speed);
+void	rot_left(t_mlx *mlx, double rot_speed);
 
 /*
 **  ft_parsing
 */
 
 void	full_parsing(char *file, t_mlx *mlx);
+char	**make_world_map(char *file, size_t file_size, t_mlx *mlx);
 
 /*
 ** ft_sprite
@@ -193,4 +211,11 @@ int		raycasting(t_mlx *mlx);
 */
 
 int		capture(t_mlx *mlx);
+int     bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE], 
+									t_byte info_header[INFO_HEADER_SIZE]);
+void	bmp_write_pixels(int fd, t_mlx *image, 
+									t_byte *bmp_data);
+void	bmp_fill_header(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
+									 t_byte info_header[INFO_HEADER_SIZE]);
+
 #endif

@@ -3,33 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_capture.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 13:45:37 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/22 14:12:51 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cub3d.h"
-
-#define CAPTURE_FILENAME "capture.bmp"
-#define IMG_DEPTH 3
-#define FILE_HEADER_SIZE 14
-#define INFO_HEADER_SIZE 40
-#define t_byte unsigned char
-
-int     bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE], t_byte info_header[INFO_HEADER_SIZE]);
-void	bmp_write_pixels(int fd, t_mlx *image, t_byte *bmp_data);
-void	bmp_fill_header(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE], t_byte info_header[INFO_HEADER_SIZE]);
 
 int		capture(t_mlx *state)
 {
 	t_byte	file_header[FILE_HEADER_SIZE];
 	t_byte	info_header[INFO_HEADER_SIZE];
 
-
 	bmp_fill_header(state, file_header, info_header);
-    printf("SCREEN_WIDTH : %d\n", state->screen_width);
 	if (!bmp_write(state, file_header, info_header))
 	{
 		return (1);
@@ -37,33 +25,7 @@ int		capture(t_mlx *state)
 	return (0);
 }
 
-/*
-** bmp file format:
-**     header:
-**         file_header:
-**             2: signature = "BM"
-**             4: file size
-**             4: reserved
-**             4: offset to pixel array
-**         info_header:
-**	       4: header size
-**	       4: image screen_width
-**	       4: image screen_height
-**	       2: number of color planes
-**	       2: bits per pixel
-**	       4: compression
-**	       4: image size
-**	       4: horizontal resolution
-**	       4: vertical resolution
-**	       4: colors in color table
-**	       4: important color count
-**     data:
-**         pixel in rgb format (without alpha component)
-**         padding added at the end of each pixel row
-**         so the length of the row is a multiple of 4
-*/
-
-int     bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
+int		bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
 						t_byte info_header[INFO_HEADER_SIZE])
 {
 	int		fd;
@@ -91,15 +53,6 @@ void	bmp_write_pixels(int fd, t_mlx *mlx, t_byte *bmp_data)
 	t_byte	padding[3];
 	int		padding_size;
 	int		z;
-	
-	
-	char *image;
-	//image = (int)mlx->data;
-	
-	image = malloc(sizeof(char) * mlx->map_height * mlx->map_width);
-	int x;
-	while (x++ < mlx->map_height * mlx->map_width)
-		image[x] = (mlx->data[x]);
 
 	ft_bzero(padding, 3);
 	padding_size = (4 - (mlx->screen_width * IMG_DEPTH) % 4) % 4;
@@ -124,8 +77,9 @@ void	bmp_fill_header(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
 {
 	int	file_size;
 
-	file_size = FILE_HEADER_SIZE + INFO_HEADER_SIZE + (IMG_DEPTH * image->screen_width
-			+ ((4 - (image->screen_width * IMG_DEPTH) % 4) % 4)) * image->screen_height;
+	file_size = FILE_HEADER_SIZE + INFO_HEADER_SIZE +
+						(IMG_DEPTH * image->screen_width +
+	((4 - (image->screen_width * IMG_DEPTH) % 4) % 4)) * image->screen_height;
 	ft_bzero(file_header, FILE_HEADER_SIZE);
 	ft_bzero(info_header, INFO_HEADER_SIZE);
 	file_header[0] = (unsigned char)('B');

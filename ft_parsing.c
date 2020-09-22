@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 12:26:19 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 14:23:20 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int		check_id(char *s, t_mlx *mlx)
 		return (0);
 }
 
-char	**mllc_world_map(char *file, size_t file_size, t_mlx *mlx)
+char	**make_world_map(char *file, size_t file_size, t_mlx *mlx)
 {
 	char	**world_map;
 	char	*line;
@@ -195,12 +195,12 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 		free(line);
 	}
 	close(fd);
-	printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor,
+	ft_printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor,
 												mlx->texture->rgb_ceiling);
-	printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
+	ft_printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
 	mlx->map_height = size.y;
 	mlx->map_width = size.x;
-	mlx->map = mllc_world_map(file, file_size, mlx);
+	mlx->map = make_world_map(file, file_size, mlx);
 }
 
 void	full_parsing(char *file, t_mlx *mlx)
