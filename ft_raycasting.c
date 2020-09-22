@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/22 15:22:10 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:46:39 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	floor_and_sky_color(t_mlx *mlx)
 	while (x < mlx->screen_width)
 	{
 		while (y < mlx->screen_height / 2)
-			mlx->data[x + (y++ * mlx->screen_width)] = mlx->texture->rgb_ceiling;
+			mlx->data[x + (y++ * mlx->screen_width)] =
+				mlx->texture->rgb_ceiling;
 		x++;
 		y = 0;
 	}
@@ -56,42 +57,43 @@ void	draw_data(t_mlx *mlx, t_floor_sky *data, int x)
 {
 	data->cellx = (int)(data->floorx);
 	data->celly = (int)(data->floory);
-			
+	/* */ 
 	data->tx = (int)(texWidth * (data->floorx - data->cellx)) & (texWidth - 1);
 	data->ty = (int)(texHeight * (data->floory - data->celly)) & (texHeight - 1);
-
+	/* */
 	data->floorx += data->floorstepx;
 	data->floory += data->floorstepy;
 
 	data->color = mlx->texture->floor[texWidth * data->ty + data->tx];
 	data->color = (data->color >> 1) & 8355711;
-	mlx->data[x + (data->y * mlx->screen_width)] = data->color;        
+	mlx->data[x + (data->y * mlx->screen_width)] = data->color;
 
 	data->color = mlx->texture->ceiling[texWidth * data->ty + data->tx];
 	data->color = (data->color >> 1) & 8355711;
-	mlx->data[x + ((mlx->screen_height - data->y - 1) * mlx->screen_width)] = data->color;
+	mlx->data[x + ((mlx->screen_height - data->y - 1)
+		* mlx->screen_width)] = data->color;
 }
 
 void	floor_and_sky_text(t_mlx *mlx)
 {
 	t_floor_sky	*data;
-	int x;
+	int			x;
 
 	data = malloc(sizeof(t_ray));
 	data->y = 0;
 	x = 0;
-	while(data->y < mlx->screen_height)
+	while (data->y < mlx->screen_height)
 	{
 		get_data(mlx, data);
 		x = 0;
-		while(++x < mlx->screen_width)
+		while (++x < mlx->screen_width)
 			draw_data(mlx, data, x);
-	data->y++;
+		data->y++;
 	}
 	free(data);
 }
 
-void	check_hit(t_mlx *mlx,t_ray *ray)
+void	check_hit(t_mlx *mlx, t_ray *ray)
 {
 	while (ray->hit == 0)
 	{
@@ -109,10 +111,10 @@ void	check_hit(t_mlx *mlx,t_ray *ray)
 		}
 		if (mlx->map[(int)ray->mapx][(int)ray->mapy] == '1')
 			ray->hit = 1;
-		}
+	}
 }
 
-void	calc_side_dist(t_mlx *mlx,t_ray *ray)
+void	calc_side_dist(t_mlx *mlx, t_ray *ray)
 {
 	if (ray->raydirx < 0)
 	{
@@ -143,28 +145,29 @@ void	calc_ray(t_mlx *mlx, t_ray *ray)
 	ray->raydiry = mlx->player->dirY + mlx->player->planeY * ray->camerax;
 	ray->mapx = (int)mlx->player->posX;
 	ray->mapy = (int)mlx->player->posY;
-	if(ray->raydiry == 0)
+	if (ray->raydiry == 0)
 		ray->deltadistx = 0;
 	else
 		ray->deltadistx = ((ray->raydirx == 0) ? 1 : fabs(1 / ray->raydirx));
-	if(ray->raydirx == 0)
+	if (ray->raydirx == 0)
 		ray->deltadisty = 0;
 	else
 		ray->deltadisty = ((ray->raydiry == 0) ? 1 : fabs(1 / ray->raydiry));
 	ray->hit = 0;
 }
+
 void	calc_draw_size(t_mlx *mlx, t_ray *ray)
 {
 	if (ray->side == 0)
 		ray->perpwalldist =
-			(ray->mapx - mlx->player->posX + (1 - ray->stepx) / 2) / ray->raydirx;
+			(ray->mapx - mlx->player->posX +
+				(1 - ray->stepx) / 2) / ray->raydirx;
 	else
 		ray->perpwalldist =
-			(ray->mapy - mlx->player->posY + (1 - ray->stepy) / 2) / ray->raydiry;
+			(ray->mapy - mlx->player->posY +
+				(1 - ray->stepy) / 2) / ray->raydiry;
 	ray->h = mlx->screen_height;
-
 	ray->lineheight = (int)(ray->h / ray->perpwalldist);
-
 	ray->drawstart = -ray->lineheight / 2 + ray->h / 2;
 	if (ray->drawstart < 0)
 		ray->drawstart = 0;
@@ -187,36 +190,40 @@ void	calc_tex_size(t_mlx *mlx, t_ray *ray)
 		ray->texX = texWidth - ray->texX - 1;
 
 	ray->step = 1.0 * texHeight / ray->lineheight;
-	ray->texPos = (ray->drawstart - ray->h / 2 + ray->lineheight / 2) * ray->step;
+	ray->texPos = (ray->drawstart - ray->h /
+		2 + ray->lineheight / 2) * ray->step;
 }
 
 void	print_wall(t_mlx *mlx, t_ray *ray)
 {
 	ray->y = ray->drawstart;
-	while (ray->y<ray->drawend)
+	while (ray->y++ < ray->drawend)
 	{
 		ray->texY = (int)ray->texPos & (texHeight - 1);
 		ray->texPos += ray->step;
 		if (ray->side == 1)
 		{
 			if (ray->raydiry >= 0)
-				ray->color = mlx->texture->west[(texHeight * ray->texY) + ray->texX];
+				ray->color =
+					mlx->texture->west[(texHeight * ray->texY) + ray->texX];
 			else
-				ray->color = mlx->texture->east[(texHeight * ray->texY) + ray->texX];
+				ray->color =
+					mlx->texture->east[(texHeight * ray->texY) + ray->texX];
 		}
 		else
 		{
 			if (ray->raydirx >= 0)
-				ray->color = mlx->texture->north[(texHeight * ray->texY) + ray->texX];
+				ray->color =
+					mlx->texture->north[(texHeight * ray->texY) + ray->texX];
 			else
-				ray->color = mlx->texture->south[(texHeight * ray->texY) + ray->texX];
+				ray->color =
+					mlx->texture->south[(texHeight * ray->texY) + ray->texX];
 		}
 		mlx->data[ray->x - 1 + ray->y * mlx->screen_width] = ray->color;
-		ray->y++;
-	}	
+	}
 }
 
-void	draw_wall(t_mlx *mlx,t_ray *ray, double *zbuffer)
+void	draw_wall(t_mlx *mlx, t_ray *ray, double *zbuffer)
 {
 	ray->x = 0;
 	ray->w = mlx->screen_width;
@@ -247,9 +254,10 @@ int		raycasting(t_mlx *mlx)
 	draw_wall(mlx, ray, zbuffer);
 	if (mlx->player->sprite_x != -1)
 		add_sprite(mlx, zbuffer);
-	if(mlx->screen_height > mlx->map_height && mlx->screen_width > mlx->map_width)
+	if (mlx->screen_height > mlx->map_height &&
+		mlx->screen_width > mlx->map_width)
 		add_map(mlx);
-	if(mlx->capture == 1);
+	if (mlx->capture == 1)
 		capture(mlx);
 	put_frame(mlx);
 	free(ray);
