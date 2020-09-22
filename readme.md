@@ -5,8 +5,8 @@
 
 ## TODO
 
-- Gestion de fenêtre parfaite (?).
-- Pouvoir sauvegarder la première image rendue avec `--save`.
+- Gestion erreur.
+- Malloc, proctection et free.
 - Norme.
 
 ## CRASH
@@ -15,6 +15,8 @@
 
 ## DONE
 
+- Gestion de fenêtre parfaite (?).
+- Pouvoir sauvegarder la première image rendue avec `--save`.
 - Éviter les segfaults dans la lecture de map.
 - Si la fenetre est plus grande que l'écran, prendre la taille de l'écran.
 - Mise en place du joueur selon la position sur la map.
