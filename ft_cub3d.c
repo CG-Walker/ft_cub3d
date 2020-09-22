@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/21 12:19:38 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 13:56:31 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,8 +249,8 @@ int		main(int argc, char *argv[])
 	put_frame(mlx);
 	get_texture(mlx);
 	raycasting(mlx);
-	capture(mlx);
 	mlx_hook(mlx->window, 2, 0, move, mlx);
+	//mlx_hook(mlx->window, 17, 0, clean_exit, mlx);
 	mlx_loop(mlx->mlx);
 	return (0);
 }

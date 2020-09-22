@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/17 14:40:14 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/22 12:26:56 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ int		raycasting(t_mlx *mlx)
 	if (mlx->player->sprite_x != -1)
 		add_sprite(mlx, zbuffer);
 	add_map(mlx);
+	capture(mlx);
 	put_frame(mlx);
 	free(ray);
 	return (0);

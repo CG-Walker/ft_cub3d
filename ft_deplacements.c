@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_deplacements.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 19:46:26 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 13:50:47 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 13:54:04 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int		move(int key, t_mlx *mlx)
 		rot_right(mlx, rot_speed);
 	if (key == LEFT_KEY)
 		rot_left(mlx, rot_speed);
-	if (key == ESC_KEY)
+	if (key == ESC_KEY || key == DESTROYNOTIFY)
 		exit(0);
 	mlx_clear_window(mlx->mlx, mlx->window);
 	raycasting(mlx);

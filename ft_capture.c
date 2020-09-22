@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_capture.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/21 16:51:50 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 13:45:37 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,9 @@ int     bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
 
 	if ((fd = open(CAPTURE_FILENAME, O_WRONLY | O_CREAT, 0644)) < 0)
 		return (FALSE);
-    printf("SCREEN_WIDTH : %d\n", image->screen_width);
 	if ((bmp_data = malloc(sizeof(unsigned char) *
 			(image->screen_width * IMG_DEPTH))) == NULL)
 	{
-        printf("MALLOC FOIRE\n");
 		close(fd);
 		return (FALSE);
 	}
@@ -86,26 +84,37 @@ int     bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
 	return (TRUE);
 }
 
-void	bmp_write_pixels(int fd, t_mlx *image, t_byte *bmp_data)
+void	bmp_write_pixels(int fd, t_mlx *mlx, t_byte *bmp_data)
 {
 	int		i;
 	int		j;
 	t_byte	padding[3];
 	int		padding_size;
+	int		z;
+	
+	
+	char *image;
+	//image = (int)mlx->data;
+	
+	image = malloc(sizeof(char) * mlx->map_height * mlx->map_width);
+	int x;
+	while (x++ < mlx->map_height * mlx->map_width)
+		image[x] = (mlx->data[x]);
 
 	ft_bzero(padding, 3);
-	padding_size = (4 - (image->screen_width * IMG_DEPTH) % 4) % 4;
-	i = image->screen_height;
+	padding_size = (4 - (mlx->screen_width * IMG_DEPTH) % 4) % 4;
+	i = mlx->screen_height;
 	while (--i >= 0)
 	{
 		j = -1;
-		while (++j < image->screen_width)
+		while (++j < mlx->screen_width)
 		{
-			bmp_data[3 * j + 0] = (image->data[4 * (i * image->screen_width + j) + 0]);
-			bmp_data[3 * j + 1] = (image->data[4 * (i * image->screen_width + j) + 1]);
-			bmp_data[3 * j + 2] = (image->data[4 * (i * image->screen_width + j) + 2]);
+			z = mlx->data[j + (i * mlx->screen_width)];
+			bmp_data[3 * j + 2] = z / (256 * 256);
+			bmp_data[3 * j + 1] = (z / 256) % 256;
+			bmp_data[3 * j + 0] = z % 256;
 		}
-		write(fd, bmp_data, image->screen_width * 3);
+		write(fd, bmp_data, mlx->screen_width * 3);
 		write(fd, padding, padding_size);
 	}
 }
