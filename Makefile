@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
+#    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/22 14:36:10 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/09/22 15:26:14 by badrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,11 @@ exec:		all
 			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
 			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
 			@./a.out map.cub
+
+screenshot: all
+			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
+			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
+			@./a.out map.cub --save
 
 pong:		all
 			@$(CC) $(CFLAGS) $(MFLAGS) pong.c
