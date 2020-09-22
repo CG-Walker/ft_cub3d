@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/17 14:10:10 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/22 12:26:19 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ char	**mllc_world_map(char *file, size_t file_size, t_mlx *mlx)
 	size.x = 0;
 	size.y = 0;
 	ret = 1;
-	world_map = malloc(sizeof(char*) * (mlx->map_height + 1));
+	if (!(world_map = malloc(sizeof(char*) * (mlx->map_height + 1))))
+		return (-1);
 	world_map[mlx->map_height] = NULL;
 	fd = open(file, O_RDONLY);
 	while (size.x++ < file_size)
@@ -133,7 +134,8 @@ char	**mllc_world_map(char *file, size_t file_size, t_mlx *mlx)
 	while (size.y < mlx->map_height)
 	{
 		ret = get_next_line(fd, &line);
-		world_map[size.y] = malloc(sizeof(char) * (mlx->map_width + 1));
+		if (!(world_map[size.y] = malloc(sizeof(char) * (mlx->map_width + 1))))
+			return (-1);
 		while (size.x < mlx->map_width)
 		{
 			if (line[size.x] != 0 && line[size.x] != '\n')
@@ -153,16 +155,11 @@ char	**mllc_world_map(char *file, size_t file_size, t_mlx *mlx)
 	return (world_map);
 }
 
-void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
+size_t	count_file_size(int fd, size_t file_size)
 {
 	char	*line;
 	int		ret;
-	t_point size;
-	size_t	tmp;
 
-	ret = 1;
-	size.x = 0;
-	size.y = 1;
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
@@ -174,6 +171,20 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 		}
 		file_size++;
 	}
+	return (file_size);
+}
+
+void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
+{
+	char	*line;
+	int		ret;
+	t_point size;
+	size_t	tmp;
+
+	ret = 1;
+	size.x = 0;
+	size.y = 1;
+	file_size = count_file_size(fd, file_size);
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
@@ -184,23 +195,12 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 		free(line);
 	}
 	close(fd);
-	printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor, mlx->texture->rgb_ceiling);
+	printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor,
+												mlx->texture->rgb_ceiling);
 	printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
 	mlx->map_height = size.y;
 	mlx->map_width = size.x;
 	mlx->map = mllc_world_map(file, file_size, mlx);
-
-	int i;
-	int j;
-
-	for(i=0; i<mlx->map_height; i++)
-    {
-        for(j=0; j<mlx->map_width; j++)
-        {
-			printf("%c", mlx->map[i][j]);
-		}
-		printf("\n");
-    }
 }
 
 void	full_parsing(char *file, t_mlx *mlx)
