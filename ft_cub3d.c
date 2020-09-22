@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 14:28:44 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 15:21:30 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,11 +221,10 @@ int		main(int argc, char *argv[])
 
 	mlx = malloc(sizeof(t_mlx));
 	mlx->mlx = mlx_init();
+	mlx->capture = 0; 
 	init_player(mlx);
-	if (argc == 2)
+	if (argc == 2 || argc == 3)
 		full_parsing(argv[1], mlx);
-	else if (argc == 3 && ft_strcmp(argv[2], "--save") == 0)
-		capture(mlx);
 	check_player_pos(mlx);
 	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
 		return (1);
@@ -237,6 +236,8 @@ int		main(int argc, char *argv[])
 	put_frame(mlx);
 	get_texture(mlx);
 	raycasting(mlx);
+	if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
+		mlx->capture = 1;
 	mlx_hook(mlx->window, 2, 0, move, mlx);
 	//mlx_hook(mlx->window, 17, 0, clean_exit, mlx);
 	mlx_loop(mlx->mlx);

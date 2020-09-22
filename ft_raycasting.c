@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/22 14:54:16 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:22:10 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,8 @@ int		raycasting(t_mlx *mlx)
 		add_sprite(mlx, zbuffer);
 	if(mlx->screen_height > mlx->map_height && mlx->screen_width > mlx->map_width)
 		add_map(mlx);
-	//capture(mlx);
+	if(mlx->capture == 1);
+		capture(mlx);
 	put_frame(mlx);
 	free(ray);
 	return (0);
