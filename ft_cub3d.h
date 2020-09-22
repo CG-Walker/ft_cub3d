@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 15:20:20 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:36:38 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,11 +189,22 @@ void	rot_right(t_mlx *mlx, double rot_speed);
 void	rot_left(t_mlx *mlx, double rot_speed);
 
 /*
+**	ft_parsing_params
+*/
+
+void	r_id(char *s, t_mlx *mlx);
+void	nesw_id(char *s, int nesw, t_mlx *mlx);
+void	fc_id(char *s, int fc, t_mlx *mlx);
+int		check_id(char *s, t_mlx *mlx);
+
+/*
 **  ft_parsing
 */
 
+size_t	count_file_size(int fd, size_t file_size);
 void	full_parsing(char *file, t_mlx *mlx);
 char	**make_world_map(char *file, size_t file_size, t_mlx *mlx);
+char	**fill_world_map(t_mlx *mlx, char **world_map, int fd, t_point size);
 
 /*
 ** ft_sprite
