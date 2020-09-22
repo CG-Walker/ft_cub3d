@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 14:23:20 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 14:38:45 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,9 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 		free(line);
 	}
 	close(fd);
-	ft_printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor,
+	printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor,
 												mlx->texture->rgb_ceiling);
-	ft_printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
+	printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
 	mlx->map_height = size.y;
 	mlx->map_width = size.x;
 	mlx->map = make_world_map(file, file_size, mlx);
