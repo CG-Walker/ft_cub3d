@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_capture.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 14:12:51 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 12:20:54 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int		capture(t_mlx *state)
 	bmp_fill_header(state, file_header, info_header);
 	if (!bmp_write(state, file_header, info_header))
 	{
-		return (1);
+		erreur_exit(state, 6);
 	}
-	return (0);
+	clean_exit(state);
 }
 
 int		bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],

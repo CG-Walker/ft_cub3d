@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_params.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 15:35:31 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 12:06:21 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	while (s[i] == ' ')
 		i++;
 	if (open(&s[i], O_RDONLY) == -1)
-		exit(-1);
+		erreur_exit(mlx, 5);
 	texture = mlx_xpm_file_to_image(mlx->mlx, &s[i], &a, &a);
 	if (nesw == 0)
 		mlx->texture->north =
@@ -84,7 +84,7 @@ void	fc_id(char *s, int fc, t_mlx *mlx)
 		mlx->texture->rgb_ceiling = r + (g * 256) + (b * 256 * 256);
 }
 
-int		check_id(char *s, t_mlx *mlx)
+int		check_id(char *s, t_mlx *mlx) // -> faire les errrors exit
 {
 	static size_t i = 0;
 

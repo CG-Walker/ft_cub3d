@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 11:55:18 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 12:21:23 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,10 @@ void	erreur_exit(t_mlx *mlx, int error_id)
 		write(1, "player not found\n", 18);
 	if (error_id == 4)
 		write(1, "map incorrect\n", 15);
+	if (error_id == 5)
+		write(1, "texture not loaded\n", 20);
+	if (error_id == 6)
+		write(1, "capture error\n", 15);
 	clean_exit(mlx);
 }
 
