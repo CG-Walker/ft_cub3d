@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 15:21:30 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:07:42 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,31 @@ void	add_map(t_mlx *mlx)
 					color = 0xFF0000;
 				if (mlx->map[x][y] == '3')
 					color = 0x00CC00;
-				mlx->data[(x + (mlx->screen_height / 35) + ((y + (mlx->screen_width / 35))
-					* mlx->screen_width))] = color;
+				mlx->data[(x + (mlx->screen_height / 35) + ((y +
+					(mlx->screen_width / 35)) * mlx->screen_width))] = color;
 			}
 		y = 0;
 	}
 	y = (int)mlx->player->posX + (mlx->screen_height / 35) +
 		((int)mlx->player->posY + (mlx->screen_width / 35)) * mlx->screen_width;
 	mlx->data[y] = 0x000000;
+}
+
+void	init_pos_player(t_mlx *mlx, int x, int y)
+{
+	mlx->player->posX = (double)x + 0.5;
+	mlx->player->posY = (double)y + 0.5;
+	mlx->player->init_posx = x;
+	mlx->player->init_poxy = y;
+	if (mlx->map[x][y] == 'E')
+		rot_right(mlx, 1.6);
+	if (mlx->map[x][y] == 'S')
+		rot_right(mlx, 3.1);
+	if (mlx->map[x][y] == 'W')
+		rot_right(mlx, 4.7);
+	if (mlx->map[x][y] == 'N')
+		rot_right(mlx, 6.3);
+	mlx->map[x][y] = '0';
 }
 
 void	check_player_pos(t_mlx *mlx)
@@ -66,22 +83,8 @@ void	check_player_pos(t_mlx *mlx)
 	{
 		while (++y < mlx->map_width)
 			if (mlx->map[x][y] == 'N' || mlx->map[x][y] == 'S'
-			|| mlx->map[x][y] == 'E' || mlx->map[x][y] == 'W')
-			{
-				mlx->player->posX = (double)x + 0.5;
-				mlx->player->posY = (double)y + 0.5;
-				mlx->player->init_posx = x;
-				mlx->player->init_poxy = y;
-				if (mlx->map[x][y] == 'E')
-					rot_right(mlx, 1.6);
-				if (mlx->map[x][y] == 'S')
-					rot_right(mlx, 3.1);
-				if (mlx->map[x][y] == 'W')
-					rot_right(mlx, 4.7);
-				if (mlx->map[x][y] == 'N')
-					rot_right(mlx, 6.3);
-				mlx->map[x][y] = '0';
-			}
+				|| mlx->map[x][y] == 'E' || mlx->map[x][y] == 'W')
+				init_pos_player(mlx, x, y);
 			else if (mlx->map[x][y] == '2')
 			{
 				mlx->player->sprite_x = x + 0.5;
@@ -130,89 +133,81 @@ void	get_texture(t_mlx *mlx)
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }
 
-int		is_close(t_mlx *mlx, t_point size, t_point begin, char c)
+void	is_close(t_mlx *mlx, t_point size, t_point begin, t_point p)
 {
-	t_point p;
-
-	mlx->map[begin.y][begin.x] = c;
+	mlx->map[begin.y][begin.x] = '3';
 	if (begin.y > 0 && mlx->map[begin.y - 1][begin.x] == '0')
 	{
 		p.y = begin.y - 1;
 		p.x = begin.x;
-		is_close(mlx, size, p, c);
+		is_close(mlx, size, p, begin);
 	}
 	if ((begin.y < (size.y - 1)) && mlx->map[begin.y + 1][begin.x] == '0')
 	{
 		p.y = begin.y + 1;
 		p.x = begin.x;
-		is_close(mlx, size, p, c);
+		is_close(mlx, size, p, begin);
 	}
 	if ((begin.x < (size.x - 1)) && mlx->map[begin.y][begin.x + 1] == '0')
 	{
 		p.x = begin.x + 1;
 		p.y = begin.y;
-		is_close(mlx, size, p, c);
+		is_close(mlx, size, p, begin);
 	}
 	if (begin.x > 0 && mlx->map[begin.y][begin.x - 1] == '0')
 	{
 		p.x = begin.x - 1;
 		p.y = begin.y;
-		is_close(mlx, size, p, c);
+		is_close(mlx, size, p, begin);
+	}
+}
+
+int		check_error_map(t_mlx *mlx)
+{
+	int i;
+	int j;
+
+	i = -1;
+	while (++i < mlx->map_height)
+	{
+		j = -1;
+		while (++j < mlx->map_width)
+		{
+			printf("%c", mlx->map[i][j]);
+			if (mlx->map[i][j] < '0' || mlx->map[i][j] > '3')
+				return (2);
+			if (mlx->map[i][j] == '3' && (i == 0 || i ==
+				mlx->map_height - 1 || j == 0 || j == mlx->map_width - 1))
+				return (1);
+		}
+		printf("\n");
 	}
 	return (0);
 }
 
 int		check_map(t_mlx *mlx)
 {
-	t_point size;
-	t_point begin;
-	int j;
-	int i;
-	int error;
+	t_point	size;
+	t_point	begin;
+	int		j;
+	int		i;
 
 	size.y = mlx->map_height;
 	size.x = mlx->map_width;
 	begin.x = mlx->player->init_poxy;
 	begin.y = mlx->player->init_posx;
-	error = 0;
-	for (i = 0; i < mlx->map_height; i++)
+	i = -1;
+	while (++i < mlx->map_height)
 	{
-		for (j = 0; j < mlx->map_width; j++)
+		j = -1;
+		while (++j < mlx->map_width)
 			if (mlx->map[i][j] == ' ')
 				mlx->map[i][j] = '0';
 	}
-
-	int x;
-	int y;
-	for (x = 0; x < mlx->map_height; x++)
-	{
-		for (y = 0; y < mlx->map_width; y++)
-		{
-			printf("%c", mlx->map[x][y]);
-		}
-		printf("\n");
-	}
-	is_close(mlx, size, begin, '3');
-	for(i = 0; i < mlx->map_height; i++)
-	{
-		for(j = 0; j < mlx->map_width; j++)
-		{
-			printf("%c", mlx->map[i][j]);
-			//if(mlx->map[i][j] < '0' ||  mlx->map[i][j] > '3')
-			//	error = 2;
-			if (mlx->map[i][j] == '3' && (i == 0 || i == mlx->map_height - 1 || j == 0 || j == mlx->map_width - 1))
-				error = 1;
-		}
-		printf("\n");
-	}
-	if (error > 0)
-	{
-		printf("ON AS UNE ERREUR! code erreur: %d\n", error);
-		return (1);
-	}
-	else
-		printf("MAP OK\n");
-	return (0);
+	printf("TEST\n");
+	is_close(mlx, size, begin, begin);
+	i = 0;
+	return (check_error_map(mlx));
 }
 
 int		main(int argc, char *argv[])
@@ -221,7 +216,7 @@ int		main(int argc, char *argv[])
 
 	mlx = malloc(sizeof(t_mlx));
 	mlx->mlx = mlx_init();
-	mlx->capture = 0; 
+	mlx->capture = 0;
 	init_player(mlx);
 	if (argc == 2 || argc == 3)
 		full_parsing(argv[1], mlx);
@@ -239,7 +234,10 @@ int		main(int argc, char *argv[])
 	if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
 		mlx->capture = 1;
 	mlx_hook(mlx->window, 2, 0, move, mlx);
-	//mlx_hook(mlx->window, 17, 0, clean_exit, mlx);
 	mlx_loop(mlx->mlx);
 	return (0);
 }
+
+/*
+**	//mlx_hook(mlx->window, 17, 0, clean_exit, mlx);
+*/

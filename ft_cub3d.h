@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 15:36:38 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/22 15:56:10 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,8 @@ typedef struct	s_point
 */
 
 int		raycasting(t_mlx *mlx);
+void	add_map(t_mlx *mlx);
+void	put_frame(t_mlx *mlx);
 
 /*
 ** ft_movements
