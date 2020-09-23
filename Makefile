@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
+#    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/22 16:01:05 by badrien          ###   ########.fr        #
+#    Updated: 2020/09/23 15:55:25 by cgoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	gcc
 
-CFLAGS		=	#-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra
 
 MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 15:10:42 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 16:08:11 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,11 +152,11 @@ typedef struct	s_mlx
 {
     void        *mlx;
     void        *window;
-    int         screen_width;
-    int         screen_height;
+    size_t      screen_width;
+    size_t      screen_height;
     char        **map;
-    int         map_width;
-    int         map_height;
+    size_t      map_width;
+    size_t      map_height;
     void        *frame;
     int         *data;
     int         bpp;
@@ -183,6 +183,7 @@ void	put_frame(t_mlx *mlx);
 int		clean_exit(t_mlx *mlx);
 void	error_exit(t_mlx *mlx, int error_id);
 void	get_texture(t_mlx *mlx);
+void	check_player_pos(t_mlx *mlx);
 
 /*
 ** ft_movements
