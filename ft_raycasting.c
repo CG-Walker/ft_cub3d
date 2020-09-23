@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_raycasting.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/23 11:54:53 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 13:55:02 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	floor_and_sky_text(t_mlx *mlx)
 	int			x;
 
 	if (!(data = malloc(sizeof(t_ray))))
-		erreur_exit(mlx, 1);
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	data->y = 0;
 	x = 0;
 	while (data->y < mlx->screen_height)
@@ -251,7 +251,7 @@ int		raycasting(t_mlx *mlx)
 	double	zbuffer[mlx->screen_width];
 
 	if (!(ray = malloc(sizeof(t_ray))))
-		erreur_exit(mlx, 1);
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	if (mlx->texture->rgb_ceiling == 0 && mlx->texture->rgb_floor == 0)
 		floor_and_sky_text(mlx);
 	else

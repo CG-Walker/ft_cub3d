@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 11:53:48 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 13:51:29 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,18 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-#define CAPTURE_FILENAME "capture.bmp"
-#define IMG_DEPTH 3
-#define FILE_HEADER_SIZE 14
-#define INFO_HEADER_SIZE 40
-#define t_byte unsigned char
+# define CAPTURE_FILENAME "capture.bmp"
+# define IMG_DEPTH 3
+# define FILE_HEADER_SIZE 14
+# define INFO_HEADER_SIZE 40
+# define t_byte unsigned char
+
+# define ERROR_MALLOC_FAILED 1
+# define ERROR_MAP_NOT_FOUND 2
+# define ERROR_PLAYER_NOT_FOUND 3
+# define ERROR_MAP_INCORRECT 4
+# define ERROR_TEXTURE_NOT_LOADED 5
+# define ERROR_CAPTURE_FAILED 6
 
 typedef struct	s_sprite
 {
@@ -173,7 +180,7 @@ int		raycasting(t_mlx *mlx);
 void	add_map(t_mlx *mlx);
 void	put_frame(t_mlx *mlx);
 int		clean_exit(t_mlx *mlx);
-void	erreur_exit(t_mlx *mlx, int error_id);
+void	error_exit(t_mlx *mlx, int error_id);
 
 /*
 ** ft_movements

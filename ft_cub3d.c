@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 12:21:23 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 13:54:20 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,21 +232,21 @@ void	engine(t_mlx *mlx)
 	mlx_loop(mlx->mlx);
 }
 
-void	erreur_exit(t_mlx *mlx, int error_id)
+void	error_exit(t_mlx *mlx, int error_id)
 {
-	write(1, "error\n", 7);
-	if (error_id == 1)
-		write(1, "malloc fail\n", 13);
-	if (error_id == 2)
-		write(1, "map not found\n", 15);
-	if (error_id == 3)
-		write(1, "player not found\n", 18);
-	if (error_id == 4)
-		write(1, "map incorrect\n", 15);
-	if (error_id == 5)
-		write(1, "texture not loaded\n", 20);
-	if (error_id == 6)
-		write(1, "capture error\n", 15);
+	write(1, "<Error>\n", 9);
+	if (error_id == ERROR_MALLOC_FAILED)
+		write(1, "Malloc failed.\n", 16);
+	else if (error_id == ERROR_MAP_NOT_FOUND)
+		write(1, "Map not found.\n", 16);
+	else if (error_id == ERROR_PLAYER_NOT_FOUND)
+		write(1, "Player not found.\n", 19);
+	else if (error_id == ERROR_MAP_INCORRECT)
+		write(1, "Map incorrect.\n", 16);
+	else if (error_id == ERROR_TEXTURE_NOT_LOADED)
+		write(1, "Texture can't be loaded.\n", 26);
+	else if (error_id == ERROR_CAPTURE_FAILED)
+		write(1, "Capture failed.\n", 17);
 	clean_exit(mlx);
 }
 
@@ -255,19 +255,19 @@ int		main(int argc, char *argv[])
 	t_mlx *mlx;
 
 	if (!(mlx = malloc(sizeof(t_mlx))))
-		erreur_exit(mlx, 1);
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	mlx->mlx = mlx_init();
 	mlx->capture = 0;
 	init_player(mlx);
 	if (argc == 2 || argc == 3)
 		full_parsing(argv[1], mlx);
 	else
-		erreur_exit(mlx, 2);
+		error_exit(mlx, ERROR_MAP_NOT_FOUND);
 	check_player_pos(mlx);
 	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
-		erreur_exit(mlx, 3);
+		error_exit(mlx, ERROR_PLAYER_NOT_FOUND);
 	if (check_map(mlx) != 0)
-		erreur_exit(mlx, 4);
+		error_exit(mlx, ERROR_MAP_INCORRECT);
 	mlx->window = mlx_new_window(mlx->mlx,
 		mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;

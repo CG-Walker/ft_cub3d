@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_capture.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 12:20:54 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 13:52:57 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@ int		capture(t_mlx *state)
 
 	bmp_fill_header(state, file_header, info_header);
 	if (!bmp_write(state, file_header, info_header))
-	{
-		erreur_exit(state, 6);
-	}
+		error_exit(state, ERROR_CAPTURE_FAILED);
 	clean_exit(state);
 }
 
-int		bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
+int		bmp_write(t_mlx *mlx, t_byte file_header[FILE_HEADER_SIZE],
 						t_byte info_header[INFO_HEADER_SIZE])
 {
 	int		fd;
@@ -34,14 +32,11 @@ int		bmp_write(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
 	if ((fd = open(CAPTURE_FILENAME, O_WRONLY | O_CREAT, 0644)) < 0)
 		return (FALSE);
 	if ((bmp_data = malloc(sizeof(unsigned char) *
-			(image->screen_width * IMG_DEPTH))) == NULL)
-	{
-		close(fd);
-		return (FALSE);
-	}
+			(mlx->screen_width * IMG_DEPTH))) == NULL)
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	write(fd, file_header, FILE_HEADER_SIZE);
 	write(fd, info_header, INFO_HEADER_SIZE);
-	bmp_write_pixels(fd, image, bmp_data);
+	bmp_write_pixels(fd, mlx, bmp_data);
 	close(fd);
 	return (TRUE);
 }
