@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 14:29:30 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:21:01 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,44 +38,45 @@ int		bmp_write(t_mlx *mlx, t_byte file_header[FILE_HEADER_SIZE],
 	write(fd, file_header, FILE_HEADER_SIZE);
 	write(fd, info_header, INFO_HEADER_SIZE);
 	bmp_write_pixels(fd, mlx, bmp_data);
+	free(bmp_data);
 	close(fd);
 	return (TRUE);
 }
 
 void	bmp_write_pixels(int fd, t_mlx *mlx, t_byte *bmp_data)
 {
-	int		i;
-	int		j;
+	int		height;
+	int		width;
 	t_byte	padding[3];
 	int		padding_size;
-	int		z;
+	int		tmp;
 
 	ft_bzero(padding, 3);
 	padding_size = (4 - (mlx->screen_width * IMG_DEPTH) % 4) % 4;
-	i = mlx->screen_height;
-	while (--i >= 0)
+	height = mlx->screen_height;
+	while (--height >= 0)
 	{
-		j = -1;
-		while (++j < mlx->screen_width)
+		width = -1;
+		while (++width < mlx->screen_width)
 		{
-			z = mlx->data[j + (i * mlx->screen_width)];
-			bmp_data[3 * j + 2] = z / (256 * 256);
-			bmp_data[3 * j + 1] = (z / 256) % 256;
-			bmp_data[3 * j + 0] = z % 256;
+			tmp = mlx->data[width + (height * mlx->screen_width)];
+			bmp_data[3 * width + 2] = tmp / (256 * 256);
+			bmp_data[3 * width + 1] = (tmp / 256) % 256;
+			bmp_data[3 * width + 0] = tmp % 256;
 		}
 		write(fd, bmp_data, mlx->screen_width * 3);
 		write(fd, padding, padding_size);
 	}
 }
 
-void	bmp_fill_header(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
+void	bmp_fill_header(t_mlx *mlx, t_byte file_header[FILE_HEADER_SIZE],
 						t_byte info_header[INFO_HEADER_SIZE])
 {
 	int	file_size;
 
 	file_size = FILE_HEADER_SIZE + INFO_HEADER_SIZE +
-						(IMG_DEPTH * image->screen_width +
-	((4 - (image->screen_width * IMG_DEPTH) % 4) % 4)) * image->screen_height;
+						(IMG_DEPTH * mlx->screen_width +
+	((4 - (mlx->screen_width * IMG_DEPTH) % 4) % 4)) * mlx->screen_height;
 	ft_bzero(file_header, FILE_HEADER_SIZE);
 	ft_bzero(info_header, INFO_HEADER_SIZE);
 	file_header[0] = (unsigned char)('B');
@@ -86,14 +87,14 @@ void	bmp_fill_header(t_mlx *image, t_byte file_header[FILE_HEADER_SIZE],
 	file_header[5] = (unsigned char)(file_size >> 24);
 	file_header[10] = (unsigned char)(FILE_HEADER_SIZE + INFO_HEADER_SIZE);
 	info_header[0] = (unsigned char)(INFO_HEADER_SIZE);
-	info_header[4] = (unsigned char)(image->screen_width);
-	info_header[5] = (unsigned char)(image->screen_width >> 8);
-	info_header[6] = (unsigned char)(image->screen_width >> 16);
-	info_header[7] = (unsigned char)(image->screen_width >> 24);
-	info_header[8] = (unsigned char)(image->screen_height);
-	info_header[9] = (unsigned char)(image->screen_height >> 8);
-	info_header[10] = (unsigned char)(image->screen_height >> 16);
-	info_header[11] = (unsigned char)(image->screen_height >> 24);
+	info_header[4] = (unsigned char)(mlx->screen_width);
+	info_header[5] = (unsigned char)(mlx->screen_width >> 8);
+	info_header[6] = (unsigned char)(mlx->screen_width >> 16);
+	info_header[7] = (unsigned char)(mlx->screen_width >> 24);
+	info_header[8] = (unsigned char)(mlx->screen_height);
+	info_header[9] = (unsigned char)(mlx->screen_height >> 8);
+	info_header[10] = (unsigned char)(mlx->screen_height >> 16);
+	info_header[11] = (unsigned char)(mlx->screen_height >> 24);
 	info_header[12] = (unsigned char)(1);
 	info_header[14] = (unsigned char)(IMG_DEPTH * 8);
 }
