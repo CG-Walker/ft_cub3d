@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 12:14:14 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/15 15:48:10 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 14:08:26 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void	add_sprite(t_mlx *mlx, double *zbuffer)
 {
 	t_sprite *sprite;
 
-	sprite = malloc(sizeof(t_sprite));
+	if(!(sprite = malloc(sizeof(t_sprite))))
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	size_sprite(mlx, sprite);
 	pre_draw_sprite(mlx, sprite);
 	sprite->zbuffer = zbuffer;

@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 12:06:21 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 14:03:45 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	nesw_id(char *s, int nesw, t_mlx *mlx)
 	while (s[i] == ' ')
 		i++;
 	if (open(&s[i], O_RDONLY) == -1)
-		erreur_exit(mlx, 5);
+		error_exit(mlx, ERROR_TEXTURE_NOT_LOADED);
 	texture = mlx_xpm_file_to_image(mlx->mlx, &s[i], &a, &a);
 	if (nesw == 0)
 		mlx->texture->north =

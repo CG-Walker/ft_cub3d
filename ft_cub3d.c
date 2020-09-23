@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 13:54:20 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 14:12:33 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ void	check_player_pos(t_mlx *mlx)
 		y = 0;
 	}
 	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
-		printf("ERREUR: player not found\n");
+		error_exit(mlx, ERROR_PLAYER_NOT_FOUND);
 	if (nb_sprite > 1)
-		printf("WARNING: plusieurs position de sprite trouve, une seule sera prise en compte\n");
+		write(1, "WARNING: More than 1 sprite found\n", 35);
 }
 
 void	init_player(t_mlx *mlx)
@@ -104,8 +104,10 @@ void	init_player(t_mlx *mlx)
 	t_player	*player;
 	t_texture	*texture;
 
-	player = malloc(sizeof(t_player));
-	texture = malloc(sizeof(t_texture));
+	if (!(player = malloc(sizeof(t_player))))
+		error_exit(mlx, ERROR_MALLOC_FAILED);
+	if (!(texture = malloc(sizeof(t_texture))))
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	player->dirX = -1;
 	player->dirY = 0;
 	player->planeX = 0;
@@ -187,6 +189,14 @@ int		check_error_map(t_mlx *mlx)
 
 int		clean_exit(t_mlx *mlx)
 {
+	int x;
+
+	x = 0;
+	while (mlx->map[x] != NULL)
+		free(mlx->map[x++]);
+	if (mlx->map != NULL)
+		free(mlx->map);
+
 	if (mlx != NULL)
 	{
 		if (mlx->frame != NULL)
