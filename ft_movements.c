@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_movements.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 19:46:26 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 11:55:30 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 15:23:10 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		move(int key, t_mlx *mlx)
 		clean_exit(mlx);
 	mlx_clear_window(mlx->mlx, mlx->window);
 	raycasting(mlx);
-	return (1);
+	return (TRUE);
 }
 
 void	mv_left(t_mlx *mlx, double move_speed)

@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 14:34:19 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:23:50 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	r_id(char *s, t_mlx *mlx)
 		mlx->screen_width = 2560;
 	if (mlx->screen_height > 1440)
 		mlx->screen_height = 1440;
-	printf("W : %d\nH : %d\n", mlx->screen_width, mlx->screen_height);
 }
 
 void	nesw_id(char *s, int nesw, t_mlx *mlx)
