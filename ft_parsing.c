@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 15:36:31 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 14:36:43 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ size_t	count_file_size(int fd, size_t file_size)
 			free(line);
 			break ;
 		}
+		free(line);
 		file_size++;
 	}
 	return (file_size);
@@ -43,11 +44,14 @@ char	**make_world_map(char *file, size_t file_size, t_mlx *mlx)
 	size.y = 0;
 	ret = 1;
 	if (!(world_map = malloc(sizeof(char*) * (mlx->map_height + 1))))
-		return (-1);
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	world_map[mlx->map_height] = NULL;
 	fd = open(file, O_RDONLY);
 	while (size.x++ < file_size)
+	{
 		get_next_line(fd, &line);
+		free(line);
+	}
 	size.x = 0;
 	world_map = fill_world_map(mlx, world_map, fd, size);
 	close(fd);
@@ -63,7 +67,7 @@ char	**fill_world_map(t_mlx *mlx, char **world_map, int fd, t_point size)
 	{
 		ret = get_next_line(fd, &line);
 		if (!(world_map[size.y] = malloc(sizeof(char) * (mlx->map_width + 1))))
-			return (-1);
+			error_exit(mlx, ERROR_MALLOC_FAILED);
 		while (size.x < mlx->map_width)
 		{
 			if (line[size.x] != 0 && line[size.x] != '\n')
@@ -104,9 +108,6 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 		free(line);
 	}
 	close(fd);
-	printf("RGB Floor  : %d\nRGB Sky  : %d\n", mlx->texture->rgb_floor,
-												mlx->texture->rgb_ceiling);
-	printf("Map Width  : %d\nMap Height : %d\n", size.x, size.y);
 	mlx->map_height = size.y;
 	mlx->map_width = size.x;
 	mlx->map = make_world_map(file, file_size, mlx);

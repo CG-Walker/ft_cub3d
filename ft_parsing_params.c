@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_params.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 14:03:45 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 14:34:19 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	fc_id(char *s, int fc, t_mlx *mlx)
 		mlx->texture->rgb_ceiling = r + (g * 256) + (b * 256 * 256);
 }
 
-int		check_id(char *s, t_mlx *mlx) // -> faire les errrors exit
+int		check_id(char *s, t_mlx *mlx)
 {
 	static size_t i = 0;
 
@@ -109,6 +109,5 @@ int		check_id(char *s, t_mlx *mlx) // -> faire les errrors exit
 	i++;
 	if (i == 8)
 		return (1);
-	else
-		return (0);
+	return (0);
 }

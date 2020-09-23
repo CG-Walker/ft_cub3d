@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 13:51:29 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 14:28:41 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define ERROR_MAP_INCORRECT 4
 # define ERROR_TEXTURE_NOT_LOADED 5
 # define ERROR_CAPTURE_FAILED 6
+# define ERROR_ID_NOT_FOUND 7
 
 typedef struct	s_sprite
 {

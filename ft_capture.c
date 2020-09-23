@@ -6,21 +6,22 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 13:52:57 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 14:29:30 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_cub3d.h"
 
-int		capture(t_mlx *state)
+int		capture(t_mlx *mlx)
 {
 	t_byte	file_header[FILE_HEADER_SIZE];
 	t_byte	info_header[INFO_HEADER_SIZE];
 
-	bmp_fill_header(state, file_header, info_header);
-	if (!bmp_write(state, file_header, info_header))
-		error_exit(state, ERROR_CAPTURE_FAILED);
-	clean_exit(state);
+	bmp_fill_header(mlx, file_header, info_header);
+	if (!bmp_write(mlx, file_header, info_header))
+		error_exit(mlx, ERROR_CAPTURE_FAILED);
+	clean_exit(mlx);
+	return (0);
 }
 
 int		bmp_write(t_mlx *mlx, t_byte file_header[FILE_HEADER_SIZE],
