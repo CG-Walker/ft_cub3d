@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 11:07:42 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:55:18 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,20 @@ int		check_error_map(t_mlx *mlx)
 	return (0);
 }
 
+int		clean_exit(t_mlx *mlx)
+{
+	if (mlx != NULL)
+	{
+		if (mlx->frame != NULL)
+			mlx_destroy_image(mlx->mlx, mlx->frame);
+		free(mlx->player);
+		free(mlx->texture);
+		free(mlx->mlx);
+		free(mlx);
+	}
+	exit(0);
+}
+
 int		check_map(t_mlx *mlx)
 {
 	t_point	size;
@@ -204,27 +218,52 @@ int		check_map(t_mlx *mlx)
 			if (mlx->map[i][j] == ' ')
 				mlx->map[i][j] = '0';
 	}
-	printf("TEST\n");
 	is_close(mlx, size, begin, begin);
 	i = 0;
 	return (check_error_map(mlx));
+}
+
+void	engine(t_mlx *mlx)
+{
+	put_frame(mlx);
+	raycasting(mlx);
+	mlx_hook(mlx->window, 2, 0, move, mlx);
+	mlx_hook(mlx->window, 17, 0, clean_exit, mlx);
+	mlx_loop(mlx->mlx);
+}
+
+void	erreur_exit(t_mlx *mlx, int error_id)
+{
+	write(1, "error\n", 7);
+	if (error_id == 1)
+		write(1, "malloc fail\n", 13);
+	if (error_id == 2)
+		write(1, "map not found\n", 15);
+	if (error_id == 3)
+		write(1, "player not found\n", 18);
+	if (error_id == 4)
+		write(1, "map incorrect\n", 15);
+	clean_exit(mlx);
 }
 
 int		main(int argc, char *argv[])
 {
 	t_mlx *mlx;
 
-	mlx = malloc(sizeof(t_mlx));
+	if (!(mlx = malloc(sizeof(t_mlx))))
+		erreur_exit(mlx, 1);
 	mlx->mlx = mlx_init();
 	mlx->capture = 0;
 	init_player(mlx);
 	if (argc == 2 || argc == 3)
 		full_parsing(argv[1], mlx);
+	else
+		erreur_exit(mlx, 2);
 	check_player_pos(mlx);
 	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
-		return (1);
+		erreur_exit(mlx, 3);
 	if (check_map(mlx) != 0)
-		return (1);
+		erreur_exit(mlx, 4);
 	mlx->window = mlx_new_window(mlx->mlx,
 		mlx->screen_width, mlx->screen_height, "Cub3D");
 	mlx->frame = NULL;
@@ -233,8 +272,7 @@ int		main(int argc, char *argv[])
 	raycasting(mlx);
 	if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
 		mlx->capture = 1;
-	mlx_hook(mlx->window, 2, 0, move, mlx);
-	mlx_loop(mlx->mlx);
+	engine(mlx);
 	return (0);
 }
 

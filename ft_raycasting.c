@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/22 16:05:08 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:54:53 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	floor_and_sky_text(t_mlx *mlx)
 	t_floor_sky	*data;
 	int			x;
 
-	data = malloc(sizeof(t_ray));
+	if (!(data = malloc(sizeof(t_ray))))
+		erreur_exit(mlx, 1);
 	data->y = 0;
 	x = 0;
 	while (data->y < mlx->screen_height)
@@ -249,7 +250,8 @@ int		raycasting(t_mlx *mlx)
 	t_ray	*ray;
 	double	zbuffer[mlx->screen_width];
 
-	ray = malloc(sizeof(t_ray));
+	if (!(ray = malloc(sizeof(t_ray))))
+		erreur_exit(mlx, 1);
 	if (mlx->texture->rgb_ceiling == 0 && mlx->texture->rgb_floor == 0)
 		floor_and_sky_text(mlx);
 	else

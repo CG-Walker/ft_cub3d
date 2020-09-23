@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 15:56:10 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:53:48 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,8 @@ typedef struct	s_point
 int		raycasting(t_mlx *mlx);
 void	add_map(t_mlx *mlx);
 void	put_frame(t_mlx *mlx);
+int		clean_exit(t_mlx *mlx);
+void	erreur_exit(t_mlx *mlx, int error_id);
 
 /*
 ** ft_movements

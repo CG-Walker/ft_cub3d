@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_movements.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 19:46:26 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 14:36:27 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 11:55:30 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		move(int key, t_mlx *mlx)
 	if (key == LEFT_KEY)
 		rot_left(mlx, rot_speed);
 	if (key == ESC_KEY || key == DESTROYNOTIFY)
-		exit(0);
+		clean_exit(mlx);
 	mlx_clear_window(mlx->mlx, mlx->window);
 	raycasting(mlx);
 	return (1);
