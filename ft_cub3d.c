@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 14:35:03 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:11:41 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,13 @@ void	check_player_pos(t_mlx *mlx)
 		write(1, "WARNING: More than 1 sprite found\n", 35);
 }
 
-void	init_player(t_mlx *mlx)
+void	init_data(t_mlx *mlx)
 {
 	t_player	*player;
 	t_texture	*texture;
 
+	mlx->mlx = mlx_init();
+	mlx->capture = 0;
 	if (!(player = malloc(sizeof(t_player))))
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	if (!(texture = malloc(sizeof(t_texture))))
@@ -118,8 +120,11 @@ void	init_player(t_mlx *mlx)
 	texture->rgb_floor = 0;
 	player->sprite_x = -1;
 	player->sprite_y = -1;
+	mlx->map = NULL;
+	mlx->frame = NULL;
 	mlx->player = player;
 	mlx->texture = texture;
+	get_texture(mlx);
 }
 
 void	get_texture(t_mlx *mlx)
@@ -192,11 +197,11 @@ int		clean_exit(t_mlx *mlx)
 	int x;
 
 	x = 0;
-	while (mlx->map[x] != NULL)
-		free(mlx->map[x++]);
+	if (mlx->map != NULL)
+		while (mlx->map[x] != NULL)
+			free(mlx->map[x++]);
 	if (mlx->map != NULL)
 		free(mlx->map);
-
 	if (mlx != NULL)
 	{
 		if (mlx->frame != NULL)
@@ -257,6 +262,8 @@ void	error_exit(t_mlx *mlx, int error_id)
 		write(1, "Texture can't be loaded.\n", 26);
 	else if (error_id == ERROR_CAPTURE_FAILED)
 		write(1, "Capture failed.\n", 17);
+	else if (error_id == ERROR_UNEXPECTED_ARGS)
+		write(1, "Unexpected number of arg(s).\n", 30);
 	clean_exit(mlx);
 }
 
@@ -266,30 +273,19 @@ int		main(int argc, char *argv[])
 
 	if (!(mlx = malloc(sizeof(t_mlx))))
 		error_exit(mlx, ERROR_MALLOC_FAILED);
-	mlx->mlx = mlx_init();
-	mlx->capture = 0;
-	init_player(mlx);
+	init_data(mlx);
 	if (argc == 2 || argc == 3)
 		full_parsing(argv[1], mlx);
-	else
-		error_exit(mlx, ERROR_MAP_NOT_FOUND);
-	check_player_pos(mlx);
-	if (mlx->player->init_posx == -1 || mlx->player->init_poxy == -1)
-		error_exit(mlx, ERROR_PLAYER_NOT_FOUND);
+	if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
+		mlx->capture = 1;
+	if ((argc != 2 && mlx->capture == 0) || (argc == 3 && mlx->capture == 0))
+		error_exit(mlx, ERROR_UNEXPECTED_ARGS);
 	if (check_map(mlx) != 0)
 		error_exit(mlx, ERROR_MAP_INCORRECT);
 	mlx->window = mlx_new_window(mlx->mlx,
 		mlx->screen_width, mlx->screen_height, "Cub3D");
-	mlx->frame = NULL;
 	put_frame(mlx);
-	get_texture(mlx);
 	raycasting(mlx);
-	if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
-		mlx->capture = 1;
 	engine(mlx);
 	return (0);
 }
-
-/*
-**	//mlx_hook(mlx->window, 17, 0, clean_exit, mlx);
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 14:36:43 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:08:56 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,4 +139,5 @@ void	full_parsing(char *file, t_mlx *mlx)
 	ret = get_next_line(fd, &line);
 	if (line[0] != '\n')
 		map_parsing(file, i, fd, mlx);
+	check_player_pos(mlx);
 }

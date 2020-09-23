@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 14:28:41 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:10:42 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define ERROR_MAP_INCORRECT 4
 # define ERROR_TEXTURE_NOT_LOADED 5
 # define ERROR_CAPTURE_FAILED 6
-# define ERROR_ID_NOT_FOUND 7
+# define ERROR_UNEXPECTED_ARGS 7
 
 typedef struct	s_sprite
 {
@@ -182,6 +182,7 @@ void	add_map(t_mlx *mlx);
 void	put_frame(t_mlx *mlx);
 int		clean_exit(t_mlx *mlx);
 void	error_exit(t_mlx *mlx, int error_id);
+void	get_texture(t_mlx *mlx);
 
 /*
 ** ft_movements
