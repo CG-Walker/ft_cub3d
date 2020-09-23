@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 15:08:56 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 16:08:26 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ size_t	count_file_size(int fd, size_t file_size)
 	char	*line;
 	int		ret;
 
+	ret = 0;
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
@@ -47,7 +48,7 @@ char	**make_world_map(char *file, size_t file_size, t_mlx *mlx)
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	world_map[mlx->map_height] = NULL;
 	fd = open(file, O_RDONLY);
-	while (size.x++ < file_size)
+	while (size.x++ < (int)file_size)
 	{
 		get_next_line(fd, &line);
 		free(line);
@@ -63,18 +64,18 @@ char	**fill_world_map(t_mlx *mlx, char **world_map, int fd, t_point size)
 	int		ret;
 	char	*line;
 
-	while (size.y < mlx->map_height)
+	while (size.y < (int)mlx->map_height)
 	{
 		ret = get_next_line(fd, &line);
 		if (!(world_map[size.y] = malloc(sizeof(char) * (mlx->map_width + 1))))
 			error_exit(mlx, ERROR_MALLOC_FAILED);
-		while (size.x < mlx->map_width)
+		while (size.x < (int)mlx->map_width)
 		{
 			if (line[size.x] != 0 && line[size.x] != '\n')
 				world_map[size.y][size.x] = line[size.x];
 			else
 			{
-				while (size.x < mlx->map_width)
+				while (size.x < (int)mlx->map_width)
 					world_map[size.y][size.x++] = ' ';
 				break ;
 			}
@@ -92,7 +93,7 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 	char	*line;
 	int		ret;
 	t_point size;
-	size_t	tmp;
+	int		tmp;
 
 	ret = 1;
 	size.x = 0;

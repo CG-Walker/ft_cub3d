@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 15:21:01 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 16:10:46 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	bmp_write_pixels(int fd, t_mlx *mlx, t_byte *bmp_data)
 	while (--height >= 0)
 	{
 		width = -1;
-		while (++width < mlx->screen_width)
+		while (++width < (int)mlx->screen_width)
 		{
 			tmp = mlx->data[width + (height * mlx->screen_width)];
 			bmp_data[3 * width + 2] = tmp / (256 * 256);

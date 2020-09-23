@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sprite.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 12:14:14 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/23 14:16:07 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 16:09:22 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	size_sprite(t_mlx *mlx, t_sprite *sprite)
 	sprite->spriteheight = abs((int)(sprite->h / (sprite->transformy)));
 }
 
-void	pre_draw_sprite(t_mlx *mlx, t_sprite *sprite)
+void	pre_draw_sprite(t_sprite *sprite)
 {
 	sprite->drawstarty = -(sprite->spriteheight) / 2 + sprite->h / 2;
 	if (sprite->drawstarty < 0)
@@ -81,7 +81,7 @@ void	add_sprite(t_mlx *mlx, double *zbuffer)
 	if (!(sprite = malloc(sizeof(t_sprite))))
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	size_sprite(mlx, sprite);
-	pre_draw_sprite(mlx, sprite);
+	pre_draw_sprite(sprite);
 	sprite->zbuffer = zbuffer;
 	draw_sprite(mlx, sprite);
 	free(sprite);

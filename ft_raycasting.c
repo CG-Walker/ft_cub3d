@@ -6,7 +6,7 @@
 /*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/23 13:55:02 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/23 16:10:27 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	floor_and_sky_color(t_mlx *mlx)
 {
-	int x;
-	int y;
+	size_t x;
+	size_t y;
 
 	x = 0;
 	y = 0;
@@ -57,8 +57,8 @@ void	get_data(t_mlx *mlx, t_floor_sky *data)
 
 void	draw_data(t_mlx *mlx, t_floor_sky *data, int x)
 {
-	int i;
-	int j;
+	size_t i;
+	size_t j;
 
 	i = texHeight;
 	j = texWidth;
@@ -80,13 +80,13 @@ void	draw_data(t_mlx *mlx, t_floor_sky *data, int x)
 void	floor_and_sky_text(t_mlx *mlx)
 {
 	t_floor_sky	*data;
-	int			x;
+	size_t		x;
 
 	if (!(data = malloc(sizeof(t_ray))))
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	data->y = 0;
 	x = 0;
-	while (data->y < mlx->screen_height)
+	while (data->y < (int)mlx->screen_height)
 	{
 		get_data(mlx, data);
 		x = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 15:11:41 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/23 16:02:19 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	put_frame(t_mlx *mlx)
 
 void	add_map(t_mlx *mlx)
 {
-	int y;
-	int x;
+	size_t y;
+	size_t x;
 	int color;
 
 	x = -1;
@@ -171,8 +171,8 @@ void	is_close(t_mlx *mlx, t_point size, t_point begin, t_point p)
 
 int		check_error_map(t_mlx *mlx)
 {
-	int i;
-	int j;
+	size_t i;
+	size_t j;
 
 	i = -1;
 	while (++i < mlx->map_height)
@@ -194,7 +194,7 @@ int		check_error_map(t_mlx *mlx)
 
 int		clean_exit(t_mlx *mlx)
 {
-	int x;
+	size_t x;
 
 	x = 0;
 	if (mlx->map != NULL)
@@ -226,10 +226,10 @@ int		check_map(t_mlx *mlx)
 	begin.x = mlx->player->init_poxy;
 	begin.y = mlx->player->init_posx;
 	i = -1;
-	while (++i < mlx->map_height)
+	while (++i < (int)mlx->map_height)
 	{
 		j = -1;
-		while (++j < mlx->map_width)
+		while (++j < (int)mlx->map_width)
 			if (mlx->map[i][j] == ' ')
 				mlx->map[i][j] = '0';
 	}
