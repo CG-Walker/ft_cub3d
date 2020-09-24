@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:56:46 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 12:27:55 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 14:03:41 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	init_data(t_mlx *mlx)
 	player->sprite_y = -1;
 	mlx->map = NULL;
 	mlx->frame = NULL;
+	mlx->zbuffer = NULL;
 	mlx->player = player;
 	mlx->texture = texture;
 	get_texture(mlx);
@@ -91,10 +92,10 @@ void	get_texture(t_mlx *mlx)
 	void	*texture;
 	int		a;
 
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/wood.xpm", &a, &a);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "./pics/wood.xpm", &a, &a);
 	mlx->texture->ceiling =
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
-	texture = mlx_xpm_file_to_image(mlx->mlx, "pics/greystone.xpm", &a, &a);
+	texture = mlx_xpm_file_to_image(mlx->mlx, "./pics/greystone.xpm", &a, &a);
 	mlx->texture->floor =
 		(int*)mlx_get_data_addr(texture, &mlx->bpp, &mlx->sl, &mlx->endian);
 }

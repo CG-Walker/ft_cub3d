@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/24 12:44:18 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 14:04:29 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ typedef struct			s_mlx
 	int			sl;
 	int			endian;
 	int			capture;
+	double		*zbuffer;
 	t_player	*player;
 	t_texture	*texture;
 }						t_mlx;
@@ -283,7 +284,7 @@ char					**fill_world_map(t_mlx *mlx, char **world_map,
 
 void					calc_draw_size(t_mlx *mlx, t_ray *ray);
 void					calc_tex_size(t_mlx *mlx, t_ray *ray);
-void					draw_wall(t_mlx *mlx, t_ray *ray, double *zbuffer);
+void					draw_wall(t_mlx *mlx, t_ray *ray);
 int						raycasting(t_mlx *mlx);
 
 /*
@@ -293,6 +294,6 @@ int						raycasting(t_mlx *mlx);
 void					size_sprite(t_mlx *mlx, t_sprite *sprite);
 void					pre_draw_sprite(t_sprite *sprite);
 void					draw_sprite(t_mlx *mlx, t_sprite *sprite);
-void					add_sprite(t_mlx *mlx, double *zbuffer);
+void					add_sprite(t_mlx *mlx);
 
 #endif

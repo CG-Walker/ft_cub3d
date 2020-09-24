@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 12:22:14 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 14:03:09 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ void	calc_tex_size(t_mlx *mlx, t_ray *ray)
 		2 + ray->lineheight / 2) * ray->step;
 }
 
-void	draw_wall(t_mlx *mlx, t_ray *ray, double *zbuffer)
+void	draw_wall(t_mlx *mlx, t_ray *ray)
 {
 	ray->x = 0;
 	ray->w = mlx->screen_width;
 	ray->h = mlx->screen_height;
-	while (ray->x++ < ray->w)
+	while (ray->x < ray->w)
 	{
 		calc_ray(mlx, ray);
 		calc_side_dist(mlx, ray);
@@ -62,24 +62,26 @@ void	draw_wall(t_mlx *mlx, t_ray *ray, double *zbuffer)
 		calc_draw_size(mlx, ray);
 		calc_tex_size(mlx, ray);
 		print_wall(mlx, ray);
-		zbuffer[ray->x] = ray->perpwalldist;
+		mlx->zbuffer[ray->x] = ray->perpwalldist;
+		ray->x++;
 	}
 }
 
 int		raycasting(t_mlx *mlx)
 {
 	t_ray	*ray;
-	double	zbuffer[mlx->screen_width];
 
+	if (!(mlx->zbuffer = malloc(sizeof(double *) * mlx->screen_width)))
+		error_exit(mlx, ERROR_MALLOC_FAILED);
 	if (!(ray = malloc(sizeof(t_ray))))
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	if (mlx->texture->rgb_ceiling == 0 && mlx->texture->rgb_floor == 0)
 		floor_and_sky_text(mlx);
 	else
 		floor_and_sky_color(mlx);
-	draw_wall(mlx, ray, zbuffer);
+	draw_wall(mlx, ray);
 	if (mlx->player->sprite_x != -1)
-		add_sprite(mlx, zbuffer);
+		add_sprite(mlx);
 	if (mlx->screen_height > mlx->map_height &&
 		mlx->screen_width > mlx->map_width)
 		add_map(mlx);
@@ -87,5 +89,6 @@ int		raycasting(t_mlx *mlx)
 		capture(mlx);
 	put_frame(mlx);
 	free(ray);
+	free(mlx->zbuffer);
 	return (0);
 }

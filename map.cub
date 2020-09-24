@@ -1,10 +1,10 @@
 R 1920 1080
 
-NO pics/redbrick.xpm
-SO pics/eagle.xpm
-WE pics/walker.xpm
-EA pics/badrien.xpm
-S pics/barrel.xpm
+NO /Users/badrien/badrien/ft_cub3d/pics/redbrick.xpm
+SO /Users/badrien/badrien/ft_cub3d/pics/eagle.xpm
+WE /Users/badrien/badrien/ft_cub3d/pics/walker.xpm
+EA /Users/badrien/badrien/ft_cub3d/pics/badrien.xpm
+S /Users/badrien/badrien/ft_cub3d/pics/barrel.xpm
 
 F 0,0,0
 C 0,0,0

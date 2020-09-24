@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 11:04:35 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:23:53 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 14:00:01 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int		clean_exit(t_mlx *mlx)
 		free(mlx->map);
 	if (mlx != NULL)
 	{
+		if (!(mlx->zbuffer))
+			free(mlx->zbuffer);
 		if (mlx->frame != NULL)
 			mlx_destroy_image(mlx->mlx, mlx->frame);
 		free(mlx->player);

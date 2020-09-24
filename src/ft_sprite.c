@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 12:14:14 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 12:16:28 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 13:55:02 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	pre_draw_sprite(t_sprite *sprite)
 void	draw_sprite(t_mlx *mlx, t_sprite *sprite)
 {
 	sprite->stripe = sprite->drawstartx;
-	while (sprite->stripe++ < sprite->drawendx)
+	while (sprite->stripe < sprite->drawendx)
 	{
 		sprite->texx = (int)(256 * (sprite->stripe - (-sprite->spritewidth / 2 +
 			sprite->spritescreenx)) * TEXWIDTH / sprite->spritewidth) / 256;
@@ -71,10 +71,11 @@ void	draw_sprite(t_mlx *mlx, t_sprite *sprite)
 				sprite->y++;
 			}
 		}
+		sprite->stripe++;
 	}
 }
 
-void	add_sprite(t_mlx *mlx, double *zbuffer)
+void	add_sprite(t_mlx *mlx)
 {
 	t_sprite *sprite;
 
@@ -82,7 +83,7 @@ void	add_sprite(t_mlx *mlx, double *zbuffer)
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	size_sprite(mlx, sprite);
 	pre_draw_sprite(sprite);
-	sprite->zbuffer = zbuffer;
+	sprite->zbuffer = mlx->zbuffer;
 	draw_sprite(mlx, sprite);
 	free(sprite);
 }
