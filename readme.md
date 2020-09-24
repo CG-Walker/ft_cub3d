@@ -3,18 +3,14 @@
 - Pour compiler et lancer : `Make exec`
 - `wasd` pour se déplacer, flèches pour tourner.
 
-## TODO
-
-- Gestion erreur.
-- Malloc, proctection et free.
-- Norme.
-
 ## CRASH
 
 - ~~Si la premiere ligne de la map commence par autre chose que '1'.~~ *fixed*
 
 ## DONE
-
+- Gestion erreur.
+- Malloc, proctection et free.
+- Norme.
 - Gestion de fenêtre parfaite (?).
 - Pouvoir sauvegarder la première image rendue avec `--save`.
 - Éviter les segfaults dans la lecture de map.
