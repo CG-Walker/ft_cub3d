@@ -1,6 +1,7 @@
 ## Usage
 
 - Pour compiler et lancer : `Make exec`
+- Pour faire un screenshot: `Make screenshot`
 - `wasd` pour se déplacer, flèches pour tourner.
 
 ## CRASH
