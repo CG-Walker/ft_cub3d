@@ -6,7 +6,7 @@
 #    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/24 14:00:53 by badrien          ###   ########.fr        #
+#    Updated: 2020/09/24 14:20:07 by badrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ clean:
 
 fclean:		clean
 			@rm -f $(NAME)
-			@rm -f libft/libft.a
+			@rm -f libft.a
 			@rm -f libft/*.o
 			@rm -f a.out
 			@echo "\033[32m[✓]\033[0m		[libft.a deleted]"
