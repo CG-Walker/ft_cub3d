@@ -6,7 +6,7 @@
 #    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/24 14:20:07 by badrien          ###   ########.fr        #
+#    Updated: 2020/09/24 14:43:02 by badrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ all:		$(NAME)
 $(NAME):	
 			@make -C ./libft
 			@cp ./libft/libft.a libft.a
-			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC} libft.a get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+			@$(CC) $(CFLAGS) -o Cub3D $(MFLAGS) ${SRC} libft.a get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 			@echo "\n\033[32m[✓]\033[0m		[$(NAME) compiled]"
 
 %.o: %.c
@@ -45,7 +45,7 @@ fclean:		clean
 			@rm -f $(NAME)
 			@rm -f libft.a
 			@rm -f libft/*.o
-			@rm -f a.out
+			@rm -f Cub3D
 			@echo "\033[32m[✓]\033[0m		[libft.a deleted]"
 			@echo "\033[32m[✓]\033[0m		[libftprintf.a deleted]"
 
@@ -53,16 +53,10 @@ re:			fclean all
 
 exec:		all
 			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
-			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out map.cub
+			@echo "\033[32m[✓]\033[0m		[Cub3D executed]\n"
+			@./Cub3D map.cub
 
 screenshot: all
 			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
-			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out map.cub --save
-
-pong:		all
-			@$(CC) $(CFLAGS) $(MFLAGS) pong.c
-			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
-			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out
+			@echo "\033[32m[✓]\033[0m		[Cub3D executed]\n"
+			@./Cub3D map.cub --save && open capture.bmp
