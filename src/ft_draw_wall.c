@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 11:01:48 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:23:48 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:30:04 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	calc_ray(t_mlx *mlx, t_ray *ray)
 {
 	ray->camerax = 2 * ray->x / (double)ray->w - 1;
-	ray->raydirx = mlx->player->dirX + mlx->player->planeX * ray->camerax;
-	ray->raydiry = mlx->player->dirY + mlx->player->planeY * ray->camerax;
-	ray->mapx = (int)mlx->player->posX;
-	ray->mapy = (int)mlx->player->posY;
+	ray->raydirx = mlx->player->dirx + mlx->player->planex * ray->camerax;
+	ray->raydiry = mlx->player->diry + mlx->player->planey * ray->camerax;
+	ray->mapx = (int)mlx->player->posx;
+	ray->mapy = (int)mlx->player->posy;
 	if (ray->raydiry == 0)
 		ray->deltadistx = 0;
 	else
@@ -35,23 +35,23 @@ void	calc_side_dist(t_mlx *mlx, t_ray *ray)
 	if (ray->raydirx < 0)
 	{
 		ray->stepx = -1;
-		ray->sidedistx = (mlx->player->posX - ray->mapx) * ray->deltadistx;
+		ray->sidedistx = (mlx->player->posx - ray->mapx) * ray->deltadistx;
 	}
 	else
 	{
 		ray->stepx = 1;
-		ray->sidedistx = (ray->mapx + 1.0 - mlx->player->posX) *
+		ray->sidedistx = (ray->mapx + 1.0 - mlx->player->posx) *
 			ray->deltadistx;
 	}
 	if (ray->raydiry < 0)
 	{
 		ray->stepy = -1;
-		ray->sidedisty = (mlx->player->posY - ray->mapy) * ray->deltadisty;
+		ray->sidedisty = (mlx->player->posy - ray->mapy) * ray->deltadisty;
 	}
 	else
 	{
 		ray->stepy = 1;
-		ray->sidedisty = (ray->mapy + 1.0 - mlx->player->posY) *
+		ray->sidedisty = (ray->mapy + 1.0 - mlx->player->posy) *
 			ray->deltadisty;
 	}
 }
@@ -82,25 +82,25 @@ void	print_wall(t_mlx *mlx, t_ray *ray)
 	ray->y = ray->drawstart;
 	while (ray->y++ < ray->drawend)
 	{
-		ray->texY = (int)ray->texPos & (texHeight - 1);
-		ray->texPos += ray->step;
+		ray->texy = (int)ray->texpos & (TEXHEIGHT - 1);
+		ray->texpos += ray->step;
 		if (ray->side == 1)
 		{
 			if (ray->raydiry >= 0)
 				ray->color =
-					mlx->texture->west[(texHeight * ray->texY) + ray->texX];
+					mlx->texture->west[(TEXHEIGHT * ray->texy) + ray->texx];
 			else
 				ray->color =
-					mlx->texture->east[(texHeight * ray->texY) + ray->texX];
+					mlx->texture->east[(TEXHEIGHT * ray->texy) + ray->texx];
 		}
 		else
 		{
 			if (ray->raydirx >= 0)
 				ray->color =
-					mlx->texture->north[(texHeight * ray->texY) + ray->texX];
+					mlx->texture->north[(TEXHEIGHT * ray->texy) + ray->texx];
 			else
 				ray->color =
-					mlx->texture->south[(texHeight * ray->texY) + ray->texX];
+					mlx->texture->south[(TEXHEIGHT * ray->texy) + ray->texx];
 		}
 		mlx->data[ray->x - 1 + ray->y * mlx->screen_width] = ray->color;
 	}

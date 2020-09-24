@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/24 11:23:39 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:31:26 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	add_map(t_mlx *mlx)
 			}
 		y = 0;
 	}
-	y = (int)mlx->player->posX + (mlx->screen_height / 35) +
-		((int)mlx->player->posY + (mlx->screen_width / 35)) * mlx->screen_width;
+	y = (int)mlx->player->posx + (mlx->screen_height / 35) +
+		((int)mlx->player->posy + (mlx->screen_width / 35)) * mlx->screen_width;
 	mlx->data[y] = 0x000000;
 }
 

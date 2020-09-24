@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:59:35 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:23:45 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:31:11 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	floor_and_sky_color(t_mlx *mlx)
 
 void	get_data(t_mlx *mlx, t_floor_sky *data)
 {
-	data->raydirx0 = mlx->player->dirX - mlx->player->planeX;
-	data->raydiry0 = mlx->player->dirY - mlx->player->planeY;
-	data->raydirx1 = mlx->player->dirX + mlx->player->planeX;
-	data->raydiry1 = mlx->player->dirY + mlx->player->planeY;
+	data->raydirx0 = mlx->player->dirx - mlx->player->planex;
+	data->raydiry0 = mlx->player->diry - mlx->player->planey;
+	data->raydirx1 = mlx->player->dirx + mlx->player->planex;
+	data->raydiry1 = mlx->player->diry + mlx->player->planey;
 	data->p = data->y - mlx->screen_height / 2;
 	data->posz = 0.5 * mlx->screen_height;
 	data->rowdistance = data->posz / data->p;
@@ -51,8 +51,8 @@ void	get_data(t_mlx *mlx, t_floor_sky *data)
 		/ mlx->screen_width;
 	data->floorstepy = data->rowdistance * (data->raydiry1 - data->raydiry0)
 		/ mlx->screen_width;
-	data->floorx = mlx->player->posX + data->rowdistance * data->raydirx0;
-	data->floory = mlx->player->posY + data->rowdistance * data->raydiry0;
+	data->floorx = mlx->player->posx + data->rowdistance * data->raydirx0;
+	data->floory = mlx->player->posy + data->rowdistance * data->raydiry0;
 }
 
 void	draw_data(t_mlx *mlx, t_floor_sky *data, int x)
@@ -60,18 +60,18 @@ void	draw_data(t_mlx *mlx, t_floor_sky *data, int x)
 	size_t i;
 	size_t j;
 
-	i = texHeight;
-	j = texWidth;
+	i = TEXHEIGHT;
+	j = TEXWIDTH;
 	data->cellx = (int)(data->floorx);
 	data->celly = (int)(data->floory);
 	data->tx = (int)(j * (data->floorx - data->cellx)) & (j - 1);
 	data->ty = (int)(i * (data->floory - data->celly)) & (i - 1);
 	data->floorx += data->floorstepx;
 	data->floory += data->floorstepy;
-	data->color = mlx->texture->floor[texWidth * data->ty + data->tx];
+	data->color = mlx->texture->floor[TEXWIDTH * data->ty + data->tx];
 	data->color = (data->color >> 1) & 8355711;
 	mlx->data[x + (data->y * mlx->screen_width)] = data->color;
-	data->color = mlx->texture->ceiling[texWidth * data->ty + data->tx];
+	data->color = mlx->texture->ceiling[TEXWIDTH * data->ty + data->tx];
 	data->color = (data->color >> 1) & 8355711;
 	mlx->data[x + ((mlx->screen_height - data->y - 1)
 		* mlx->screen_width)] = data->color;

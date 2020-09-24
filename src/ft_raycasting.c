@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:24:22 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:22:14 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	calc_draw_size(t_mlx *mlx, t_ray *ray)
 {
 	if (ray->side == 0)
 		ray->perpwalldist =
-			(ray->mapx - mlx->player->posX +
+			(ray->mapx - mlx->player->posx +
 				(1 - ray->stepx) / 2) / ray->raydirx;
 	else
 		ray->perpwalldist =
-			(ray->mapy - mlx->player->posY +
+			(ray->mapy - mlx->player->posy +
 				(1 - ray->stepy) / 2) / ray->raydiry;
 	ray->h = mlx->screen_height;
 	ray->lineheight = (int)(ray->h / ray->perpwalldist);
@@ -35,17 +35,17 @@ void	calc_draw_size(t_mlx *mlx, t_ray *ray)
 void	calc_tex_size(t_mlx *mlx, t_ray *ray)
 {
 	if (ray->side == 0)
-		ray->wallX = mlx->player->posY + ray->perpwalldist * ray->raydiry;
+		ray->wallx = mlx->player->posy + ray->perpwalldist * ray->raydiry;
 	else
-		ray->wallX = mlx->player->posX + ray->perpwalldist * ray->raydirx;
-	ray->wallX -= floor((ray->wallX));
-	ray->texX = (int)(ray->wallX * (double)texWidth);
+		ray->wallx = mlx->player->posx + ray->perpwalldist * ray->raydirx;
+	ray->wallx -= floor((ray->wallx));
+	ray->texx = (int)(ray->wallx * (double)TEXWIDTH);
 	if (ray->side == 0 && ray->raydirx > 0)
-		ray->texX = texWidth - ray->texX - 1;
+		ray->texx = TEXWIDTH - ray->texx - 1;
 	if (ray->side == 1 && ray->raydiry < 0)
-		ray->texX = texWidth - ray->texX - 1;
-	ray->step = 1.0 * texHeight / ray->lineheight;
-	ray->texPos = (ray->drawstart - ray->h /
+		ray->texx = TEXWIDTH - ray->texx - 1;
+	ray->step = 1.0 * TEXHEIGHT / ray->lineheight;
+	ray->texpos = (ray->drawstart - ray->h /
 		2 + ray->lineheight / 2) * ray->step;
 }
 

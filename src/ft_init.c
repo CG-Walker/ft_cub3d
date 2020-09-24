@@ -6,7 +6,7 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:56:46 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:23:56 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:27:55 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	init_pos_player(t_mlx *mlx, int x, int y)
 {
-	mlx->player->posX = (double)x + 0.5;
-	mlx->player->posY = (double)y + 0.5;
+	mlx->player->posx = (double)x + 0.5;
+	mlx->player->posy = (double)y + 0.5;
 	mlx->player->init_posx = x;
 	mlx->player->init_poxy = y;
 	if (mlx->map[x][y] == 'E')
@@ -69,10 +69,10 @@ void	init_data(t_mlx *mlx)
 		error_exit(mlx, ERROR_MALLOC_FAILED);
 	if (!(texture = malloc(sizeof(t_texture))))
 		error_exit(mlx, ERROR_MALLOC_FAILED);
-	player->dirX = -1;
-	player->dirY = 0;
-	player->planeX = 0;
-	player->planeY = 0.86;
+	player->dirx = -1;
+	player->diry = 0;
+	player->planex = 0;
+	player->planey = 0.86;
 	player->init_posx = -1;
 	player->init_poxy = -1;
 	texture->rgb_ceiling = 0;
