@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:47:19 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 16:08:11 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 11:17:55 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define ERROR_TEXTURE_NOT_LOADED 5
 # define ERROR_CAPTURE_FAILED 6
 # define ERROR_UNEXPECTED_ARGS 7
+# define ERROR_SCREEN_SIZE 8
+# define ERROR_RGB 9
 
 typedef struct	s_sprite
 {
@@ -120,7 +122,7 @@ typedef struct	s_floor_sky
 	float	floory;
 }				t_floor_sky;
 
-typedef struct	s_texture // -> tableau de texture pour avoir des taille differente 
+typedef struct	s_texture
 {
 	int	*west;
 	int	*east;
@@ -174,16 +176,74 @@ typedef struct	s_point
 }				t_point;
 
 /*
-** ft_cub3d
+** ft_capture.c
 */
 
-int		raycasting(t_mlx *mlx);
-void	add_map(t_mlx *mlx);
+int		capture(t_mlx *mlx);
+int		bmp_write(t_mlx *mlx, t_byte file_header[FILE_HEADER_SIZE],
+						t_byte info_header[INFO_HEADER_SIZE]);
+void	bmp_write_pixels(int fd, t_mlx *mlx, t_byte *bmp_data);
+void	bmp_fill_header(t_mlx *mlx, t_byte file_header[FILE_HEADER_SIZE],
+						t_byte info_header[INFO_HEADER_SIZE]);
+
+/*
+** ft_cub3d.c
+*/
+
 void	put_frame(t_mlx *mlx);
-int		clean_exit(t_mlx *mlx);
+void	add_map(t_mlx *mlx);
+void	engine(t_mlx *mlx);
+int		main(int argc, char *argv[]);
+
+/*
+**	ft_draw_floor_sky.c
+*/
+
+void	floor_and_sky_color(t_mlx *mlx);
+void	get_data(t_mlx *mlx, t_floor_sky *data);
+void	draw_data(t_mlx *mlx, t_floor_sky *data, int x);
+void	floor_and_sky_text(t_mlx *mlx);
+
+/*
+**	ft_draw_wall.c
+*/
+
+void	calc_ray(t_mlx *mlx, t_ray *ray);
+void	calc_side_dist(t_mlx *mlx, t_ray *ray);
+void	check_hit(t_mlx *mlx, t_ray *ray);
+void	print_wall(t_mlx *mlx, t_ray *ray);
+
+/*
+**	ft_exit.c
+*/
+
 void	error_exit(t_mlx *mlx, int error_id);
-void	get_texture(t_mlx *mlx);
+int		clean_exit(t_mlx *mlx);
+
+
+/*
+**	ft_init.c
+*/
+
+void	init_pos_player(t_mlx *mlx, int x, int y);
 void	check_player_pos(t_mlx *mlx);
+void	init_data(t_mlx *mlx);
+void	get_texture(t_mlx *mlx);
+
+/*
+**	ft_map.c
+*/
+
+void	is_close(t_mlx *mlx, t_point size, t_point begin, t_point p);
+int		check_error_map(t_mlx *mlx);
+int		check_map(t_mlx *mlx);
+
+/*
+** ft_movements_rot
+*/
+
+void	rot_right(t_mlx *mlx, double rot_speed);
+void	rot_left(t_mlx *mlx, double rot_speed);
 
 /*
 ** ft_movements
@@ -194,13 +254,6 @@ void	mv_left(t_mlx *mlx, double move_speed);
 void	mv_right(t_mlx *mlx, double move_speed);
 void	mv_forward(t_mlx *mlx, double move_speed);
 void	mv_backward(t_mlx *mlx, double move_speed);
-
-/*
-** ft_movements_rot
-*/
-
-void	rot_right(t_mlx *mlx, double rot_speed);
-void	rot_left(t_mlx *mlx, double rot_speed);
 
 /*
 **	ft_parsing_params
@@ -216,21 +269,27 @@ int		check_id(char *s, t_mlx *mlx);
 */
 
 size_t	count_file_size(int fd, size_t file_size);
-void	full_parsing(char *file, t_mlx *mlx);
+void	full_parsing(char *file, t_mlx *mlx, size_t i);
 char	**make_world_map(char *file, size_t file_size, t_mlx *mlx);
 char	**fill_world_map(t_mlx *mlx, char **world_map, int fd, t_point size);
-
-/*
-** ft_sprite
-*/
-
-void	add_sprite(t_mlx *mlx, double *ZBuffer);
 
 /*
 ** ft_raycasting
 */
 
+void	calc_draw_size(t_mlx *mlx, t_ray *ray);
+void	calc_tex_size(t_mlx *mlx, t_ray *ray);
+void	draw_wall(t_mlx *mlx, t_ray *ray, double *zbuffer);
 int		raycasting(t_mlx *mlx);
+
+/*
+** ft_sprite
+*/
+
+void	size_sprite(t_mlx *mlx, t_sprite *sprite);
+void	pre_draw_sprite(t_sprite *sprite);
+void	draw_sprite(t_mlx *mlx, t_sprite *sprite);
+void	add_sprite(t_mlx *mlx, double *ZBuffer);
 
 /*
 **	ft_capture

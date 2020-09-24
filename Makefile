@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
+#    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/23 15:55:25 by cgoncalv         ###   ########.fr        #
+#    Updated: 2020/09/24 11:17:26 by badrien          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CFLAGS		=	-Wall -Werror -Wextra
 
 MFLAGS		=	-I minilibx -L minilibx -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
 
-SRC			=	ft_cub3d.c ft_movements.c ft_movements_rot.c ft_parsing.c ft_parsing_params.c ft_sprite.c ft_raycasting.c ft_capture.c
+SRC			=	ft_capture.c ft_cub3d.c ft_draw_floor_sky.c ft_draw_wall.c ft_exit.c ft_init.c ft_map.c \
+				ft_movements.c ft_movements_rot.c ft_parsing.c ft_parsing_params.c ft_raycasting.c ft_sprite.c
 
 OBJ 		=	$(SRC:.c=.o)
 

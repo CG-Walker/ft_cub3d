@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_params.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 15:23:50 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 10:37:42 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	r_id(char *s, t_mlx *mlx)
 		mlx->screen_width = 2560;
 	if (mlx->screen_height > 1440)
 		mlx->screen_height = 1440;
+	if (mlx->screen_height <= 0 || mlx->screen_width <= 0)
+		error_exit(mlx, ERROR_SCREEN_SIZE);
 }
 
 void	nesw_id(char *s, int nesw, t_mlx *mlx)
@@ -77,6 +79,8 @@ void	fc_id(char *s, int fc, t_mlx *mlx)
 	while (ft_isdigit(s[i]))
 		i++;
 	b = ft_atoi(&s[++i]);
+	if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255)
+		error_exit(mlx, ERROR_RGB);
 	if (fc == 0)
 		mlx->texture->rgb_floor = r + (g * 256) + (b * 256 * 256);
 	else

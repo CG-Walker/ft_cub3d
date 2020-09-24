@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 16:08:26 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 10:43:55 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,16 +114,15 @@ void	map_parsing(char *file, size_t file_size, int fd, t_mlx *mlx)
 	mlx->map = make_world_map(file, file_size, mlx);
 }
 
-void	full_parsing(char *file, t_mlx *mlx)
+void	full_parsing(char *file, t_mlx *mlx, size_t i)
 {
 	char	*line;
 	int		fd;
 	int		ret;
-	size_t	i;
 
 	ret = 1;
-	i = 0;
-	fd = open(file, O_RDONLY);
+	if ((fd = open(file, O_RDONLY)) == -1)
+		error_exit(mlx, ERROR_MAP_NOT_FOUND);
 	while (ret == 1)
 	{
 		ret = get_next_line(fd, &line);
