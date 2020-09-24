@@ -6,11 +6,11 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/24 10:37:42 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:14 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	r_id(char *s, t_mlx *mlx)
 {

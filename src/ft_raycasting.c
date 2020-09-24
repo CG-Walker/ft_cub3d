@@ -6,11 +6,11 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 14:12:54 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:03:58 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:22 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	calc_draw_size(t_mlx *mlx, t_ray *ray)
 {

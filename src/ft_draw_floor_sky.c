@@ -6,11 +6,11 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:59:35 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 11:00:51 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:23:45 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	floor_and_sky_color(t_mlx *mlx)
 {

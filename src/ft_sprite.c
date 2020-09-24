@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sprite.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 12:14:14 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/23 16:09:22 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:29 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	size_sprite(t_mlx *mlx, t_sprite *sprite)
 {

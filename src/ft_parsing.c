@@ -6,11 +6,11 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 15:11:40 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/24 10:43:55 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:18 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 size_t	count_file_size(int fd, size_t file_size)
 {

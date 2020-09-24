@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_movements.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 19:46:26 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 16:51:11 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:10 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 int		move(int key, t_mlx *mlx)
 {

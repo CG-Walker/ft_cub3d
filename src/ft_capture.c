@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_capture.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 16:06:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/23 16:10:46 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 11:28:32 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 int		capture(t_mlx *mlx)
 {

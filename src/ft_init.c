@@ -6,11 +6,11 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:56:46 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 10:58:12 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:23:56 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	init_pos_player(t_mlx *mlx, int x, int y)
 {

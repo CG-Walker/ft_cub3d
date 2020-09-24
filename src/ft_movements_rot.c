@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_movements_rot.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:33:54 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/22 14:34:35 by cgoncalv         ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:06 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	rot_right(t_mlx *mlx, double rot_speed)
 {

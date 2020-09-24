@@ -6,11 +6,11 @@
 /*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:54:40 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 10:56:22 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:24:03 by badrien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_cub3d.h"
+#include "../include/ft_cub3d.h"
 
 void	is_close(t_mlx *mlx, t_point size, t_point begin, t_point p)
 {
