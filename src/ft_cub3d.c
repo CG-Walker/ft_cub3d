@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 16:46:34 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/24 12:31:26 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/28 13:31:19 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		main(int argc, char *argv[])
 	init_data(mlx);
 	if (argc == 2 || argc == 3)
 		full_parsing(argv[1], mlx, 0);
-	if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
+	if (argc == 3 && ft_strncmp(argv[2], "--save\0", 7) == 0)
 		mlx->capture = 1;
 	if ((argc != 2 && mlx->capture == 0) || (argc == 3 && mlx->capture == 0))
 		error_exit(mlx, ERROR_UNEXPECTED_ARGS);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_params.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 15:35:10 by cgoncalv          #+#    #+#             */
-/*   Updated: 2020/09/24 11:24:14 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/28 13:33:20 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	r_id(char *s, t_mlx *mlx)
 		mlx->screen_width = 2560;
 	if (mlx->screen_height > 1440)
 		mlx->screen_height = 1440;
-	if (mlx->screen_height <= 0 || mlx->screen_width <= 0)
+	if (mlx->screen_height <= 50 || mlx->screen_width <= 50)
 		error_exit(mlx, ERROR_SCREEN_SIZE);
 }
 

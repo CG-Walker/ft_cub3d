@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: badrien <badrien@student.42.fr>            +#+  +:+       +#+         #
+#    By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/18 15:14:55 by cgoncalv          #+#    #+#              #
-#    Updated: 2020/09/24 14:20:07 by badrien          ###   ########.fr        #
+#    Updated: 2020/09/24 15:20:23 by cgoncalv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC			=	src/ft_capture.c src/ft_cub3d.c src/ft_draw_floor_sky.c src/ft_draw_wall
 
 OBJ 		=	$(SRC:.c=.o)
 
-NAME		=	ft_cub3D
+NAME		=	Cub3D
 
 LIB			=	ar rcs
 
@@ -30,39 +30,34 @@ all:		$(NAME)
 
 $(NAME):	
 			@make -C ./libft
-			@cp ./libft/libft.a libft.a
-			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC} libft.a get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-			@echo "\n\033[32m[✓]\033[0m		[$(NAME) compiled]"
+			@mv ./libft/libft.a libft.a
+			@$(CC) $(CFLAGS) $(MFLAGS) ${SRC} libft.a get_next_line/get_next_line.c get_next_line/get_next_line_utils.c -o $(NAME)
+			@echo "\033[32m[✓]\033[0m		['$(NAME)'	compiled]"
 
 %.o: %.c
 			$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 			@rm -f *.o
-			@echo "\033[32m\n[✓]\033[0m		[*.o deleted]"
+			@echo "\033[32m\n[✓]\033[0m		['*.o'		deleted]"
 
 fclean:		clean
 			@rm -f $(NAME)
 			@rm -f libft.a
 			@rm -f libft/*.o
-			@rm -f a.out
-			@echo "\033[32m[✓]\033[0m		[libft.a deleted]"
-			@echo "\033[32m[✓]\033[0m		[libftprintf.a deleted]"
+			@rm -f capture.bmp
+			@echo "\033[32m[✓]\033[0m		['libft.a'	deleted]"
+			@echo "\033[32m[✓]\033[0m		['$(NAME)'	deleted]"
+			@echo "\033[32m[✓]\033[0m		['capture.bmp'	deleted]"
 
 re:			fclean all
 
 exec:		all
-			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
-			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out map.cub
+			@echo "\033[32m[✓]\033[0m		['$(NAME)'	executed]"
+			@./$(NAME) map.cub
 
 screenshot: all
-			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
-			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out map.cub --save
-
-pong:		all
-			@$(CC) $(CFLAGS) $(MFLAGS) pong.c
-			@echo "\033[32m[✓]\033[0m		[$(NAME) and main.c compiled]"
-			@echo "\033[32m[✓]\033[0m		[a.out executed]\n"
-			@./a.out
+			@./$(NAME) map.cub --save
+			@echo "\033[32m[✓]\033[0m		['capture.bmp'	created]"
+			@echo "\033[32m[✓]\033[0m		['capture.bmp'	opened]"
+			@open capture.bmp

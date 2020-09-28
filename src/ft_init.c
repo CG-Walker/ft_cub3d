@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badrien <badrien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgoncalv <cgoncalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 10:56:46 by badrien           #+#    #+#             */
-/*   Updated: 2020/09/24 14:03:41 by badrien          ###   ########.fr       */
+/*   Updated: 2020/09/28 13:17:34 by cgoncalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	check_player_pos(t_mlx *mlx)
 				mlx->player->sprite_x = x + 0.5;
 				mlx->player->sprite_y = y + 0.5;
 				nb_sprite++;
+				mlx->map[x][y] = '0';
 			}
 		y = 0;
 	}
